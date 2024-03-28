@@ -1,11 +1,14 @@
 package com.example.page;
 
+import com.example.SaveFile.Reset;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class SettingPage extends Application {
 
@@ -29,6 +32,19 @@ public class SettingPage extends Application {
 
         settingLayout.add(returnStartPage, 0, 0);
 
+        Button resetScoreboard = new Button("스코어보드 초기화");
+
+        resetScoreboard.setOnAction(e -> {
+            Reset scoreReset = new Reset();
+            try {
+                scoreReset.ScoreReset();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        settingLayout.add(resetScoreboard, 0, 1);
+
         Scene settingPage = new Scene(settingLayout, 311, 621);
 
         primaryStage.setScene(settingPage);
@@ -36,3 +52,4 @@ public class SettingPage extends Application {
         primaryStage.show();
     }
 }
+

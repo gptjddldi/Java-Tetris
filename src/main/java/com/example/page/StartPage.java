@@ -44,8 +44,8 @@ public class StartPage extends Application {
         });
 
         scoreboardButton.setOnAction(e -> {
-            ScoreBoardPage scoreBoardpage = new ScoreBoardPage();
-            scoreBoardpage.start(primaryStage);
+            ScoreBoardAtStartPage scoreBoardpagePageStart = new ScoreBoardAtStartPage();
+            scoreBoardpagePageStart.start(primaryStage);
         });
 
         exitButton.setOnAction(e -> primaryStage.close());
