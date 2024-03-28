@@ -14,7 +14,10 @@ public class TetrisGame {
     private Tetromino currentTetromino; // Current Tetromino shape
     private final Timeline gameLoop;
 
+    private int score;
+
     public TetrisGame() {
+        score = 0;
         // Initialize the game board
         board = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
         // Initialize other game variables
@@ -26,6 +29,7 @@ public class TetrisGame {
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
     }
+
 
     private void spawnNewTetromino() {
         currentTetromino = Tetromino.getRandomTetromino();
@@ -74,6 +78,8 @@ public class TetrisGame {
     // Method to fix the current Tetromino onto the board
     private void fixTetromino() {
         boolean[][] shape = currentTetromino.getShape();
+        int linesCleared = 0;
+
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
                 if (shape[i][j]) {
@@ -81,11 +87,28 @@ public class TetrisGame {
                 }
             }
         }
-        clearLines();
+
+        score += 10;
+
+        for (int y = 0; y < BOARD_HEIGHT; y++) {
+            boolean lineCleared = true; // Assume line is cleared initially
+            for (int x = 0; x < BOARD_WIDTH; x++) {
+                if (!board[y][x]) { // If any cell in the row is not occupied
+                    lineCleared = false; // Line is not cleared
+                    break; // No need to check further in this row
+                }
+            }
+            if (lineCleared) {
+                linesCleared++;
+                // You may choose to break here if you only want to count one line cleared per fix
+            }
+        }
+
+        clearLines(linesCleared);
         spawnNewTetromino();
     }
 
-    private void clearLines() {
+    private void clearLines(int linesCleared) {
         for (int y = BOARD_HEIGHT - 1; y >= 0; y--) {
             boolean lineFull = true;
             for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -106,6 +129,27 @@ public class TetrisGame {
                 y++; // Check the same line again
             }
         }
+
+        switch (linesCleared) {
+            case 1:
+                score += 100;
+                break;
+            case 2:
+                score += 200;
+                break;
+            case 3:
+                score += 300;
+                break;
+            case 4:
+                score += 400;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public int getScore() {
+        return score;
     }
 
     // Method to check if the Tetromino can move to a new position
