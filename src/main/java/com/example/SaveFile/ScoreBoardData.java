@@ -3,9 +3,12 @@ package com.example.SaveFile;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ScoreBoardData {
-    String[][] stu_arr=new String[10][2];     //2차원 배열 정의
+    String[][] stu_arr=new String[10][2];
     String name;
     int score;
 
@@ -13,24 +16,44 @@ public class ScoreBoardData {
     public static void SaveToFile(String text, int score) {
         String filePath = "src/main/java/com/example/SaveFile/score.txt";
         try {
-
-
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
             }
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-            writer.write(String.format("%d", score));//여기에 점수 받아오면됨
-            writer.write("," + text);
-            writer.newLine();
 
+            List<String> lines = new ArrayList<>();
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            reader.close();
+
+            lines.add(String.format("%d,%s", score, text));
+
+            Collections.sort(lines, (a, b) -> {
+                int scoreA = Integer.parseInt(a.split(",")[0]);
+                int scoreB = Integer.parseInt(b.split(",")[0]);
+                return Integer.compare(scoreB, scoreA);
+            });
+
+            if (lines.size() > 10) {
+                lines.subList(10, lines.size()).clear();
+            }
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for (String sortedLine : lines) {
+                writer.write(sortedLine);
+                writer.newLine();
+            }
             writer.flush();
             writer.close();
-            //txt파일에서 숫자 높은순으로 정렬 만들어야됨
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     public static void saveRancking(TextField textField,int score) {
         String text = textField.getText();
@@ -46,7 +69,7 @@ public class ScoreBoardData {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        int i = 1;
+        int i = 0;
         while (i < 10) {
             obj.getScr(i);
             stringBuilder.append(obj.getDataAsString());

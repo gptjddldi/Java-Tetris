@@ -53,8 +53,11 @@ public class ScoreBoardAtGameEnd extends Application {
         Button submitButton = new Button("저장");
         submitButton.setOnAction(event -> {
             ScoreBoardData.saveRancking(inputField,score);
-            StartPage startPage = new StartPage();
-            startPage.start(primaryStage);
+            try {
+                ScoreBoardData.loadRanking(textArea);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         });
 
