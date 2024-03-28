@@ -3,6 +3,3 @@
 1
 2
 3
-=======
-# Java-Tetrisaaaaa
->>>>>>> master
