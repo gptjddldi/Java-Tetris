@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Tetromino {
     private final boolean[][] shape;
-
+//test
     private Tetromino(boolean[][] shape) {
         this.shape = shape;
     }
