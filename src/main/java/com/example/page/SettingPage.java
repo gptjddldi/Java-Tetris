@@ -23,7 +23,7 @@ public class SettingPage extends Application {
         settingLayout.setVgap(10);
         settingLayout.setHgap(10);
 
-        Button returnStartPage = new Button("Mainmenu");
+        Button returnStartPage = new Button("Main menu");
 
         returnStartPage.setOnAction(e -> {
             StartPage startScreen = new StartPage();
@@ -43,6 +43,26 @@ public class SettingPage extends Application {
             }
         });
 
+        Button setControlsButton = new Button("조작키 설정");
+
+        setControlsButton.setOnAction(e -> {
+            // 조작키 설정 창을 생성
+            ControlsSettingsWindow controlsSettingsWindow = new ControlsSettingsWindow();
+            controlsSettingsWindow.show();
+        });
+
+        settingLayout.add(setControlsButton, 0, 2);
+
+        Button adjustScreenSizeButton = new Button("게임 화면 크기 조절");
+
+        adjustScreenSizeButton.setOnAction(e -> {
+            // 화면 크기 조절 창을 생성
+            ScreenSizeSettingsWindow screenSizeSettingsWindow = new ScreenSizeSettingsWindow();
+            screenSizeSettingsWindow.show();
+        });
+
+        settingLayout.add(adjustScreenSizeButton, 0, 3); // 이 부분 수정
+
         settingLayout.add(resetScoreboard, 0, 1);
 
         Scene settingPage = new Scene(settingLayout, 311, 621);
@@ -52,4 +72,3 @@ public class SettingPage extends Application {
         primaryStage.show();
     }
 }
-
