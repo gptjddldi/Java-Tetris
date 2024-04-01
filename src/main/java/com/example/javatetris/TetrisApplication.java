@@ -4,9 +4,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -17,12 +19,15 @@ public class TetrisApplication extends Application {
     private final int BOARD_HEIGHT = 20;
     private final TetrisGame tetrisGame = new TetrisGame();
     private Rectangle[][] boardGrid;
+    private Label scoreLabel;
 
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
         GridPane gameBoard = createGameBoard();
+        VBox scorePane = createScorePane();
         root.setCenter(gameBoard);
+        root.setRight(scorePane);
 
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> {
@@ -65,6 +70,19 @@ public class TetrisApplication extends Application {
         return gridPane;
     }
 
+    private VBox createScorePane() {
+        VBox scorePane = new VBox();
+        scorePane.setSpacing(10);
+
+        // Score label
+        scoreLabel = new Label("Score: 0"); // Initial score
+        scorePane.getChildren().add(scoreLabel);
+
+        // Add any additional score-related UI elements here
+
+        return scorePane;
+    }
+
     private void updateGameBoard() {
         boolean[][] boardState = tetrisGame.getBoardState();
 
@@ -73,6 +91,7 @@ public class TetrisApplication extends Application {
                 boardGrid[y][x].setFill(boardState[y][x] ? Color.GREEN : Color.WHITE);
             }
         }
+        scoreLabel.setText("Score: " + tetrisGame.getScore());
     }
 
     public static void main(String[] args) {
