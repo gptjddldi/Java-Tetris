@@ -12,9 +12,18 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class ScoreBoardAtGameEnd extends Application {
+    private int score;
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public ScoreBoardAtGameEnd() {
+        super();
+    }
+    public ScoreBoardAtGameEnd(int score) {
+        this();
+        setScore(score);
     }
 
     @Override
@@ -47,9 +56,6 @@ public class ScoreBoardAtGameEnd extends Application {
         TextField inputField = new TextField("");
         inputField.setPrefWidth(250);
 
-
-        int score = 1; //여기에 점수 넣으면 됨
-
         Button submitButton = new Button("저장");
         submitButton.setOnAction(event -> {
             ScoreBoardData.saveRancking(inputField,score);
@@ -69,5 +75,9 @@ public class ScoreBoardAtGameEnd extends Application {
         primaryStage.setScene(scoreBoardPage);
         primaryStage.setTitle("scoreBoard");
         primaryStage.show();
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

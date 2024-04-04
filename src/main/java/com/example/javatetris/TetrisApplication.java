@@ -1,13 +1,16 @@
 package com.example.javatetris;
 
+import com.example.page.ScoreBoardAtGameEnd;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -20,10 +23,15 @@ public class TetrisApplication extends Application {
     private final TetrisGame tetrisGame = new TetrisGame();
     private Rectangle[][] boardGrid;
     private Label scoreLabel;
+    private Timeline gameLoop;
+    private BorderPane root;
+    private Boolean isPause = false;
+    private static Stage window;
 
     @Override
     public void start(Stage primaryStage) {
-        BorderPane root = new BorderPane();
+        window = primaryStage;
+        root = new BorderPane();
         GridPane gameBoard = createGameBoard();
         VBox scorePane = createScorePane();
         root.setCenter(gameBoard);
@@ -31,6 +39,7 @@ public class TetrisApplication extends Application {
 
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> {
+            if(isPause) return;
             KeyCode code = event.getCode();
             switch (code) {
                 case LEFT -> tetrisGame.moveLeft();
@@ -46,13 +55,18 @@ public class TetrisApplication extends Application {
         primaryStage.show();
 
         // Game loop
-        Timeline gameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
-            tetrisGame.moveDown();
+        gameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
+            if(isPause) return;
             updateGameBoard();
         }));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
     }
+    public void endGame(){
+        ScoreBoardAtGameEnd page = new ScoreBoardAtGameEnd(tetrisGame.getScore());
+        page.start(window);
+    }
+
 
     private GridPane createGameBoard() {
         GridPane gridPane = new GridPane();
@@ -83,7 +97,32 @@ public class TetrisApplication extends Application {
         return scorePane;
     }
 
+    private Pane createGameOverPane() {
+        Pane gameOverPane = new Pane();
+
+        Label gameOverLabel = new Label("Game Over");
+        gameOverLabel.setStyle("-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: red;");
+        gameOverLabel.setLayoutX(50);
+        gameOverLabel.setLayoutY(200);
+
+        Button rankingButton = new Button("Ranking");
+        rankingButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
+        rankingButton.setLayoutX(80);
+        rankingButton.setLayoutY(300);
+        rankingButton.setOnAction(e -> {
+            endGame();
+        });
+
+        gameOverPane.getChildren().addAll(gameOverLabel, rankingButton);
+
+        return gameOverPane;
+    }
+
     private void updateGameBoard() {
+        if(tetrisGame.isGameOver()){
+            root.getChildren().add(createGameOverPane());
+            return;
+        }
         boolean[][] boardState = tetrisGame.getBoardState();
 
         for (int y = 0; y < BOARD_HEIGHT; y++) {

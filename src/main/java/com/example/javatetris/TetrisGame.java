@@ -13,7 +13,7 @@ public class TetrisGame {
     private int currentX, currentY; // Current position of the active Tetromino
     private Tetromino currentTetromino; // Current Tetromino shape
     private final Timeline gameLoop;
-
+    private boolean gameOver = false;
     private int score;
 
     public TetrisGame() {
@@ -38,7 +38,7 @@ public class TetrisGame {
         if (!canMove(currentX, currentY, currentTetromino)) {
             // Game over condition: if new Tetromino cannot be placed, game ends
             // You can handle game over logic here
-            System.out.println("Game Over");
+            gameOver = true;
             gameLoop.stop();
         }
     }
@@ -198,4 +198,9 @@ public class TetrisGame {
         }
         return copy;
     }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
 }
