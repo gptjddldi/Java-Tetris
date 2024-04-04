@@ -5,6 +5,7 @@ import com.example.page.StartPage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,7 +36,7 @@ public class TetrisApplication extends Application {
         window = primaryStage;
         root = new BorderPane();
         GridPane gameBoard = createGameBoard();
-        VBox scorePane = createScorePane();
+        VBox scorePane = createSidePane();
         root.setCenter(gameBoard);
         root.setRight(scorePane);
         pausePane = createPausePane();
@@ -106,17 +107,17 @@ public class TetrisApplication extends Application {
         return gridPane;
     }
 
-    private VBox createScorePane() {
-        VBox scorePane = new VBox();
-        scorePane.setSpacing(10);
+    private VBox createSidePane() {
+        VBox sidePane = new VBox(50);
+        Tetromino nextTetromino = tetrisGame.getNextTetromino();
 
-        // Score label
         scoreLabel = new Label("Score: 0"); // Initial score
-        scorePane.getChildren().add(scoreLabel);
-
+        sidePane.getChildren().add(scoreLabel);
+        sidePane.getChildren().add(new Label("Next Tetromino:"));
+        sidePane.getChildren().add(new Label(nextTetromino.toString()));
         // Add any additional score-related UI elements here
 
-        return scorePane;
+        return sidePane;
     }
 
     private Pane createPausePane() {
@@ -126,17 +127,13 @@ public class TetrisApplication extends Application {
         continueButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
         continueButton.setLayoutX(80);
         continueButton.setLayoutY(200);
-        continueButton.setOnAction(e -> {
-            continueGame();
-        });
+        continueButton.setOnAction(e -> continueGame());
 
         Button exitButton = new Button("Exit");
         exitButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
         exitButton.setLayoutX(80);
         exitButton.setLayoutY(300);
-        exitButton.setOnAction(e -> {
-            quitGame();
-        });
+        exitButton.setOnAction((ActionEvent e) -> quitGame());
 
         pausePane.getChildren().addAll(continueButton, exitButton);
 
@@ -155,9 +152,7 @@ public class TetrisApplication extends Application {
         rankingButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
         rankingButton.setLayoutX(80);
         rankingButton.setLayoutY(300);
-        rankingButton.setOnAction(e -> {
-            endGame();
-        });
+        rankingButton.setOnAction(e -> endGame());
 
         gameOverPane.getChildren().addAll(gameOverLabel, rankingButton);
 
