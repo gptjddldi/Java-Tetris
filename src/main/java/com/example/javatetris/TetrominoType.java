@@ -1,5 +1,7 @@
 package com.example.javatetris;
 
+import javafx.scene.paint.Color;
+
 public enum TetrominoType {
     I_SHAPE(new boolean[][]{{true, true, true, true}}),
     J_SHAPE(new boolean[][]{{true, false, false}, {true, true, true}}),
@@ -17,5 +19,8 @@ public enum TetrominoType {
 
     public boolean[][] getShape() {
         return shape;
+    }
+
+    public void setColor(Color colorBlindColor) {
     }
 }

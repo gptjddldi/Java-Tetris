@@ -1,7 +1,7 @@
-1,aaaaaaaaa
-1,aaaaaaaaa
-1,aaaaaaaaa
-1,sssssssss
+0,no score now
+0,no score now
+0,no score now
+0,no score now
 0,no score now
 0,no score now
 0,no score now

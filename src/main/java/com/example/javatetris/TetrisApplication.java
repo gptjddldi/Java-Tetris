@@ -22,7 +22,7 @@ public class TetrisApplication extends Application {
     private Label scoreLabel;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) { // 게임 보드와 점수 패널 생성, 사용자 입력 ㅊ처리
         BorderPane root = new BorderPane();
         GridPane gameBoard = createGameBoard();
         VBox scorePane = createScorePane();
@@ -54,7 +54,7 @@ public class TetrisApplication extends Application {
         gameLoop.play();
     }
 
-    private GridPane createGameBoard() {
+    private GridPane createGameBoard() { // 게임 보드를 그리드 형태로 만듦
         GridPane gridPane = new GridPane();
         boardGrid = new Rectangle[BOARD_HEIGHT][BOARD_WIDTH];
 

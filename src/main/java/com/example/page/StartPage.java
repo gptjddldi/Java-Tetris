@@ -10,7 +10,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class StartPage extends Application {
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -27,6 +26,7 @@ public class StartPage extends Application {
         Button settingButton = new Button("Setting");
         Button scoreboardButton = new Button("Scoreboard");
         Button exitButton = new Button("Exit");
+
 
         startButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
         settingButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
@@ -50,6 +50,7 @@ public class StartPage extends Application {
 
         exitButton.setOnAction(e -> primaryStage.close());
 
+
         startLayout.add(startButton, 0, 0);
         startLayout.add(settingButton, 0, 1);
         startLayout.add(scoreboardButton, 0, 2);
@@ -63,4 +64,3 @@ public class StartPage extends Application {
         primaryStage.show();
     }
 }
-
