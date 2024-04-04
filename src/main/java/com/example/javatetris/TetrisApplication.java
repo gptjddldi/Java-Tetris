@@ -1,6 +1,7 @@
 package com.example.javatetris;
 
 import com.example.page.ScoreBoardAtGameEnd;
+import com.example.page.StartPage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -24,6 +25,7 @@ public class TetrisApplication extends Application {
     private Rectangle[][] boardGrid;
     private Label scoreLabel;
     private Timeline gameLoop;
+    private Pane pausePane;
     private BorderPane root;
     private Boolean isPause = false;
     private static Stage window;
@@ -36,6 +38,7 @@ public class TetrisApplication extends Application {
         VBox scorePane = createScorePane();
         root.setCenter(gameBoard);
         root.setRight(scorePane);
+        pausePane = createPausePane();
 
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> {
@@ -46,6 +49,7 @@ public class TetrisApplication extends Application {
                 case RIGHT -> tetrisGame.moveRight();
                 case DOWN -> tetrisGame.moveDown();
                 case UP -> tetrisGame.rotateClockwise();
+                case SPACE -> pauseGame();
             }
             updateGameBoard();
         });
@@ -62,11 +66,29 @@ public class TetrisApplication extends Application {
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
     }
+
+    private void pauseGame() {
+        isPause = true;
+        gameLoop.pause();
+        tetrisGame.pauseGame();
+        root.getChildren().add(pausePane);
+    }
+
+    public void quitGame(){
+        StartPage startPage = new StartPage();
+        startPage.start(window);
+    }
     public void endGame(){
         ScoreBoardAtGameEnd page = new ScoreBoardAtGameEnd(tetrisGame.getScore());
         page.start(window);
     }
 
+    public void continueGame(){
+        isPause = false;
+        gameLoop.play();
+        tetrisGame.resumeGame();
+        root.getChildren().remove(pausePane);
+    }
 
     private GridPane createGameBoard() {
         GridPane gridPane = new GridPane();
@@ -95,6 +117,30 @@ public class TetrisApplication extends Application {
         // Add any additional score-related UI elements here
 
         return scorePane;
+    }
+
+    private Pane createPausePane() {
+        Pane pausePane = new Pane();
+
+        Button continueButton = new Button("Continue");
+        continueButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
+        continueButton.setLayoutX(80);
+        continueButton.setLayoutY(200);
+        continueButton.setOnAction(e -> {
+            continueGame();
+        });
+
+        Button exitButton = new Button("Exit");
+        exitButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
+        exitButton.setLayoutX(80);
+        exitButton.setLayoutY(300);
+        exitButton.setOnAction(e -> {
+            quitGame();
+        });
+
+        pausePane.getChildren().addAll(continueButton, exitButton);
+
+        return pausePane;
     }
 
     private Pane createGameOverPane() {

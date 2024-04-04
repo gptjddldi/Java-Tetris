@@ -203,4 +203,11 @@ public class TetrisGame {
         return gameOver;
     }
 
+    public void pauseGame() {
+        gameLoop.pause();
+    }
+
+    public void resumeGame() {
+        gameLoop.play();
+    }
 }
