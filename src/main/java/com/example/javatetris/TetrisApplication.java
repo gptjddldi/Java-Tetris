@@ -16,14 +16,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class TetrisApplication extends Application {
-    private final int BOARD_WIDTH = 10;
-    private final int BOARD_HEIGHT = 20;
+    private final int BOARD_WIDTH = 12;
+    private final int BOARD_HEIGHT = 22;
     private final TetrisGame tetrisGame = new TetrisGame();
-    private Rectangle[][] boardGrid;
+    private Text[][] boardGrid;
     private Label scoreLabel;
     private Timeline gameLoop;
     private Pane pausePane;
@@ -93,17 +96,55 @@ public class TetrisApplication extends Application {
 
     private GridPane createGameBoard() {
         GridPane gridPane = new GridPane();
-        boardGrid = new Rectangle[BOARD_HEIGHT][BOARD_WIDTH];
+        boardGrid = new Text[BOARD_HEIGHT][BOARD_WIDTH]; // Change to Text array
 
+        // Create the game board with 'o's
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
-                int BLOCK_SIZE = 30;
-                Rectangle block = new Rectangle(BLOCK_SIZE, BLOCK_SIZE, Color.WHITE);
-                block.setStroke(Color.BLACK);
+                Text block = new Text("O");
+                block.setFill(Color.GREEN); // Set color for the text
+                block.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
                 boardGrid[y][x] = block;
                 gridPane.add(block, x, y);
             }
         }
+
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            boardGrid[0][x].setFill(Color.TRANSPARENT); // Make the top border 'o's invisible
+            boardGrid[BOARD_HEIGHT - 1][x].setFill(Color.TRANSPARENT); // Make the bottom border 'o's invisible
+        }
+
+        for (int y = 0; y < BOARD_HEIGHT; y++) {
+            boardGrid[y][0].setFill(Color.TRANSPARENT); // Make the left border 'o's invisible
+            boardGrid[y][BOARD_WIDTH - 1].setFill(Color.TRANSPARENT); // Make the right border 'o's invisible
+        }
+
+
+        // Add 'x's for the border
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            Text borderTextTop = new Text("X");
+            Text borderTextBottom = new Text("X");
+            borderTextTop.setFill(Color.WHITE); // Make the rectangle invisible
+            borderTextBottom.setFill(Color.WHITE); // Make the rectangle invisible
+            borderTextTop.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
+            borderTextBottom.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
+            gridPane.add(borderTextTop, x, 0); // Add to the top row
+            gridPane.add(borderTextBottom, x, BOARD_HEIGHT - 1); // Add to the bottom row
+        }
+
+        for (int y = 0; y < BOARD_HEIGHT; y++) {
+            Text borderTextLeft = new Text("X");
+            Text borderTextRight = new Text("X");
+            borderTextLeft.setFill(Color.WHITE); // Make the rectangle invisible
+            borderTextRight.setFill(Color.WHITE); // Make the rectangle invisible
+            borderTextLeft.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
+            borderTextRight.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
+            gridPane.add(borderTextLeft, 0, y); // Add to the left column
+            gridPane.add(borderTextRight, BOARD_WIDTH - 1, y); // Add to the right column
+        }
+
+        gridPane.setStyle("-fx-background-color: black;");
+
         return gridPane;
     }
 
@@ -166,9 +207,15 @@ public class TetrisApplication extends Application {
         }
         boolean[][] boardState = tetrisGame.getBoardState();
 
-        for (int y = 0; y < BOARD_HEIGHT; y++) {
-            for (int x = 0; x < BOARD_WIDTH; x++) {
-                boardGrid[y][x].setFill(boardState[y][x] ? Color.GREEN : Color.WHITE);
+        for (int y = 1; y < BOARD_HEIGHT-1; y++) {
+            for (int x = 1; x < BOARD_WIDTH-1; x++) {
+
+                if (boardState[y-1][x-1]){
+                    boardGrid[y][x].setText("O");
+
+                }else{
+                    boardGrid[y][x].setText("");
+                }
             }
         }
         scoreLabel.setText("Score: " + tetrisGame.getScore());
