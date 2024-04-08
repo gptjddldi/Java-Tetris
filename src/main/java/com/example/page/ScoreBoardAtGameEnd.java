@@ -61,8 +61,6 @@ public class ScoreBoardAtGameEnd extends Application {
             }
         });
 
-        int score = 1; // 여기에 점수 넣으면 됨
-
         Button submitButton = new Button("저장");
         submitButton.setOnAction(event -> {
             if (!submitButtonClicked) {
