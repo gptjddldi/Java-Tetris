@@ -14,9 +14,18 @@ import javafx.stage.Stage;
 
 public class ScoreBoardAtGameEnd extends Application {
     private boolean submitButtonClicked = false;
+    private int score;
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public ScoreBoardAtGameEnd() {
+        super();
+    }
+    public ScoreBoardAtGameEnd(int score) {
+        this();
+        setScore(score);
     }
 
     @Override
@@ -76,5 +85,9 @@ public class ScoreBoardAtGameEnd extends Application {
         primaryStage.setScene(scoreBoardPage);
         primaryStage.setTitle("scoreBoard");
         primaryStage.show();
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
