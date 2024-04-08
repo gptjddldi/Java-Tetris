@@ -6,12 +6,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class ScoreBoardAtGameEnd extends Application {
+    private boolean submitButtonClicked = false;
     private int score;
 
     public static void main(String[] args) {
@@ -42,29 +44,35 @@ public class ScoreBoardAtGameEnd extends Application {
 
         scoreBoardLayout.add(backButton, 0, 0);
 
-        TextArea textArea = new TextArea();
-        textArea.setPrefWidth(300);
-        textArea.setPrefHeight(500);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-        scoreBoardLayout.add(textArea, 0, 3, 2, 1);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPrefSize(300, 500);
+        scoreBoardLayout.add(scrollPane, 0, 3, 2, 1);
+
 
         Label label = new Label("랭킹 업데이트를 위해 이름을 입력하세요");
         scoreBoardLayout.add(label, 0, 4);
 
-
         TextField inputField = new TextField("");
         inputField.setPrefWidth(250);
 
+        inputField.addEventFilter(KeyEvent.KEY_TYPED, event -> { // 쉼표 입력을 막음
+            if (event.getCharacter().equals(",")) {
+                event.consume();
+            }
+        });
+
         Button submitButton = new Button("저장");
         submitButton.setOnAction(event -> {
-            ScoreBoardData.saveRancking(inputField,score);
-            try {
-                ScoreBoardData.loadRanking(textArea);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (!submitButtonClicked) {
+                ScoreBoardData.saveRanking(inputField.getText(), score);
+                try {
+                    ScoreBoardData.loadRanking(scrollPane);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                submitButtonClicked = true;
+                submitButton.setDisable(true);
             }
-
         });
 
         scoreBoardLayout.add(inputField, 0, 5);
