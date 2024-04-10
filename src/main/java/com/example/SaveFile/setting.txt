@@ -2,3 +2,6 @@ UP
 DOWN
 LEFT
 RIGHT
+S
+D
+off

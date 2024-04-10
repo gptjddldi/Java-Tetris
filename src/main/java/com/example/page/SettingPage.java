@@ -5,11 +5,14 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static com.example.SaveFile.SaveSetting.saveColorSettingsToFile;
 
 public class SettingPage extends Application {
 
@@ -24,7 +27,7 @@ public class SettingPage extends Application {
     @Override
     public void start(Stage primaryStage) {
         GridPane settingLayout = new GridPane();
-        settingLayout.setAlignment(Pos.TOP_LEFT);
+        settingLayout.setAlignment(Pos.CENTER);
         settingLayout.setVgap(10);
         settingLayout.setHgap(10);
 
@@ -56,11 +59,7 @@ public class SettingPage extends Application {
         setControlsButton.setOnAction(e -> {
             // 조작키 설정 창을 보여줌
             controlsSettingsWindow.showAndWait();
-            // 설정된 조작키 가져오기
-            controlKeys = controlsSettingsWindow.getNewKeys();
         });
-
-        settingLayout.add(setControlsButton, 0, 2);
 
         Button adjustScreenSizeButton = new Button("게임 화면 크기 조절");
 
@@ -70,23 +69,23 @@ public class SettingPage extends Application {
             screenSizeSettingsWindow.show();
         });
 
-        Button colorBlindButton = new Button("색맹 모드: 꺼짐");
-        colorBlindButton.setOnAction(e -> {
-            colorBlindMode = !colorBlindMode;
-            if (colorBlindMode) {
-                colorBlindButton.setText("색맹 모드: 켜짐");
-                // 여기에 색맹 모드를 적용하는 코드 추가
+        CheckBox colorBlindCheckBox = new CheckBox("색맹모드");
+
+        colorBlindCheckBox.setOnAction(e -> {
+            if (colorBlindCheckBox.isSelected()) {
+                saveColorSettingsToFile("on");
             } else {
-                colorBlindButton.setText("색맹 모드: 꺼짐");
-                // 여기에 일반 모드로 전환하는 코드 추가
+                saveColorSettingsToFile("off");
             }
         });
 
-        settingLayout.add(colorBlindButton, 0, 4);
+        settingLayout.add(colorBlindCheckBox, 0, 3);
 
-        settingLayout.add(adjustScreenSizeButton, 0, 3);
+        settingLayout.add(adjustScreenSizeButton, 0, 1);
 
-        settingLayout.add(resetScoreboard, 0, 1);
+        settingLayout.add(setControlsButton, 0, 2);
+
+        settingLayout.add(resetScoreboard, 0, 4);
 
         Scene settingPage = new Scene(settingLayout, 311, 621);
 
@@ -95,6 +94,5 @@ public class SettingPage extends Application {
         primaryStage.show();
     }
 
-    // 색맹 모드 적용 메서드
 }
 

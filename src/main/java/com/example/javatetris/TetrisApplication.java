@@ -33,7 +33,6 @@ public class TetrisApplication extends Application {
     private BorderPane root;
     private Boolean isPause = false;
     private static Stage window;
-    private KeyCode[] controlKeys;
 
     @Override
     public void start(Stage primaryStage) {
@@ -50,7 +49,7 @@ public class TetrisApplication extends Application {
         KeyCode[] controlKeys = new KeyCode[4];
         //키 로드 한 후 각각 키에 키값 넣어주기
         String[] keyNames = SaveSetting.loadKeySettingsFromFile();
-        for (int i = 0; i < keyNames.length; i++) {
+        for (int i = 0; i < 4; i++) {
             controlKeys[i] = KeyCode.valueOf(keyNames[i]);
         }
 
@@ -212,15 +211,17 @@ public class TetrisApplication extends Application {
             root.getChildren().add(createGameOverPane());
             return;
         }
-        boolean[][] boardState = tetrisGame.getBoardState();
+        char[][] boardState = tetrisGame.getBoardChar();
+        Color[][] boardColor = tetrisGame.getBoardColor();
 
         for (int y = 1; y < BOARD_HEIGHT-1; y++) {
             for (int x = 1; x < BOARD_WIDTH-1; x++) {
 
-                if (boardState[y-1][x-1]){
-                    boardGrid[y][x].setText("O");
+                if (boardState[y-1][x-1] != 'N'){
+                    boardGrid[y][x].setText(boardState[y-1][x-1] + "");
+                    boardGrid[y][x].setFill(boardColor[y-1][x-1]); // Set color for the text
 
-                }else{
+                } else{
                     boardGrid[y][x].setText("");
                 }
             }

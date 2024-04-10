@@ -23,6 +23,41 @@ public class SaveSetting {
             e.printStackTrace();
         }
     }
+    public static void saveColorSettingsToFile(String a) {
+        String filePath = "src/main/java/com/example/SaveFile/setting.txt";
+        ArrayList<String> array = new ArrayList<>();
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            ArrayList<String> lines = new ArrayList<>();
+            String line;
+            int lineNumber = 0;
+            while ((line = reader.readLine()) != null && lineNumber <6) {
+                lines.add(line);
+                lineNumber++;
+            }
+            reader.close();
+
+            // 파일의 기존 내용을 그대로 쓰기
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for (String l : lines) {
+                writer.write(l);
+                writer.newLine();
+            }
+
+            writer.write(a);
+
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static String[] loadKeySettingsFromFile() {
         String filePath = "src/main/java/com/example/SaveFile/setting.txt";
         List<String> keyNames = new ArrayList<>();
@@ -38,4 +73,25 @@ public class SaveSetting {
         }
         return keyNames.toArray(new String[0]);
     }
+
+    public static String loadColorSettingFromFile() {
+        String file = "src/main/java/com/example/SaveFile/setting.txt";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = null;
+            int lineNumber = 0;
+            while ((line = reader.readLine()) != null && lineNumber < 7) {
+                if (lineNumber == 6) {
+                    reader.close();
+                    return line;
+                }
+                lineNumber++;
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

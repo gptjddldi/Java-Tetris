@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import static com.example.SaveFile.SaveSetting.saveKeySettingsToFile;
 
 public class ControlsSettingsWindow {
-    private KeyCode[] newKeys;
 
     public void showAndWait() {
         Stage window = new Stage();
@@ -57,7 +56,4 @@ public class ControlsSettingsWindow {
         window.showAndWait();
     }
 
-    public KeyCode[] getNewKeys() {
-        return newKeys;
-    }
 }
