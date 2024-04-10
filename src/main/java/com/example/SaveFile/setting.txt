@@ -1,4 +1,4 @@
-W
-D
-S
-A
+UP
+DOWN
+LEFT
+RIGHT

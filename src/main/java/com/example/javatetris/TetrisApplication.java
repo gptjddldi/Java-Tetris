@@ -46,6 +46,7 @@ public class TetrisApplication extends Application {
         pausePane = createPausePane();
 
         Scene scene = new Scene(root);
+
         KeyCode[] controlKeys = new KeyCode[4];
         //키 로드 한 후 각각 키에 키값 넣어주기
         String[] keyNames = SaveSetting.loadKeySettingsFromFile();
@@ -55,20 +56,12 @@ public class TetrisApplication extends Application {
 
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-            if (controlKeys != null ) {
-                if (code == controlKeys[2]) tetrisGame.moveLeft();
-                else if (code == controlKeys[3]) tetrisGame.moveRight();
-                else if (code == controlKeys[1]) tetrisGame.moveDown();
-                else if (code == controlKeys[0]) tetrisGame.rotateClockwise();
-            } else {
-                // 기본 조작키 설정
-                switch (code) {
-                    case LEFT -> tetrisGame.moveLeft();
-                    case RIGHT -> tetrisGame.moveRight();
-                    case DOWN -> tetrisGame.moveDown();
-                    case UP -> tetrisGame.rotateClockwise();
-                }
-            }
+            if (code == controlKeys[2]) tetrisGame.moveLeft();
+            else if (code == controlKeys[3]) tetrisGame.moveRight();
+            else if (code == controlKeys[1]) tetrisGame.moveDown();
+            else if (code == controlKeys[0]) tetrisGame.rotateClockwise();
+            //여기에 게임 중지 넣으시면 됩니다
+            //else if () pauseGame();
             updateGameBoard();
         });
 
