@@ -1,5 +1,6 @@
 package com.example.javatetris;
 
+import com.example.SaveFile.SaveSetting;
 import com.example.page.ScoreBoardAtGameEnd;
 import com.example.page.StartPage;
 import javafx.animation.KeyFrame;
@@ -15,7 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -33,6 +33,7 @@ public class TetrisApplication extends Application {
     private BorderPane root;
     private Boolean isPause = false;
     private static Stage window;
+    private KeyCode[] controlKeys;
 
     @Override
     public void start(Stage primaryStage) {
@@ -45,15 +46,28 @@ public class TetrisApplication extends Application {
         pausePane = createPausePane();
 
         Scene scene = new Scene(root);
+        KeyCode[] controlKeys = new KeyCode[4];
+        //키 로드 한 후 각각 키에 키값 넣어주기
+        String[] keyNames = SaveSetting.loadKeySettingsFromFile();
+        for (int i = 0; i < keyNames.length; i++) {
+            controlKeys[i] = KeyCode.valueOf(keyNames[i]);
+        }
+
         scene.setOnKeyPressed(event -> {
-            if(isPause) return;
             KeyCode code = event.getCode();
-            switch (code) {
-                case LEFT -> tetrisGame.moveLeft();
-                case RIGHT -> tetrisGame.moveRight();
-                case DOWN -> tetrisGame.moveDown();
-                case UP -> tetrisGame.rotateClockwise();
-                case SPACE -> pauseGame();
+            if (controlKeys != null ) {
+                if (code == controlKeys[2]) tetrisGame.moveLeft();
+                else if (code == controlKeys[3]) tetrisGame.moveRight();
+                else if (code == controlKeys[1]) tetrisGame.moveDown();
+                else if (code == controlKeys[0]) tetrisGame.rotateClockwise();
+            } else {
+                // 기본 조작키 설정
+                switch (code) {
+                    case LEFT -> tetrisGame.moveLeft();
+                    case RIGHT -> tetrisGame.moveRight();
+                    case DOWN -> tetrisGame.moveDown();
+                    case UP -> tetrisGame.rotateClockwise();
+                }
             }
             updateGameBoard();
         });
