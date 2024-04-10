@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class TetrisGame {
     private final int BOARD_WIDTH = 10;
@@ -12,8 +13,9 @@ public class TetrisGame {
     private final boolean[][] board; // Represents the game board
     private int currentX, currentY; // Current position of the active Tetromino
     private Tetromino currentTetromino; // Current Tetromino shape
+    private Tetromino nextTetromino; // Current Tetromino shape
     private final Timeline gameLoop;
-
+    private boolean gameOver = false;
     private int score;
 
     public TetrisGame() {
@@ -32,13 +34,15 @@ public class TetrisGame {
 
 
     private void spawnNewTetromino() {
-        currentTetromino = Tetromino.getRandomTetromino();
+        currentTetromino = Objects.requireNonNullElseGet(nextTetromino, Tetromino::getRandomTetromino);
+        nextTetromino = Tetromino.getRandomTetromino();
+
         currentX = BOARD_WIDTH / 2 - currentTetromino.getWidth() / 2;
         currentY = 0;
         if (!canMove(currentX, currentY, currentTetromino)) {
             // Game over condition: if new Tetromino cannot be placed, game ends
             // You can handle game over logic here
-            System.out.println("Game Over");
+            gameOver = true;
             gameLoop.stop();
         }
     }
@@ -131,20 +135,12 @@ public class TetrisGame {
         }
 
         switch (linesCleared) {
-            case 1:
-                score += 100;
-                break;
-            case 2:
-                score += 200;
-                break;
-            case 3:
-                score += 300;
-                break;
-            case 4:
-                score += 400;
-                break;
-            default:
-                break;
+            case 1 -> score += 100;
+            case 2 -> score += 200;
+            case 3 -> score += 300;
+            case 4 -> score += 400;
+            default -> {
+            }
         }
     }
 
@@ -197,5 +193,21 @@ public class TetrisGame {
             }
         }
         return copy;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void pauseGame() {
+        gameLoop.pause();
+    }
+
+    public void resumeGame() {
+        gameLoop.play();
+    }
+
+    public Tetromino getNextTetromino() {
+        return nextTetromino;
     }
 }
