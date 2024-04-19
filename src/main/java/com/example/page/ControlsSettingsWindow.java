@@ -22,8 +22,8 @@ public class ControlsSettingsWindow {
         layout.setHgap(10);
 
         // 각 조작키에 대한 레이블과 텍스트 필드를 생성
-        KeyCode[] defaultKeys = {KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT}; // 기본 조작키 목록
-        TextField[] keyFields = new TextField[4];
+        KeyCode[] defaultKeys = {KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT, KeyCode.SPACE}; // 기본 조작키 목록
+        TextField[] keyFields = new TextField[5];
         for (int i = 0; i < defaultKeys.length; i++) {
             Label keyLabel = new Label(defaultKeys[i] + ": ");
             keyFields[i] = new TextField(); // 텍스트 필드 생성
@@ -35,7 +35,7 @@ public class ControlsSettingsWindow {
         Button saveButton = new Button("저장");
         saveButton.setOnAction(e -> {
             // 변경된 조작키를 저장
-            newKeys = new KeyCode[4];
+            newKeys = new KeyCode[5];
             for (int i = 0; i < defaultKeys.length; i++) {
                 try {
                     // 사용자가 입력한 문자열을 대문자로 변환하여 KeyCode로 가져옴

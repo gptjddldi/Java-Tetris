@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 W
+D
 S
-=======
-UP
-DOWN
->>>>>>> 0c71ecdb82b6365122f01b85436ab827611fae77
-LEFT
-RIGHT
+A

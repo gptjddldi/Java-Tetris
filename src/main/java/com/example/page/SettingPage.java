@@ -60,7 +60,7 @@ public class SettingPage extends Application {
 
         adjustScreenSizeButton.setOnAction(e -> {
             // 화면 크기 조절 창을 생성
-            ScreenSizeSettingsWindow screenSizeSettingsWindow = new ScreenSizeSettingsWindow();
+            ScreenSizeSettingsWindow screenSizeSettingsWindow = new ScreenSizeSettingsWindow(primaryStage);
             screenSizeSettingsWindow.show();
         });
 

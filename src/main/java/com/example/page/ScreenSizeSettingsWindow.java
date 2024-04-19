@@ -9,10 +9,12 @@ import javafx.stage.Stage;
 
 public class ScreenSizeSettingsWindow {
 
-    public void show() {
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("게임 화면 크기 조절");
+    private final Stage window;
+
+    public ScreenSizeSettingsWindow(Stage primaryStage) {
+        this.window = new Stage();
+        this.window.initModality(Modality.APPLICATION_MODAL);
+        this.window.setTitle("게임 화면 크기 조절");
 
         GridPane layout = new GridPane();
         layout.setVgap(10);
@@ -28,8 +30,8 @@ public class ScreenSizeSettingsWindow {
         saveButton.setOnAction(e -> {
             // 선택된 화면 크기를 가져와서 처리
             String selectedSize = screenSizeChoiceBox.getValue();
-            // 이후 처리 작업을 추가
-            System.out.println("선택된 화면 크기: " + selectedSize);
+            // 화면 크기를 변경
+            applyScreenSize(selectedSize, primaryStage);
             window.close(); // 창 닫기
         });
 
@@ -38,7 +40,22 @@ public class ScreenSizeSettingsWindow {
 
         Scene scene = new Scene(layout);
         window.setScene(scene);
+    }
+
+    public void show() {
         window.showAndWait();
     }
+
+    private void applyScreenSize(String selectedSize, Stage primaryStage) {
+        // 선택된 화면 크기를 파싱하여 너비와 높이를 얻음
+        String[] sizeParts = selectedSize.split("x");
+        int width = Integer.parseInt(sizeParts[0]);
+        int height = Integer.parseInt(sizeParts[1]);
+
+        // 주어진 너비와 높이로 primaryStage의 크기를 변경
+        primaryStage.setWidth(width);
+        primaryStage.setHeight(height);
+    }
 }
+
 
