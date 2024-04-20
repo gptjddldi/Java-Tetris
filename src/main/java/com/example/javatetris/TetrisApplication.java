@@ -27,6 +27,7 @@ public class TetrisApplication extends Application {
     private final TetrisGame tetrisGame = new TetrisGame();
     private Text[][] boardGrid;
     private Label scoreLabel;
+    private GridPane nextTetrominoDisplay;
     private Timeline gameLoop;
     private Pane pausePane;
     private BorderPane root;
@@ -149,17 +150,44 @@ public class TetrisApplication extends Application {
 
     private VBox createSidePane() {
         VBox sidePane = new VBox(50);
-        Tetromino nextTetromino = tetrisGame.getNextTetromino();
 
-        scoreLabel = new Label("Score: 0"); // Initial score
-        sidePane.getChildren().add(scoreLabel);
-        sidePane.getChildren().add(new Label("Next Tetromino:"));
-        sidePane.getChildren().add(new Label(nextTetromino.toString()));
-        // Add any additional score-related UI elements here
+        scoreLabel = new Label("Score: 0");
+        scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
+        // 다음 테트로미노를 표시할 GridPane 생성
+        nextTetrominoDisplay = new GridPane();
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                Text block = new Text("");
+                block.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
+                nextTetrominoDisplay.add(block, x, y);
+            }
+        }
+        nextTetrominoDisplay.setPrefSize(100, 100); // 적당한 크기 설정
+        nextTetrominoDisplay.setStyle("-fx-background-color: black;"); // 배경색 설정
+        updateNextTetrominoDisplay();
+
+        sidePane.getChildren().addAll(scoreLabel, nextTetrominoDisplay);
         return sidePane;
     }
 
+    private void updateNextTetrominoDisplay() {
+        nextTetrominoDisplay.getChildren().clear(); // 이전 테트로미노 지우기
+        Tetromino nextTetromino = tetrisGame.getNextTetromino(); // 다음 테트로미노 가져오기
+        char [][] nextState = nextTetromino.getShape();
+        Color nextColor = nextTetromino.getColor();
+        for (int i = 0; i < nextState.length; i++) {
+            for (int j = 0; j < nextState[i].length; j++) {
+
+                if (nextState[i][j] != 'N') {
+                    Text block = new Text(nextState[i][j] + "");
+                    block.setFill(nextColor); // Set color for the text
+                    block.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
+                    nextTetrominoDisplay.add(block, j,i);
+                }
+            }
+        }
+    }
     private Pane createPausePane() {
         Pane pausePane = new Pane();
 
@@ -220,6 +248,7 @@ public class TetrisApplication extends Application {
             }
         }
         scoreLabel.setText("Score: " + tetrisGame.getScore());
+        updateNextTetrominoDisplay();
     }
 
     public static void main(String[] args) {
