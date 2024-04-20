@@ -2,6 +2,7 @@ package com.example.javatetris;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.Arrays;
@@ -10,7 +11,9 @@ import java.util.Objects;
 public class TetrisGame {
     private final int BOARD_WIDTH = 10;
     private final int BOARD_HEIGHT = 20;
-    private final boolean[][] board; // Represents the game board
+    private final char[][] charBoard; // Represents the game board
+
+    private final Color[][] colorBoard; // Represents the game board
     private int currentX, currentY; // Current position of the active Tetromino
     private Tetromino currentTetromino; // Current Tetromino shape
     private Tetromino nextTetromino; // Current Tetromino shape
@@ -21,7 +24,12 @@ public class TetrisGame {
     public TetrisGame() {
         score = 0;
         // Initialize the game board
-        board = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
+        charBoard = new char[BOARD_HEIGHT][BOARD_WIDTH];
+        for(int i = 0; i < charBoard.length; i++) {
+            Arrays.fill(charBoard[i], 'N');
+        }
+
+        colorBoard = new Color[BOARD_HEIGHT][BOARD_WIDTH];
         // Initialize other game variables
         // Set up the first Tetromino
         spawnNewTetromino();
@@ -81,23 +89,24 @@ public class TetrisGame {
 
     // Method to fix the current Tetromino onto the board
     private void fixTetromino() {
-        boolean[][] shape = currentTetromino.getShape();
+        char[][] shape = currentTetromino.getShape();
+        Color color = currentTetromino.getColor();
         int linesCleared = 0;
 
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
-                if (shape[i][j]) {
-                    board[currentY + i][currentX + j] = true;
+                if (shape[i][j] != 'N') {
+                    charBoard[currentY + i][currentX + j] = shape[i][j];
+                    colorBoard[currentY + i][currentX + j] = color;
                 }
             }
         }
-
         score += 10;
 
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             boolean lineCleared = true; // Assume line is cleared initially
             for (int x = 0; x < BOARD_WIDTH; x++) {
-                if (!board[y][x]) { // If any cell in the row is not occupied
+                if (charBoard[y][x] == 'N') { // If any cell in the row is not occupied
                     lineCleared = false; // Line is not cleared
                     break; // No need to check further in this row
                 }
@@ -116,7 +125,7 @@ public class TetrisGame {
         for (int y = BOARD_HEIGHT - 1; y >= 0; y--) {
             boolean lineFull = true;
             for (int x = 0; x < BOARD_WIDTH; x++) {
-                if (!board[y][x]) {
+                if (charBoard[y][x] == 'N') {
                     lineFull = false;
                     break;
                 }
@@ -124,11 +133,11 @@ public class TetrisGame {
             if (lineFull) {
                 // Move all lines above down by one
                 for (int yy = y; yy > 0; yy--) {
-                    System.arraycopy(board[yy - 1], 0, board[yy], 0, BOARD_WIDTH);
+                    System.arraycopy(charBoard[yy - 1], 0, charBoard[yy], 0, BOARD_WIDTH);
                 }
                 // Clear top line
                 for (int x = 0; x < BOARD_WIDTH; x++) {
-                    board[0][x] = false;
+                    charBoard[0][x] = 'N';
                 }
                 y++; // Check the same line again
             }
@@ -150,10 +159,10 @@ public class TetrisGame {
 
     // Method to check if the Tetromino can move to a new position
     private boolean canMove(int newX, int newY, Tetromino tetromino) {
-        boolean[][] shape = tetromino.getShape();
+        char[][] shape = tetromino.getShape();
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
-                if (shape[i][j]) {
+                if (shape[i][j] != 'N') {
                     int x = newX + j;
                     int y = newY + i;
                     // Check if the Tetromino is within bounds
@@ -161,7 +170,7 @@ public class TetrisGame {
                         return false;
                     }
                     // Check for collisions with existing blocks on the board
-                    if (y >= 0 && board[y][x]) {
+                    if (y >= 0 && charBoard[y][x] != 'N') {
                         return false;
                     }
                 }
@@ -171,23 +180,49 @@ public class TetrisGame {
     }
 
     // Method to get the current state of the game board
-    public boolean[][] getBoardState() {
-        boolean[][] copy = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
+    // 여기서 Color 도 같이 전달하면 좋을듯?
+    public char[][] getBoardChar() {
+        char[][] copy = new char[BOARD_HEIGHT][BOARD_WIDTH];
 
         // Copy current board state
         for (int i = 0; i < BOARD_HEIGHT; i++) {
-            copy[i] = Arrays.copyOf(board[i], BOARD_WIDTH);
+            copy[i] = Arrays.copyOf(charBoard[i], BOARD_WIDTH);
         }
 
         // Overlay current Tetromino onto the board state
-        boolean[][] shape = currentTetromino.getShape();
+        char[][] shape = currentTetromino.getShape();
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
-                if (shape[i][j]) {
+                if (shape[i][j] != 'N') {
                     int x = currentX + j;
                     int y = currentY + i;
                     if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
-                        copy[y][x] = true;
+                        copy[y][x] = shape[i][j];
+                    }
+                }
+            }
+        }
+        return copy;
+    }
+
+    public Color[][] getBoardColor() {
+        Color[][] copy = new Color[BOARD_HEIGHT][BOARD_WIDTH];
+
+        // Copy current board state
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            copy[i] = Arrays.copyOf(colorBoard[i], BOARD_WIDTH);
+        }
+
+        // Overlay current Tetromino onto the board state
+        char[][] shape = currentTetromino.getShape();
+        Color color = currentTetromino.getColor();
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
+                if (shape[i][j] != 'N') {
+                    int x = currentX + j;
+                    int y = currentY + i;
+                    if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
+                        copy[y][x] = color;
                     }
                 }
             }

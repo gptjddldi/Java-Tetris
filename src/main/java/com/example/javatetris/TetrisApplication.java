@@ -15,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -102,7 +101,7 @@ public class TetrisApplication extends Application {
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
                 Text block = new Text("O");
-                block.setFill(Color.GREEN); // Set color for the text
+//                block.setFill(Color.GREEN); // Set color for the text
                 block.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Set font size and style
                 boardGrid[y][x] = block;
                 gridPane.add(block, x, y);
@@ -205,15 +204,17 @@ public class TetrisApplication extends Application {
             root.getChildren().add(createGameOverPane());
             return;
         }
-        boolean[][] boardState = tetrisGame.getBoardState();
+        char[][] boardState = tetrisGame.getBoardChar();
+        Color[][] boardColor = tetrisGame.getBoardColor();
 
         for (int y = 1; y < BOARD_HEIGHT-1; y++) {
             for (int x = 1; x < BOARD_WIDTH-1; x++) {
 
-                if (boardState[y-1][x-1]){
-                    boardGrid[y][x].setText("O");
+                if (boardState[y-1][x-1] != 'N'){
+                    boardGrid[y][x].setText(boardState[y-1][x-1] + "");
+                    boardGrid[y][x].setFill(boardColor[y-1][x-1]); // Set color for the text
 
-                }else{
+                } else{
                     boardGrid[y][x].setText("");
                 }
             }
