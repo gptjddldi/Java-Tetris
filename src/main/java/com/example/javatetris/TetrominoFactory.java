@@ -20,11 +20,46 @@ public class TetrominoFactory {
         };
     }
 
-    public static Tetromino generateTetromino() {
-        int typeIndex = (int) (Math.random() * BasicTetrominoType.values().length);
-        BasicTetrominoType type = BasicTetrominoType.values()[typeIndex];
+    public static Tetromino generateTetromino(Difficulty difficulty) {
+        BasicTetrominoType[] types = BasicTetrominoType.values();
+        double[] weights = new double[types.length];
+        double totalWeight = 0.0;
 
-        return switch (type) {
+        for (int i = 0; i < types.length; i++) {
+            weights[i] = 1.0;
+        }
+
+        switch (difficulty) {
+            case EASY:
+                weights[BasicTetrominoType.I_SHAPE.ordinal()] = 1.20;
+                break;
+            case MEDIUM:
+                break;
+            case HARD:
+                weights[BasicTetrominoType.I_SHAPE.ordinal()] = 0.80;
+                break;
+        }
+
+        for (double weight : weights) {
+            totalWeight += weight;
+        }
+
+        double value = Math.random() * totalWeight;
+        double cumulativeWeight = 0.0;
+        int selectedTypeIndex = 0;
+
+        for (int i = 0; i < weights.length; i++) {
+            cumulativeWeight += weights[i];
+            if (cumulativeWeight > value) {
+                selectedTypeIndex = i;
+                break;
+            }
+        }
+
+        BasicTetrominoType selectedType = types[selectedTypeIndex];
+
+
+        return switch (selectedType) {
             case I_SHAPE -> new Tetromino(BasicTetrominoType.I_SHAPE, new char[][]{{'O', 'O', 'O', 'O'}}, Color.CYAN);
             case J_SHAPE ->
                     new Tetromino(BasicTetrominoType.J_SHAPE, new char[][]{{'O', 'N', 'N'}, {'O', 'O', 'O'}}, Color.BLUE);

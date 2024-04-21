@@ -38,13 +38,13 @@ public class TetrisGame {
 
 
     private void spawnNewTetromino() {
-        currentTetromino = Objects.requireNonNullElseGet(nextTetromino, TetrominoFactory::generateTetromino);
+        currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> TetrominoFactory.generateTetromino(Difficulty.EASY));
 
         if(clearedLines >= 1) {
             nextTetromino = TetrominoFactory.generateSpecialTetromino();
             clearedLines -= 1;
         } else {
-            nextTetromino = TetrominoFactory.generateTetromino();
+            nextTetromino = TetrominoFactory.generateTetromino(Difficulty.EASY);
         }
 
         currentX = BOARD_WIDTH / 2 - currentTetromino.getWidth() / 2;
