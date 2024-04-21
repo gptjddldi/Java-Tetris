@@ -14,6 +14,10 @@ public record Tetromino(TetrominoType tetrominoType, char[][] shape, Color color
         return new Tetromino(tetrominoType, rotated, color);
     }
 
+    public Color getColor() {
+        return color;
+    }
+
     public int getWidth() {
         return shape[0].length;
     }

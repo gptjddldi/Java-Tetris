@@ -1,5 +1,5 @@
-1,finish
-0,no score now
+860,me
+170,hi
 0,no score now
 0,no score now
 0,no score now

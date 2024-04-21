@@ -167,7 +167,6 @@ public class TetrisGame {
         }
         return true;
     }
-
     public char[][] getBoardChar() {
         char[][] copy = new char[BOARD_HEIGHT][BOARD_WIDTH];
 

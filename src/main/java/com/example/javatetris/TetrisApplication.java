@@ -1,5 +1,6 @@
 package com.example.javatetris;
 
+import com.example.SaveFile.SaveSetting;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -21,15 +22,20 @@ public class TetrisApplication extends Application {
         root.setRight(tetrisUI.getSidePane());
 
         Scene scene = new Scene(root);
+
+        KeyCode[] controlKeys = new KeyCode[5];
+        String[] keyNames = SaveSetting.loadKeySettingsFromFile();
+        for (int i = 0; i < 5; i++) {
+            controlKeys[i] = KeyCode.valueOf(keyNames[i]);
+        }
+
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-            switch (code) {
-                case LEFT -> tetrisGame.moveLeft();
-                case RIGHT -> tetrisGame.moveRight();
-                case DOWN -> tetrisGame.moveDown();
-                case UP -> tetrisGame.rotateClockwise();
-                case SPACE -> tetrisUI.pauseGame();
-            }
+            if (code == controlKeys[2]) tetrisGame.moveLeft();
+            else if (code == controlKeys[3]) tetrisGame.moveRight();
+            else if (code == controlKeys[1]) tetrisGame.moveDown();
+            else if (code == controlKeys[0]) tetrisGame.rotateClockwise();
+            else if (code == controlKeys[4]) tetrisUI.pauseGame();
             tetrisUI.updateGameBoard();
         });
 

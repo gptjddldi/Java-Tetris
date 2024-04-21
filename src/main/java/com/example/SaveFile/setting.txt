@@ -1,0 +1,7 @@
+UP
+DOWN
+LEFT
+RIGHT
+SPACE
+s
+on
