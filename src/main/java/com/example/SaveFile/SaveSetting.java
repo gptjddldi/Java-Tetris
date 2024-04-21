@@ -2,6 +2,7 @@ package com.example.SaveFile;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SaveSetting {
@@ -12,11 +13,37 @@ public class SaveSetting {
             if (!file.exists()) {
                 file.createNewFile();
             }
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            ArrayList<String> lines = new ArrayList<>();
+            String line;
+            int lineNumber = 0;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+                lineNumber++;
+            }
+            reader.close();
+
+            String[] linesArray = lines.toArray(new String[0]);
+
+            List<String> keyNameList = new ArrayList<>(Arrays.asList(keyNames));
+            String[] keyNameArray = keyNameList.toArray(new String[0]);
+
+
+            int minLength = Math.min(keyNameArray.length, linesArray.length);
+            for (int i = 0; i < linesArray.length; i++) {
+                if (i < minLength) {
+                    linesArray[i] = keyNameArray[i];
+                }
+            }
+
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            for (String keyName : keyNames) {
-                writer.write(keyName);
+            for (String setting : linesArray) {
+                writer.write(setting);
                 writer.newLine();
             }
+
             writer.flush();
             writer.close();
         } catch (IOException e) {

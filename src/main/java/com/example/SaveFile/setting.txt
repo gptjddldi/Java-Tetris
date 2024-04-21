@@ -2,6 +2,6 @@ UP
 DOWN
 LEFT
 RIGHT
-S
-D
-off
+a
+s
+on
