@@ -8,52 +8,43 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.io.*;
+
 public class Reset {
-    public void ScoreReset() throws IOException {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/java/com/example/SaveFile/resetscore.txt")));
-            File file = new File("src/main/java/com/example/SaveFile/score.txt");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    private static final String SCORE_FILE_PATH = "src/main/java/com/example/SaveFile/score.txt";
+    private static final String SCORE_RESET_FILE_PATH = "src/main/java/com/example/SaveFile/resetscore.txt";
+    private static final String SETTING_FILE_PATH = "src/main/java/com/example/SaveFile/setting.txt";
+    private static final String SETTING_RESET_FILE_PATH = "src/main/java/com/example/SaveFile/resetsetting.txt";
 
-            String str;
-            int i = 0;
-            while (i < 10) {
-                str = reader.readLine();
-                if (str == null) break;
-                writer.write(str);
-                writer.newLine();
-                i++;
-            }
-            writer.close();
-            reader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("파일명을 찾을 수 없습니다.");
-        } catch (NullPointerException e) {
-            System.out.println("Err : " + e);
-        }
-    }
-    public void SettingReset() throws IOException {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/java/com/example/SaveFile/resetsetting.txt")));
-            File file = new File("src/main/java/com/example/SaveFile/setting.txt");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
-            String str;
-            int i = 0;
-            while (i < 7) {
-                str = reader.readLine();
-                if (str == null) break;
-                writer.write(str);
-                writer.newLine();
-                i++;
-            }
-            writer.close();
-            reader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("파일명을 찾을 수 없습니다.");
-        } catch (NullPointerException e) {
-            System.out.println("Err : " + e);
+    public void ScoreReset() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(SCORE_RESET_FILE_PATH));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(SCORE_FILE_PATH))) {
+            reader.lines().limit(10).forEach(line -> {
+                try {
+                    writer.write(line);
+                    writer.newLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
+    public void SettingReset() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(SETTING_RESET_FILE_PATH));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(SETTING_FILE_PATH))) {
+            reader.lines().limit(7).forEach(line -> {
+                try {
+                    writer.write(line);
+                    writer.newLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

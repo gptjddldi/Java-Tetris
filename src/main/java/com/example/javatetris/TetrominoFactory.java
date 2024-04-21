@@ -4,7 +4,7 @@ import com.example.SaveFile.SaveSetting;
 import javafx.scene.paint.Color;
 
 public class TetrominoFactory {
-    private static String colorSetting = SaveSetting.loadColorSettingFromFile();
+    private static String colorSetting = SaveSetting.loadOneSettingFromFile(7);
     private static Color CYAN = colorSetting.equals("on") ? Color.rgb(0, 204, 204) : Color.rgb(0, 255, 255);
     public static Color BLUE = colorSetting.equals("on") ? Color.rgb(0, 102, 204) : Color.rgb(0, 0, 255);
     public static Color ORANGE = colorSetting.equals("on") ? Color.rgb(255, 204, 0) : Color.rgb(255, 165, 0);

@@ -5,3 +5,4 @@ RIGHT
 SPACE
 s
 off
+NORMAL

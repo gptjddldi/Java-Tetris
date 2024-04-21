@@ -25,10 +25,8 @@ public class SaveSetting {
             reader.close();
 
             String[] linesArray = lines.toArray(new String[0]);
-
             List<String> keyNameList = new ArrayList<>(Arrays.asList(keyNames));
             String[] keyNameArray = keyNameList.toArray(new String[0]);
-
 
             int minLength = Math.min(keyNameArray.length, linesArray.length);
             for (int i = 0; i < linesArray.length; i++) {
@@ -36,8 +34,6 @@ public class SaveSetting {
                     linesArray[i] = keyNameArray[i];
                 }
             }
-
-
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for (String setting : linesArray) {
                 writer.write(setting);
@@ -50,39 +46,36 @@ public class SaveSetting {
             e.printStackTrace();
         }
     }
-    public static void saveColorSettingsToFile(String a) {
+    public static void saveOneSettingsToFile(String newValue, int place) {
         String filePath = "src/main/java/com/example/SaveFile/setting.txt";
-        ArrayList<String> array = new ArrayList<>();
+        ArrayList<String> lines = new ArrayList<>();
         try {
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
             }
+
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            ArrayList<String> lines = new ArrayList<>();
-            String line;
-            int lineNumber = 0;
-            while ((line = reader.readLine()) != null && lineNumber <6) {
-                lines.add(line);
-                lineNumber++;
+            for (int i = 0; i < 8; i++) {
+                String line = reader.readLine();
+                lines.add(line != null ? line : "");
             }
             reader.close();
 
-            // 파일의 기존 내용을 그대로 쓰기
+            lines.set(place - 1, newValue);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for (String l : lines) {
                 writer.write(l);
                 writer.newLine();
             }
-
-            writer.write(a);
-
             writer.flush();
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+
 
 
     public static String[] loadKeySettingsFromFile() {
@@ -101,20 +94,21 @@ public class SaveSetting {
         return keyNames.toArray(new String[0]);
     }
 
-    public static String loadColorSettingFromFile() {
-        String file = "src/main/java/com/example/SaveFile/setting.txt";
+    public static String loadOneSettingFromFile(int place) {
+        String filePath = "src/main/java/com/example/SaveFile/setting.txt";
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line = null;
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            ArrayList<String> lines = new ArrayList<>();
+            String line;
             int lineNumber = 0;
-            while ((line = reader.readLine()) != null && lineNumber < 7) {
-                if (lineNumber == 6) {
-                    reader.close();
-                    return line;
-                }
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
                 lineNumber++;
             }
             reader.close();
+            if (place > 0 && place <= lines.size()) {
+                return lines.get(place - 1);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
