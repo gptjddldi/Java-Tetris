@@ -2,22 +2,7 @@ package com.example.javatetris;
 
 import javafx.scene.paint.Color;
 
-import java.util.Random;
-
-public class Tetromino {
-    private final char[][] shape;
-    private final Color color;
-
-    private Tetromino(char[][] shape, Color color) {
-        this.shape = shape;
-        this.color = color;
-    }
-
-    public static Tetromino getRandomTetromino() {
-        Random random = new Random();
-        TetrominoType type = TetrominoType.values()[random.nextInt(TetrominoType.values().length)];
-        return new Tetromino(type.getShape(), type.getColor());
-    }
+public record Tetromino(TetrominoType tetrominoType, char[][] shape, Color color) {
 
     public Tetromino rotateClockwise() {
         char[][] rotated = new char[shape[0].length][shape.length];
@@ -26,12 +11,7 @@ public class Tetromino {
                 rotated[j][shape.length - 1 - i] = shape[i][j];
             }
         }
-        return new Tetromino(rotated, color);
-    }
-
-
-    public char[][] getShape() {
-        return shape;
+        return new Tetromino(tetrominoType, rotated, color);
     }
 
     public Color getColor() {
