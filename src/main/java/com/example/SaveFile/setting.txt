@@ -2,6 +2,6 @@ UP
 DOWN
 LEFT
 RIGHT
-a
+SPACE
 s
 on
