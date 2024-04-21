@@ -1,6 +1,7 @@
 package com.example.page;
 
 import com.example.SaveFile.Reset;
+import com.example.SaveFile.SaveSetting;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -46,6 +47,8 @@ public class SettingPage extends Application {
             Reset scoreReset = new Reset();
             try {
                 scoreReset.ScoreReset();
+                StartPage startScreen = new StartPage();
+                startScreen.start(primaryStage);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -71,11 +74,31 @@ public class SettingPage extends Application {
 
         CheckBox colorBlindCheckBox = new CheckBox("색맹모드");
 
+        String colorSetting = SaveSetting.loadColorSettingFromFile();
+
+        if (colorSetting.equals("on")) {
+            colorBlindCheckBox.setSelected(true); // 체크박스를 체크된 상태로 설정
+        }
+
+
         colorBlindCheckBox.setOnAction(e -> {
             if (colorBlindCheckBox.isSelected()) {
                 saveColorSettingsToFile("on");
             } else {
                 saveColorSettingsToFile("off");
+            }
+        });
+
+        Button resetSetting = new Button("세팅 초기화");
+
+        resetSetting.setOnAction(e -> {
+            Reset settingReset = new Reset();
+            try {
+                settingReset.SettingReset();
+                StartPage startScreen = new StartPage();
+                startScreen.start(primaryStage);
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         });
 
@@ -86,6 +109,7 @@ public class SettingPage extends Application {
         settingLayout.add(setControlsButton, 0, 2);
 
         settingLayout.add(resetScoreboard, 0, 4);
+        settingLayout.add(resetSetting, 0, 5);
 
         Scene settingPage = new Scene(settingLayout, 311, 621);
 

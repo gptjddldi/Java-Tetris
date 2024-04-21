@@ -32,4 +32,28 @@ public class Reset {
             System.out.println("Err : " + e);
         }
     }
+    public void SettingReset() throws IOException {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/java/com/example/SaveFile/resetsetting.txt")));
+            File file = new File("src/main/java/com/example/SaveFile/setting.txt");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+            String str;
+            int i = 0;
+            while (i < 7) {
+                str = reader.readLine();
+                if (str == null) break;
+                writer.write(str);
+                writer.newLine();
+                i++;
+            }
+            writer.close();
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("파일명을 찾을 수 없습니다.");
+        } catch (NullPointerException e) {
+            System.out.println("Err : " + e);
+        }
+    }
+
 }

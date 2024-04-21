@@ -1,5 +1,6 @@
 package com.example.page;
 
+import com.example.SaveFile.SaveSetting;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,14 +22,19 @@ public class ControlsSettingsWindow {
         GridPane layout = new GridPane();
         layout.setVgap(10);
         layout.setHgap(10);
-
+        String[] keyName = SaveSetting.loadKeySettingsFromFile();
         // 각 조작키에 대한 레이블과 텍스트 필드를 생성
         KeyCode[] defaultKeys = {KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT, KeyCode.SPACE};
         TextField[] keyFields = new TextField[5]; // 텍스트 필드 배열 크기 변경
         for (int i = 0; i < defaultKeys.length; i++) {
-            Label keyLabel = new Label(defaultKeys[i] + ": ");
+            Label keyLabel;
+            if (i == 4) {
+                keyLabel = new Label("PAUSE: ");
+            } else {
+                keyLabel = new Label(defaultKeys[i] + ": ");
+            }
             keyFields[i] = new TextField(); // 텍스트 필드 생성
-            keyFields[i].setText(defaultKeys[i].getName()); // 초기값 설정
+            keyFields[i].setText(keyName[i]); // 초기값 설정
             layout.addRow(i, keyLabel, keyFields[i]); // 레이블과 텍스트 필드를 레이아웃에 추가
         }
 
