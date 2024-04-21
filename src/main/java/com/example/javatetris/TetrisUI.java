@@ -139,8 +139,8 @@ public class TetrisUI {
     private void updateNextTetrominoDisplay() {
         nextTetrominoDisplay.getChildren().clear();
         Tetromino nextTetromino = tetrisGame.getNextTetromino();
-        char [][] nextState = nextTetromino.getShape();
-        Color nextColor = nextTetromino.getColor();
+        char [][] nextState = nextTetromino.shape();
+        Color nextColor = nextTetromino.color();
 
         for (int i = 0; i < nextState.length; i++) {
             for (int j = 0; j < nextState[i].length; j++) {
