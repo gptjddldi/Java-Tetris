@@ -3,30 +3,31 @@ package com.example.javatetris;
 import com.example.SaveFile.SaveSetting;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TetrominoFactory {
-    private static String colorSetting = SaveSetting.loadOneSettingFromFile(7);
-    private static Color CYAN = colorSetting.equals("on") ? Color.rgb(0, 204, 204) : Color.rgb(0, 255, 255);
+    private static final String colorSetting = SaveSetting.loadOneSettingFromFile(7);
+    public static Color CYAN = colorSetting.equals("on") ? Color.rgb(0, 204, 204) : Color.rgb(0, 255, 255);
     public static Color BLUE = colorSetting.equals("on") ? Color.rgb(0, 102, 204) : Color.rgb(0, 0, 255);
     public static Color ORANGE = colorSetting.equals("on") ? Color.rgb(255, 204, 0) : Color.rgb(255, 165, 0);
     public static Color YELLOW = colorSetting.equals("on") ? Color.rgb(255, 153, 51) : Color.rgb(255, 255, 0);
     public static Color GREEN = colorSetting.equals("on") ? Color.rgb(0, 204, 102) : Color.rgb(0, 128, 0);
     public static Color PURPLE = colorSetting.equals("on") ? Color.rgb(204, 102, 255) : Color.rgb(128, 0, 128);
     public static Color RED = colorSetting.equals("on") ? Color.rgb(204, 51, 0) : Color.rgb(255, 0, 0);
-    public static Color WHITE = Color.WHITE;
+//    public static Color WHITE = Color.WHITE;
 
-    public static Tetromino generateSpecialTetromino() {
+    public static Tetromino generateSpecialTetromino(Difficulty difficulty) {
         int typeIndex = (int) (Math.random() * SpecialTetrominoType.values().length);
         SpecialTetrominoType type = SpecialTetrominoType.values()[typeIndex];
         return switch (type) {
             case HEAVY_SHAPE ->
-                    new Tetromino(SpecialTetrominoType.HEAVY_SHAPE, new char[][]{{'O', 'O'}, {'O', 'O'}}, Color.GRAY);
-            case HORIZON_SHAPE ->
-                    new Tetromino(SpecialTetrominoType.HORIZON_SHAPE, new char[][]{{'O', 'O', 'O', 'O'}}, Color.LIGHTBLUE);
-            case VERTICAL_SHAPE ->
-                    new Tetromino(SpecialTetrominoType.VERTICAL_SHAPE, new char[][]{{'O'}, {'O'}, {'O'}, {'O'}}, Color.LIGHTGREEN);
-            case BOMB_SHAPE -> new Tetromino(SpecialTetrominoType.BOMB_SHAPE, new char[][]{{'O'}}, Color.BISQUE);
+                    new Tetromino(SpecialTetrominoType.HEAVY_SHAPE, new char[][]{{'O', 'O'}, {'O', 'O', 'O', 'O'}}, Color.GRAY);
+            case BOMB_SHAPE -> new Tetromino(SpecialTetrominoType.BOMB_SHAPE, new char[][]{{'B'}}, Color.BISQUE);
             case CROSS_SHAPE ->
                     new Tetromino(SpecialTetrominoType.CROSS_SHAPE, new char[][]{{'N', 'O', 'N'}, {'O', 'O', 'O'}, {'N', 'O', 'N'}}, Color.LIGHTPINK);
+            case LINE_SHAPE -> generateShapedTetromino(generateTetromino(difficulty), SpecialTetrominoType.LINE_SHAPE);
+            case VERTICAL_SHAPE -> generateShapedTetromino(generateTetromino(difficulty), SpecialTetrominoType.VERTICAL_SHAPE);
         };
     }
 
@@ -85,5 +86,33 @@ public class TetrominoFactory {
             case Z_SHAPE ->
                     new Tetromino(BasicTetrominoType.Z_SHAPE, new char[][]{{'O', 'O', 'N'}, {'N', 'O', 'O'}}, RED);
         };
+    }
+
+    private static Tetromino generateShapedTetromino(Tetromino original, TetrominoType type) {
+        char ch = 'N';
+        if (type == SpecialTetrominoType.LINE_SHAPE) {
+            ch = 'L';
+        } else if (type == SpecialTetrominoType.VERTICAL_SHAPE) {
+            ch = 'V';
+        }
+        char[][] modifiedShape = original.shape().clone();
+        int rows = modifiedShape.length;
+        int cols = modifiedShape[0].length;
+
+        List<int[]> oBlocks = new ArrayList<>();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (modifiedShape[i][j] == 'O') {
+                    oBlocks.add(new int[]{i, j});
+                }
+            }
+        }
+
+        if (!oBlocks.isEmpty()) {
+            int[] selectedBlock = oBlocks.get((int) (Math.random() * oBlocks.size()));
+            modifiedShape[selectedBlock[0]][selectedBlock[1]] = ch;
+        }
+
+        return new Tetromino(type, modifiedShape, original.color());
     }
 }
