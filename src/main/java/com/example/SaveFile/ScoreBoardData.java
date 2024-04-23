@@ -23,7 +23,7 @@ public class ScoreBoardData {
             if (!file.exists()) {    // 파일 없으면 생성
                 file.createNewFile();
             }
-
+            String level = SaveSetting.loadOneSettingFromFile(8);
             List<String> lines = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new FileReader(file)); // 파일 읽기
             String line;
@@ -33,6 +33,7 @@ public class ScoreBoardData {
             reader.close(); // 파일 읽기 종료
 
             lines.add(String.format("%d,%s", score, text));
+
 
             Collections.sort(lines, (a, b) -> { // 점수 sorting
                 int scoreA = Integer.parseInt(a.split(",")[0]);
@@ -69,43 +70,65 @@ public class ScoreBoardData {
         obj.getScore();
 
         VBox container = new VBox();
-
+        Label mode_level = new Label("<일반 모드>");
+        container.getChildren().add(mode_level);
         for (int i = 0; i < 10; i++) {
             obj.getScr(i);
-
-            Label label = new Label("점수: " + obj.score + "             이름: " + obj.name);
+            Label label = new Label(String.format("점수: %10d이름: %s(HARD)", obj.score, obj.name));
+            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
             if (obj.score == lastEnteredScore && obj.name.equals(lastEnteredName)) {
-                label.setStyle("-fx-font-weight: bold; -fx-text-fill: red;");
+                label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold; -fx-text-fill: red;");
             }
-
             container.getChildren().add(label);
         }
-
+        Label mode_item = new Label("\n<아이템 모드>");
+        container.getChildren().add(mode_item);
+//        for (int i = 11; i < 20; i++) {
+//            obj.getScr(i);
+//            Label label = new Label("점수: " + obj.score + "             이름: " + obj.name+"("+"HARD"+")");
+//            if (obj.score == lastEnteredScore && obj.name.equals(lastEnteredName)) {
+//                label.setStyle("-fx-font-weight: bold; -fx-text-fill: red;");
+//            }
+//
+//            container.getChildren().add(label);
+//        }
         scrollPane.setContent(container);
     }
+
+
     public static void HomeloadRanking(ScrollPane scrollPane) throws Exception {
         ScoreBoardData obj = new ScoreBoardData();
         obj.getScore();
 
         VBox container = new VBox();
-
+        Label mode_level = new Label("<일반 모드>");
+        container.getChildren().add(mode_level);
         for (int i = 0; i < 10; i++) {
             obj.getScr(i);
-
-            Label label = new Label("점수: " + obj.score + "             이름: " + obj.name);
+            Label label = new Label(String.format("점수: %-10d이름: %s(HARD)", obj.score, obj.name));
+            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
             container.getChildren().add(label);
         }
+        Label mode_item = new Label("\n<아이템 모드>");
+        container.getChildren().add(mode_item);
+//        for (int i = 11; i < 20; i++) {
+//            obj.getScr(i);
+//
+//            Label label = new Label("점수: " + obj.score + "             이름: " + obj.name+"("+"HARD"+")");
+//            container.getChildren().add(label);
+//        }
 
         scrollPane.setContent(container);
     }
 
-    public void getScr(int i){
-        if (stu_arr[i][0] != null) {
+    public void getScr(int i) {
+        if (stu_arr[i] != null && stu_arr[i].length >= 2) { // Check if array and its length are valid
             this.score = Integer.parseInt(stu_arr[i][0]);
+            this.name = stu_arr[i][1];
         } else {
             this.score = 0;
+            this.name = ""; // Or any default value you prefer
         }
-        this.name = stu_arr[i][1];
     }
 
     public void getScore() throws IOException { // 데이터 읽어오는 핵심 코드

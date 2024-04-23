@@ -61,6 +61,12 @@ public class ScoreBoardAtGameEnd extends Application {
             }
         });
 
+        try {
+            ScoreBoardData.HomeloadRanking(scrollPane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         Button submitButton = new Button("저장");
         submitButton.setOnAction(event -> {
             if (!submitButtonClicked) {

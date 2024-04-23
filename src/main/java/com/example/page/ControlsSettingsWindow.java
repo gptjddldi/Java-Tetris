@@ -24,13 +24,15 @@ public class ControlsSettingsWindow {
         layout.setHgap(10);
         String[] keyName = SaveSetting.loadKeySettingsFromFile();
         // 각 조작키에 대한 레이블과 텍스트 필드를 생성
-        KeyCode[] defaultKeys = {KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT, KeyCode.SPACE};
-        TextField[] keyFields = new TextField[5]; // 텍스트 필드 배열 크기 변경
+        KeyCode[] defaultKeys = {KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT, KeyCode.SPACE, KeyCode.X};
+        TextField[] keyFields = new TextField[6]; // 텍스트 필드 배열 크기 변경
         for (int i = 0; i < defaultKeys.length; i++) {
             Label keyLabel;
             if (i == 4) {
                 keyLabel = new Label("PAUSE: ");
-            } else {
+            } else if(i ==  5) {
+                keyLabel = new Label("fall at once: ");
+            } else{
                 keyLabel = new Label(defaultKeys[i] + ": ");
             }
             keyFields[i] = new TextField(); // 텍스트 필드 생성
@@ -42,7 +44,7 @@ public class ControlsSettingsWindow {
         Button saveButton = new Button("저장");
         saveButton.setOnAction(e -> {
             // 변경된 조작키를 저장
-            String[] keyNames = new String[5]; // 텍스트 필드에 입력된 값들을 저장할 배열 크기 변경
+            String[] keyNames = new String[6]; // 텍스트 필드에 입력된 값들을 저장할 배열 크기 변경
             for (int i = 0; i < defaultKeys.length; i++) {
                 try {
                     keyNames[i] = keyFields[i].getText().toUpperCase(); // 대문자로 변환한 값을 저장
