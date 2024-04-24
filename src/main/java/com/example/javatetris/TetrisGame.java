@@ -1,5 +1,6 @@
 package com.example.javatetris;
 
+import com.example.SaveFile.SaveSetting;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
@@ -21,8 +22,12 @@ public class TetrisGame {
     private boolean gameOver = false;
     private int score = 0;
     private int clearedLines = 0;
+    private TetrominoFactory tetrominoFactory;
 
     public TetrisGame() {
+        String colorSetting = SaveSetting.loadOneSettingFromFile(7);
+        tetrominoFactory = new TetrominoFactory(colorSetting);
+
         charBoard = new char[BOARD_HEIGHT][BOARD_WIDTH];
         for (char[] chars : charBoard) {
             Arrays.fill(chars, 'N');
@@ -38,13 +43,13 @@ public class TetrisGame {
 
 
     private void spawnNewTetromino() {
-        currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> TetrominoFactory.generateTetromino(Difficulty.EASY));
+        currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> tetrominoFactory.generateTetromino(Difficulty.EASY));
 
         if(clearedLines >= 1) {
-            nextTetromino = TetrominoFactory.generateSpecialTetromino(Difficulty.EASY);
+            nextTetromino = tetrominoFactory.generateSpecialTetromino(Difficulty.EASY);
             clearedLines -= 1;
         } else {
-            nextTetromino = TetrominoFactory.generateTetromino(Difficulty.EASY);
+            nextTetromino = tetrominoFactory.generateTetromino(Difficulty.EASY);
         }
 
         currentX = BOARD_WIDTH / 2 - currentTetromino.getWidth() / 2;
