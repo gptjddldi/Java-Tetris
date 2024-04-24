@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class TetrominoFactoryTest {
+    TetrominoFactory tetrominoFactory = new TetrominoFactory("on");
     @Test
     void testTetrominoGenerationEasy() {
         testTetrominoGeneration(Difficulty.EASY, 0.20, 10000);
@@ -37,7 +38,7 @@ class TetrominoFactoryTest {
         }
 
         for (int i = 0; i < trials; i++) {
-            Tetromino tetromino = TetrominoFactory.generateTetromino(difficulty);
+            Tetromino tetromino = tetrominoFactory.generateTetromino(difficulty);
             counts.put((BasicTetrominoType) tetromino.tetrominoType(), counts.get(tetromino.tetrominoType()) + 1);
         }
 

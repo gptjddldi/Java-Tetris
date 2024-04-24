@@ -1,23 +1,34 @@
 package com.example.javatetris;
 
-import com.example.SaveFile.SaveSetting;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TetrominoFactory {
-    private static final String colorSetting = SaveSetting.loadOneSettingFromFile(7);
-    public static Color CYAN = colorSetting.equals("on") ? Color.rgb(0, 204, 204) : Color.rgb(0, 255, 255);
-    public static Color BLUE = colorSetting.equals("on") ? Color.rgb(0, 102, 204) : Color.rgb(0, 0, 255);
-    public static Color ORANGE = colorSetting.equals("on") ? Color.rgb(255, 204, 0) : Color.rgb(255, 165, 0);
-    public static Color YELLOW = colorSetting.equals("on") ? Color.rgb(255, 153, 51) : Color.rgb(255, 255, 0);
-    public static Color GREEN = colorSetting.equals("on") ? Color.rgb(0, 204, 102) : Color.rgb(0, 128, 0);
-    public static Color PURPLE = colorSetting.equals("on") ? Color.rgb(204, 102, 255) : Color.rgb(128, 0, 128);
-    public static Color RED = colorSetting.equals("on") ? Color.rgb(204, 51, 0) : Color.rgb(255, 0, 0);
-//    public static Color WHITE = Color.WHITE;
 
-    public static Tetromino generateSpecialTetromino(Difficulty difficulty) {
+    private  Color CYAN = Color.rgb(0, 255, 255);
+    private  Color BLUE = Color.rgb(0, 0, 255);
+    private  Color ORANGE = Color.rgb(255, 165, 0);
+    private  Color YELLOW = Color.rgb(255, 255, 0);
+    private  Color GREEN = Color.rgb(0, 128, 0);
+    private  Color PURPLE = Color.rgb(128, 0, 128);
+    private  Color RED = Color.rgb(255, 0, 0);
+
+
+    public TetrominoFactory(String colorSetting) {
+        if(colorSetting.equals("on")){
+            CYAN = Color.rgb(0, 204, 204);
+            BLUE = Color.rgb(0, 0, 255);
+            ORANGE = Color.rgb(255, 204, 0);
+            YELLOW = Color.rgb(255, 153, 51);
+            GREEN = Color.rgb(0, 204, 102);
+            PURPLE = Color.rgb(204, 102, 255);
+            RED = Color.rgb(204, 51, 0);
+        }
+    }
+
+    public  Tetromino generateSpecialTetromino(Difficulty difficulty) {
         int typeIndex = (int) (Math.random() * SpecialTetrominoType.values().length);
         SpecialTetrominoType type = SpecialTetrominoType.values()[typeIndex];
         return switch (type) {
@@ -31,7 +42,7 @@ public class TetrominoFactory {
         };
     }
 
-    public static Tetromino generateTetromino(Difficulty difficulty) {
+    public Tetromino generateTetromino(Difficulty difficulty) {
         BasicTetrominoType[] types = BasicTetrominoType.values();
         double[] weights = new double[types.length];
         double totalWeight = 0.0;
@@ -88,7 +99,7 @@ public class TetrominoFactory {
         };
     }
 
-    private static Tetromino generateShapedTetromino(Tetromino original, TetrominoType type) {
+    private Tetromino generateShapedTetromino(Tetromino original, TetrominoType type) {
         char ch = 'N';
         if (type == SpecialTetrominoType.LINE_SHAPE) {
             ch = 'L';
