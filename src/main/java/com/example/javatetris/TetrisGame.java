@@ -2,9 +2,11 @@ package com.example.javatetris;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -21,6 +23,8 @@ public class TetrisGame {
     private boolean gameOver = false;
     private int score = 0;
     private int clearedLines = 0;
+    private boolean readyToFix = false;
+    int clearNum = 0;
 
     public TetrisGame() {
         charBoard = new char[BOARD_HEIGHT][BOARD_WIDTH];
@@ -74,10 +78,21 @@ public class TetrisGame {
                 clearCell(currentX, currentY, currentTetromino);
             }
         } else {
-            fixTetromino();
+            if (!readyToFix) {
+                readyToFix = true; // fixTetromino 실행 준비 완료
+                new Timeline(new KeyFrame(Duration.seconds(0.1), ae1 ->{
+                    fixTetrominoAndScore(()->{
+                        turnLinesWhite();
+                    });
+                })).play();
+
+                new Timeline(new KeyFrame(Duration.seconds(0.9), ae2 -> {
+                    clearLinesAndSpawnNewTetromino(clearNum);
+                    readyToFix = false;
+                })).play();
+            }
         }
     }
-
 
     public void rotateClockwise() {
         Tetromino rotated = currentTetromino.rotateClockwise();
@@ -86,10 +101,9 @@ public class TetrisGame {
         }
     }
 
-    private void fixTetromino() {
+    private void fixTetrominoAndScore(Runnable callback) {
         char[][] shape = currentTetromino.shape();
         Color color = currentTetromino.color();
-        int num = 0;
 
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
@@ -100,20 +114,6 @@ public class TetrisGame {
             }
         }
         score += 10;
-
-        for (int y = 0; y < BOARD_HEIGHT; y++) {
-            boolean lineCleared = true;
-            for (int x = 0; x < BOARD_WIDTH; x++) {
-                if (charBoard[y][x] == 'N') {
-                    lineCleared = false;
-                    break;
-                }
-            }
-            if (lineCleared) {
-                num++;
-            }
-        }
-
         if (currentTetromino.tetrominoType() == SpecialTetrominoType.BOMB_SHAPE) {
             handleBombShape();
         }
@@ -132,26 +132,55 @@ public class TetrisGame {
             handleVerticalShape();
         }
 
-        clearLines(num);
-        spawnNewTetromino();
+        callback.run();
+    }
+
+    private void turnLinesWhite() {
+        clearNum = 0;
+
+        for (int y = 0; y < BOARD_HEIGHT; y++) {
+            boolean lineCleared = true;
+            for (int x = 0; x < BOARD_WIDTH; x++) {
+                if (charBoard[y][x] == 'N') {
+                    lineCleared = false;
+                    break;
+                }
+            }
+            if (lineCleared) {
+                clearNum++;
+                for (int x = 0; x < BOARD_WIDTH; x++) {
+                    charBoard[y][x] = 'O';
+                    colorBoard[y][x] = Color.WHITE;
+                }
+            }
+        }
+    }
+
+    private void clearLinesAndSpawnNewTetromino(int num) {
+
+        clearLines(num); // 이전에 정의된 clearLines 메소드를 사용하여 줄을 삭제
+        spawnNewTetromino(); // 새로운 테트로미노 생성
     }
 
     private void clearLines(int num) {
         clearedLines += num;
         for (int y = BOARD_HEIGHT - 1; y >= 0; y--) {
-            boolean lineFull = true;
+            boolean lineFullOrWhite = true;
+            //boolean lineFull = true;
             for (int x = 0; x < BOARD_WIDTH; x++) {
-                if (charBoard[y][x] == 'N') {
-                    lineFull = false;
+                if (charBoard[y][x] == 'N' || colorBoard[y][x] != Color.WHITE) {
+                    lineFullOrWhite = false;
                     break;
                 }
             }
-            if (lineFull) {
+            if (lineFullOrWhite) {
                 for (int yy = y; yy > 0; yy--) {
                     System.arraycopy(charBoard[yy - 1], 0, charBoard[yy], 0, BOARD_WIDTH);
+                    System.arraycopy(colorBoard[yy - 1], 0, colorBoard[yy], 0, BOARD_WIDTH);
                 }
                 for (int x = 0; x < BOARD_WIDTH; x++) {
                     charBoard[0][x] = 'N';
+                    colorBoard[0][x] = null;
                 }
                 y++;
             }
