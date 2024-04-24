@@ -18,16 +18,16 @@ public class TetrominoFactory {
 
     public TetrominoFactory(String colorSetting) {
         if(colorSetting.equals("on")){
-            CYAN = Color.rgb(0, 204, 204);
-            BLUE = Color.rgb(0, 0, 255);
-            ORANGE = Color.rgb(255, 204, 0);
-            YELLOW = Color.rgb(255, 153, 51);
-            GREEN = Color.rgb(0, 204, 102);
-            PURPLE = Color.rgb(204, 102, 255);
-            RED = Color.rgb(204, 51, 0);
+            CYAN = Color.rgb(136, 204, 238); //cyan
+            BLUE = Color.rgb(68, 170, 153); //teal
+            ORANGE = Color.rgb(221, 204, 119);// sand
+            YELLOW = Color.rgb(153, 153, 51); //olive
+            GREEN = Color.rgb(17, 119, 51); //green
+            PURPLE = Color.rgb(136, 34, 85);//purple
+            RED = Color.rgb(170, 68, 153);//wine
         }
     }
-
+//(221,221,221)palegrey, (204,102,119)rose, (51,34,136)indigo
     public  Tetromino generateSpecialTetromino(Difficulty difficulty) {
         int typeIndex = (int) (Math.random() * SpecialTetrominoType.values().length);
         SpecialTetrominoType type = SpecialTetrominoType.values()[typeIndex];
