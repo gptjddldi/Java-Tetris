@@ -4,5 +4,6 @@ LEFT
 RIGHT
 SPACE
 X
-off
-ITEM
+on
+EASY
+big

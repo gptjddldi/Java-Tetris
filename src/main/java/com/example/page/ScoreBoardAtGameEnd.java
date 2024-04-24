@@ -61,8 +61,8 @@ public class ScoreBoardAtGameEnd extends Application {
         scoreBoardLayout.setHgap(10);
         int nomal_mode = getPlace10(10);
         int item_mode = getPlace10(20);
-        String mode = SaveSetting.loadOneSettingFromFile(8);
-        if (Objects.equals(mode, "NORMAL") || Objects.equals(mode, "HARD") || Objects.equals(mode, "EASY")){
+        String mode_game = SaveSetting.loadOneSettingFromFile(8);
+        if (Objects.equals(mode_game, "NORMAL") || Objects.equals(mode_game, "HARD") || Objects.equals(mode_game, "EASY")){
             if (nomal_mode > score){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
@@ -71,11 +71,11 @@ public class ScoreBoardAtGameEnd extends Application {
                 alert.showAndWait();
                 StartPage startPage = new StartPage();
                 startPage.start(primaryStage);
-                
+
                 return;
             }
         }
-        else {
+        else if(Objects.equals(mode_game, "ITEM")) {
             if (item_mode > score){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");

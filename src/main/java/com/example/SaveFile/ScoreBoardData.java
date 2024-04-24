@@ -6,12 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import com.example.page.StartPage;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Label;
 
 public class ScoreBoardData {
-    String[][] stu_arr=new String[20][3];
+    String[][] stu_arr=new String[21][3];
     String name;
     int score;
     String level;
@@ -23,49 +24,55 @@ public class ScoreBoardData {
         String filePath = "src/main/java/com/example/SaveFile/score.txt";
         try {
             File file = new File(filePath);
-            if (!file.exists()) {    // 파일 없으면 생성
+            if (!file.exists()) {
                 file.createNewFile();
             }
-            String mode = SaveSetting.loadOneSettingFromFile(8);
 
+            String gameLevel = SaveSetting.loadOneSettingFromFile(8);
             List<String> lines = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader(file)); // 파일 읽기
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
             }
-            reader.close(); // 파일 읽기 종료
 
-            System.out.println(lines);
-
-            lines.add(String.format("%d,%s,%s", score, text, mode));
-            System.out.println(lines);
-
-            if (Objects.equals(mode, "ITEM")) {
+            lines.add(String.format("%d,%s,%s", score, text, gameLevel));
+            String mode = StartPage.mode;
+            if (Objects.equals(mode, "item")) {
                 Collections.sort(lines.subList(10, lines.size()), (a, b) -> {
                     int scoreA = Integer.parseInt(a.split(",")[0]);
                     int scoreB = Integer.parseInt(b.split(",")[0]);
                     return Integer.compare(scoreB, scoreA);
                 });
-            } else if (Objects.equals(mode, "HARD") || Objects.equals(mode, "NORMAL") || Objects.equals(mode, "EASY")) {
-                Collections.sort(lines.subList(0, Math.min(10, lines.size())), (a, b) -> {
+                if (lines.size() > 20) {
+                    lines.subList(20, lines.size()).clear();
+                }
+            } else if (Objects.equals(mode, "normal")) {
+                List<String> tempLines = new ArrayList<>(lines);
+                int endIndex = Math.min(10, lines.size());
+                List<String> newList = new ArrayList<>(tempLines.subList(0, endIndex));
+                newList.add(tempLines.get(20));
+                Collections.sort(newList, (a, b) -> {
                     int scoreA = Integer.parseInt(a.split(",")[0]);
                     int scoreB = Integer.parseInt(b.split(",")[0]);
                     return Integer.compare(scoreB, scoreA);
                 });
+
+                newList.remove(10);
+                List<String> combinedList = new ArrayList<>(tempLines.subList(10, 20));
+                newList.addAll(combinedList);
+                lines.clear();
+                lines.addAll(newList);
             }
 
-            if (lines.size() > 20) { // 10등까지 출력
-                lines.subList(20, lines.size()).clear();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (String sortedLine : lines) {
+                    writer.write(sortedLine);
+                    writer.newLine();
+                }
+                writer.flush();
             }
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // 파일에 작성
-            for (String sortedLine : lines) {
-                writer.write(sortedLine);
-                writer.newLine();
-            }
-            writer.flush();
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,8 +80,7 @@ public class ScoreBoardData {
 
 
     public static void saveRanking(String name, int score) {
-        String text = name;
-        SaveToFile(text, score);
+        SaveToFile(name, score);
 
         lastEnteredScore = score;
         lastEnteredName = name;

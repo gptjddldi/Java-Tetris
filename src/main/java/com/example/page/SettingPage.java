@@ -14,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import static com.example.SaveFile.SaveSetting.saveAll;
+
 public class SettingPage extends Application {
     private ControlsSettingsWindow controlsSettingsWindow;
 
@@ -25,6 +27,7 @@ public class SettingPage extends Application {
 
         Button returnStartPage = new Button("메인메뉴");
         returnStartPage.setOnAction(e -> {
+            saveAll();
             StartPage startScreen = new StartPage();
             startScreen.start(primaryStage);
         });
@@ -61,11 +64,11 @@ public class SettingPage extends Application {
         });
 
         ComboBox<String> levelComboBox;
-        String[] levels = {"EASY", "NORMAL", "HARD", "ITEM"};
+        String[] levels = {"EASY", "NORMAL", "HARD"};
         levelComboBox = new ComboBox<>();
         levelComboBox.getItems().addAll(levels);
         String level = SaveSetting.loadOneSettingFromFile(8);
-        levelComboBox.setValue(level); // 현재 설정 값으로 썸네일처럼 표시
+        levelComboBox.setValue(level);
 
 
         levelComboBox.setOnAction(e -> {

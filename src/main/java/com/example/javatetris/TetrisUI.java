@@ -73,10 +73,8 @@ public class TetrisUI {
         scoreLabel.setText("Score: " + tetrisGame.getScore());
         updateNextTetrominoDisplay();
     }
-
     private GridPane createGameBoard() {
         GridPane gridPane = new GridPane();
-
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
                 Text block = createText("O", Color.WHITE);

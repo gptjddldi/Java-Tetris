@@ -1,5 +1,6 @@
 package com.example.page;
 
+import com.example.SaveFile.SaveSetting;
 import com.example.javatetris.TetrisApplication;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -18,7 +19,8 @@ public class StartPage extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    public static String mode;
+    public static String colormode;
     @Override
     public void start(Stage primaryStage) {
         GridPane startLayout = new GridPane();
@@ -26,20 +28,22 @@ public class StartPage extends Application {
         startLayout.setVgap(20);
         startLayout.setHgap(20);
         startLayout.setPadding(new Insets(20));
-
+        String lev = SaveSetting.loadOneSettingFromFile(7);
         Label gameTitleLabel = new Label("Java Tetris");
         gameTitleLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
         startLayout.add(gameTitleLabel, 0, 0);
 
-        Button startButton = createMenuButton("Start Game");
-        Button settingButton = createMenuButton("Setting");
-        Button scoreboardButton = createMenuButton("Scoreboard");
-        Button exitButton = createMenuButton("Exit");
+        Button startButton = createMenuButton("일반모드");
+        Button startITEMButton = createMenuButton("아이템모드");
+        Button settingButton = createMenuButton("설정");
+        Button scoreboardButton = createMenuButton("스코어보드");
+        Button exitButton = createMenuButton("게임종료");
 
         startLayout.add(startButton, 0, 1);
-        startLayout.add(settingButton, 0, 2);
-        startLayout.add(scoreboardButton, 0, 3);
-        startLayout.add(exitButton, 0, 4);
+        startLayout.add(startITEMButton, 0, 2);
+        startLayout.add(settingButton, 0, 3);
+        startLayout.add(scoreboardButton, 0, 4);
+        startLayout.add(exitButton, 0, 5);
 
         Scene startPage = new Scene(startLayout, 311, 621);
         primaryStage.setScene(startPage);
@@ -58,7 +62,16 @@ public class StartPage extends Application {
             }
         });
 
-        startButton.setOnAction(e -> changeScene(new TetrisApplication(), primaryStage));
+        startButton.setOnAction(e -> {
+            mode = "normal";
+            colormode = SaveSetting.loadOneSettingFromFile(7);
+            changeScene(new TetrisApplication(), primaryStage);
+        });
+        startITEMButton.setOnAction(e -> {
+            mode = "item";
+            colormode = SaveSetting.loadOneSettingFromFile(7);
+            changeScene(new TetrisApplication(), primaryStage);
+        });
         settingButton.setOnAction(e -> changeScene(new SettingPage(), primaryStage));
         scoreboardButton.setOnAction(e -> changeScene(new ScoreBoardAtStartPage(), primaryStage));
         exitButton.setOnAction(e -> Platform.exit());

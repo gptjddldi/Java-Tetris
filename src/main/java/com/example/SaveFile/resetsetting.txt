@@ -6,3 +6,5 @@ SPACE
 X
 off
 NORMAL
+normal
+normal
