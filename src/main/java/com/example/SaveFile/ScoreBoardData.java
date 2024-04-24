@@ -4,14 +4,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Label;
 
 public class ScoreBoardData {
-    String[][] stu_arr=new String[10][2];
+    String[][] stu_arr=new String[20][3];
     String name;
     int score;
+    String level;
     public static int lastEnteredScore;
     public static String lastEnteredName;
 
@@ -23,7 +26,8 @@ public class ScoreBoardData {
             if (!file.exists()) {    // 파일 없으면 생성
                 file.createNewFile();
             }
-            String level = SaveSetting.loadOneSettingFromFile(8);
+            String mode = SaveSetting.loadOneSettingFromFile(8);
+
             List<String> lines = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new FileReader(file)); // 파일 읽기
             String line;
@@ -32,17 +36,27 @@ public class ScoreBoardData {
             }
             reader.close(); // 파일 읽기 종료
 
-            lines.add(String.format("%d,%s", score, text));
+            System.out.println(lines);
 
+            lines.add(String.format("%d,%s,%s", score, text, mode));
+            System.out.println(lines);
 
-            Collections.sort(lines, (a, b) -> { // 점수 sorting
-                int scoreA = Integer.parseInt(a.split(",")[0]);
-                int scoreB = Integer.parseInt(b.split(",")[0]);
-                return Integer.compare(scoreB, scoreA);
-            });
+            if (Objects.equals(mode, "ITEM")) {
+                Collections.sort(lines.subList(10, lines.size()), (a, b) -> {
+                    int scoreA = Integer.parseInt(a.split(",")[0]);
+                    int scoreB = Integer.parseInt(b.split(",")[0]);
+                    return Integer.compare(scoreB, scoreA);
+                });
+            } else if (Objects.equals(mode, "HARD") || Objects.equals(mode, "NORMAL") || Objects.equals(mode, "EASY")) {
+                Collections.sort(lines.subList(0, Math.min(10, lines.size())), (a, b) -> {
+                    int scoreA = Integer.parseInt(a.split(",")[0]);
+                    int scoreB = Integer.parseInt(b.split(",")[0]);
+                    return Integer.compare(scoreB, scoreA);
+                });
+            }
 
-            if (lines.size() > 10) { // 10등까지 출력
-                lines.subList(10, lines.size()).clear();
+            if (lines.size() > 20) { // 10등까지 출력
+                lines.subList(20, lines.size()).clear();
             }
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(file)); // 파일에 작성
@@ -56,6 +70,7 @@ public class ScoreBoardData {
             e.printStackTrace();
         }
     }
+
 
     public static void saveRanking(String name, int score) {
         String text = name;
@@ -74,24 +89,24 @@ public class ScoreBoardData {
         container.getChildren().add(mode_level);
         for (int i = 0; i < 10; i++) {
             obj.getScr(i);
-            Label label = new Label(String.format("점수: %10d이름: %s(HARD)", obj.score, obj.name));
-            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
+            Label label = new Label(String.format("점수: %-10d이름: %s%s", obj.score, obj.name,obj.level));
+            label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold; -fx-font-size: 12px;");
             if (obj.score == lastEnteredScore && obj.name.equals(lastEnteredName)) {
-                label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold; -fx-text-fill: red;");
+                label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold;-fx-text-fill: red;");
             }
             container.getChildren().add(label);
         }
         Label mode_item = new Label("\n<아이템 모드>");
         container.getChildren().add(mode_item);
-//        for (int i = 11; i < 20; i++) {
-//            obj.getScr(i);
-//            Label label = new Label("점수: " + obj.score + "             이름: " + obj.name+"("+"HARD"+")");
-//            if (obj.score == lastEnteredScore && obj.name.equals(lastEnteredName)) {
-//                label.setStyle("-fx-font-weight: bold; -fx-text-fill: red;");
-//            }
-//
-//            container.getChildren().add(label);
-//        }
+        for (int i = 10; i < 20; i++) {
+            obj.getScr(i);
+            Label label = new Label(String.format("점수: %-10d이름: %s%s", obj.score, obj.name,obj.level));
+            label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold; -fx-font-size: 12px;");
+            if (obj.score == lastEnteredScore && obj.name.equals(lastEnteredName)) {
+                label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold;-fx-text-fill: red;");
+            }
+            container.getChildren().add(label);
+        }
         scrollPane.setContent(container);
     }
 
@@ -105,29 +120,31 @@ public class ScoreBoardData {
         container.getChildren().add(mode_level);
         for (int i = 0; i < 10; i++) {
             obj.getScr(i);
-            Label label = new Label(String.format("점수: %-10d이름: %s(HARD)", obj.score, obj.name));
-            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 12px;");
+            Label label = new Label(String.format("점수: %-10d이름: %s%s" + "\n", obj.score, obj.name,obj.level));
+            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold;-fx-font-size: 12px;");
             container.getChildren().add(label);
         }
         Label mode_item = new Label("\n<아이템 모드>");
         container.getChildren().add(mode_item);
-//        for (int i = 11; i < 20; i++) {
-//            obj.getScr(i);
-//
-//            Label label = new Label("점수: " + obj.score + "             이름: " + obj.name+"("+"HARD"+")");
-//            container.getChildren().add(label);
-//        }
+        for (int i = 10; i < 20; i++) {
+            obj.getScr(i);
+            Label label = new Label(String.format("점수: %-10d이름: %s%s", obj.score, obj.name,obj.level));
+            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold;-fx-font-size: 12px;");
+            container.getChildren().add(label);
+        }
 
         scrollPane.setContent(container);
     }
 
     public void getScr(int i) {
-        if (stu_arr[i] != null && stu_arr[i].length >= 2) { // Check if array and its length are valid
+        if (stu_arr[i] != null && stu_arr[i].length >= 3) { // Check if array and its length are valid
             this.score = Integer.parseInt(stu_arr[i][0]);
             this.name = stu_arr[i][1];
+            this.level = "("+stu_arr[i][2]+")";
         } else {
             this.score = 0;
-            this.name = ""; // Or any default value you prefer
+            this.name = "";
+            this.level = ""; // Or any default value you prefer
         }
     }
 

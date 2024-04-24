@@ -5,4 +5,4 @@ RIGHT
 SPACE
 X
 off
-NORMAL
+ITEM

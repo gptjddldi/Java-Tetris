@@ -1,10 +1,20 @@
-0,
-0,
-0,
-0,
-0,
-0,
-0,
-0,
-0,
-0,
+120,aaaa,NORMAL
+110,aaaa,NORMAL
+110,wssss,NORMAL
+100,aa,NORMAL
+100,eee,NORMAL
+80,new,NORMAL
+0,,
+0,,
+0,,
+0,,
+120,new item,ITEM
+120,item please,ITEM
+100,item,ITEM
+0,,
+0,,
+0,,
+0,,
+0,,
+0,,
+0,,
