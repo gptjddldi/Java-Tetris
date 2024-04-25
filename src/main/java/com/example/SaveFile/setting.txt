@@ -1,9 +1,9 @@
-UP
-DOWN
-LEFT
-RIGHT
-SPACE
-X
+Key1
+Key2
+NewValue
+Key4
+Key5
+Key6
 off
 NORMAL
 NORMAL
