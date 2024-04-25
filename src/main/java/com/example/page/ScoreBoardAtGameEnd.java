@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.example.SaveFile.size.size;
+import static com.example.page.StartPage.mode;
 
 public class ScoreBoardAtGameEnd extends Application {
     private boolean submitButtonClicked = false;
@@ -63,8 +64,7 @@ public class ScoreBoardAtGameEnd extends Application {
         scoreBoardLayout.setHgap(10*size());
         int nomal_mode = getPlace10(10);
         int item_mode = getPlace10(20);
-        String mode_game = SaveSetting.loadOneSettingFromFile(8);
-        if (Objects.equals(mode_game, "NORMAL") || Objects.equals(mode_game, "HARD") || Objects.equals(mode_game, "EASY")){
+        if (Objects.equals(mode, "normal")){
             if (nomal_mode > score){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
@@ -77,7 +77,7 @@ public class ScoreBoardAtGameEnd extends Application {
                 return;
             }
         }
-        else if(Objects.equals(mode_game, "ITEM")) {
+        else if(Objects.equals(mode, "item")) {
             if (item_mode > score){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
