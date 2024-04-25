@@ -79,6 +79,13 @@ public class TetrisGame {
         }
     }
 
+    public void moveDownAll() {
+        while (canMove(currentX, currentY + 1, currentTetromino)) {
+            currentY++;
+        }
+        fixTetromino();
+    }
+
 
     public void rotateClockwise() {
         Tetromino rotated = currentTetromino.rotateClockwise();
