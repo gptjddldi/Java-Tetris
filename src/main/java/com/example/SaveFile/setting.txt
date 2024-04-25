@@ -4,6 +4,5 @@ LEFT
 RIGHT
 SPACE
 X
-on
+off
 EASY
-big
