@@ -6,4 +6,4 @@ Key5
 Key6
 off
 NORMAL
-NORMAL
+BIG
