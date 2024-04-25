@@ -11,7 +11,16 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class TetrisApplication extends Application {
-    private final TetrisGame tetrisGame = new TetrisGame();
+    private final TetrisGame tetrisGame;
+    public TetrisApplication() {
+        super();
+        tetrisGame = new TetrisGame("normal");
+    }
+
+    public TetrisApplication(String mode) {
+        super();
+        tetrisGame = new TetrisGame(mode);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -23,9 +32,9 @@ public class TetrisApplication extends Application {
 
         Scene scene = new Scene(root);
 
-        KeyCode[] controlKeys = new KeyCode[5];
+        KeyCode[] controlKeys = new KeyCode[6];
         String[] keyNames = SaveSetting.loadKeySettingsFromFile();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             controlKeys[i] = KeyCode.valueOf(keyNames[i]);
         }
 
@@ -36,7 +45,7 @@ public class TetrisApplication extends Application {
             else if (code == controlKeys[1]) tetrisGame.moveDown();
             else if (code == controlKeys[0]) tetrisGame.rotateClockwise();
             else if (code == controlKeys[4]) tetrisUI.pauseGame();
-            //else if(code == controlKeys[5]) fallAtOnce();
+            else if(code == controlKeys[5]) tetrisGame.moveDownAll();
             tetrisUI.updateGameBoard();
         });
 

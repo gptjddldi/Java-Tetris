@@ -56,18 +56,14 @@ public class StartPage extends Application {
         });
 
         startButton.setOnAction(e -> {
-            mode = "normal";
             colormode = SaveSetting.loadOneSettingFromFile(7);
-            changeScene(new TetrisApplication(), primaryStage);
+            changeScene(new TetrisApplication("normal"), primaryStage);
         });
         startITEMButton.setOnAction(e -> {
-            mode = "item";
             colormode = SaveSetting.loadOneSettingFromFile(7);
-            changeScene(new TetrisApplication(), primaryStage);
+            changeScene(new TetrisApplication("item"), primaryStage);
         });
-        settingButton.setOnAction(e -> {
-            changeScene(new SettingPage(), primaryStage);
-        });
+        settingButton.setOnAction(e -> changeScene(new SettingPage(), primaryStage));
         scoreboardButton.setOnAction(e -> changeScene(new ScoreBoardAtStartPage(), primaryStage));
         exitButton.setOnAction(e -> Platform.exit());
     }
