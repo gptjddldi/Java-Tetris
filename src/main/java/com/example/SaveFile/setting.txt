@@ -6,4 +6,4 @@ SPACE
 X
 off
 NORMAL
-BIG
+NORMAL
