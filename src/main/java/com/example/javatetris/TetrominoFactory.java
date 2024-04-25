@@ -33,10 +33,10 @@ public class TetrominoFactory {
         SpecialTetrominoType type = SpecialTetrominoType.values()[typeIndex];
         return switch (type) {
             case HEAVY_SHAPE ->
-                    new Tetromino(SpecialTetrominoType.HEAVY_SHAPE, new char[][]{{'N', 'O', 'O', 'N'}, {'O', 'O', 'O', 'O'}}, Color.GRAY);
-            case BOMB_SHAPE -> new Tetromino(SpecialTetrominoType.BOMB_SHAPE, new char[][]{{'B'}}, Color.BISQUE);
+                    new Tetromino(SpecialTetrominoType.HEAVY_SHAPE, new char[][]{{'N', 'O', 'O', 'N'}, {'O', 'O', 'O', 'O'}}, GREEN);
+            case BOMB_SHAPE -> new Tetromino(SpecialTetrominoType.BOMB_SHAPE, new char[][]{{'B'}}, PURPLE);
             case CROSS_SHAPE ->
-                    new Tetromino(SpecialTetrominoType.CROSS_SHAPE, new char[][]{{'N', 'O', 'N'}, {'O', 'O', 'O'}, {'N', 'O', 'N'}}, Color.LIGHTPINK);
+                    new Tetromino(SpecialTetrominoType.CROSS_SHAPE, new char[][]{{'N', 'O', 'N'}, {'O', 'O', 'O'}, {'N', 'O', 'N'}}, RED);
             case LINE_SHAPE -> generateShapedTetromino(generateTetromino(difficulty), SpecialTetrominoType.LINE_SHAPE);
             case VERTICAL_SHAPE -> generateShapedTetromino(generateTetromino(difficulty), SpecialTetrominoType.VERTICAL_SHAPE);
         };
