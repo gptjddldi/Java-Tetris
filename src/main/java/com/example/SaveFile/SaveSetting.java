@@ -55,28 +55,51 @@ public class SaveSetting {
                 file.createNewFile();
             }
 
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            for (int i = 0; i < 8; i++) {
-                String line = reader.readLine();
-                lines.add(line != null ? line : "");
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                int lineNumber = 0;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                    lineNumber++;
+                }
+            }
+
+            lines.set(place - 1, newValue);
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (String l : lines) {
+                    writer.write(l);
+                    writer.newLine();
+                }
+                writer.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveAll() {
+
+        String Path = "src/main/java/com/example/SaveFile/setting.txt";
+
+        try {
+            // 파일 읽기
+            BufferedReader reader = new BufferedReader(new FileReader(Path));
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
             }
             reader.close();
 
-            lines.set(place - 1, newValue);
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            for (String l : lines) {
-                writer.write(l);
-                writer.newLine();
-            }
-            writer.flush();
+            // 파일 쓰기
+            BufferedWriter writer = new BufferedWriter(new FileWriter(Path));
+            writer.write(content.toString());
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-
 
     public static String[] loadKeySettingsFromFile() {
         String filePath = "src/main/java/com/example/SaveFile/setting.txt";

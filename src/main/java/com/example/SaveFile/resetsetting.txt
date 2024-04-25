@@ -3,6 +3,7 @@ DOWN
 LEFT
 RIGHT
 SPACE
-s
+X
 off
 NORMAL
+normal

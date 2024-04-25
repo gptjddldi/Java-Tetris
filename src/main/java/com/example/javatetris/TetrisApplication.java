@@ -36,6 +36,7 @@ public class TetrisApplication extends Application {
             else if (code == controlKeys[1]) tetrisGame.moveDown();
             else if (code == controlKeys[0]) tetrisGame.rotateClockwise();
             else if (code == controlKeys[4]) tetrisUI.pauseGame();
+            //else if(code == controlKeys[5]) fallAtOnce();
             tetrisUI.updateGameBoard();
         });
 

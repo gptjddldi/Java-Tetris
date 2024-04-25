@@ -19,7 +19,7 @@ public class Reset {
     public void ScoreReset() {
         try (BufferedReader reader = new BufferedReader(new FileReader(SCORE_RESET_FILE_PATH));
              BufferedWriter writer = new BufferedWriter(new FileWriter(SCORE_FILE_PATH))) {
-            reader.lines().limit(10).forEach(line -> {
+            reader.lines().limit(20).forEach(line -> {
                 try {
                     writer.write(line);
                     writer.newLine();
@@ -35,7 +35,7 @@ public class Reset {
     public void SettingReset() {
         try (BufferedReader reader = new BufferedReader(new FileReader(SETTING_RESET_FILE_PATH));
              BufferedWriter writer = new BufferedWriter(new FileWriter(SETTING_FILE_PATH))) {
-            reader.lines().limit(7).forEach(line -> {
+            reader.lines().limit(8).forEach(line -> {
                 try {
                     writer.write(line);
                     writer.newLine();

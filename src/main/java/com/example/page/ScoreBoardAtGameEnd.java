@@ -1,9 +1,11 @@
 package com.example.page;
 
+import com.example.SaveFile.SaveSetting;
 import com.example.SaveFile.ScoreBoardData;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -11,6 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Objects;
 
 public class ScoreBoardAtGameEnd extends Application {
     private boolean submitButtonClicked = false;
@@ -27,13 +34,60 @@ public class ScoreBoardAtGameEnd extends Application {
         this();
         setScore(score);
     }
-
+    public int getPlace10(int a) {
+        int value = 0;
+        String filePath = "src/main/java/com/example/SaveFile/score.txt";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            for (int i = 0; i < a - 1; i++) {
+                reader.readLine();
+            }
+            String line = reader.readLine();
+            String[] values = line.split(",");
+            reader.close();
+            if (values.length > 0) {
+                value = Integer.parseInt(values[0]);
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
     @Override
     public void start(Stage primaryStage) {
         GridPane scoreBoardLayout = new GridPane();
         scoreBoardLayout.setAlignment(Pos.CENTER);
         scoreBoardLayout.setVgap(10);
         scoreBoardLayout.setHgap(10);
+        int nomal_mode = getPlace10(10);
+        int item_mode = getPlace10(20);
+        String mode_game = SaveSetting.loadOneSettingFromFile(8);
+        if (Objects.equals(mode_game, "NORMAL") || Objects.equals(mode_game, "HARD") || Objects.equals(mode_game, "EASY")){
+            if (nomal_mode > score){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("10등 안에 들지 못했습니다.\n메인 메뉴로 돌아갑니다.");
+                alert.showAndWait();
+                StartPage startPage = new StartPage();
+                startPage.start(primaryStage);
+
+                return;
+            }
+        }
+        else if(Objects.equals(mode_game, "ITEM")) {
+            if (item_mode > score){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("10등 안에 들지 못했습니다.\n메인 메뉴로 돌아갑니다.");
+                alert.showAndWait();
+                StartPage startPage = new StartPage();
+                startPage.start(primaryStage);
+                return;
+            }
+        }
+
 
         Button backButton = new Button("MainMenu");
 
@@ -61,6 +115,12 @@ public class ScoreBoardAtGameEnd extends Application {
             }
         });
 
+        try {
+            ScoreBoardData.HomeloadRanking(scrollPane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         Button submitButton = new Button("저장");
         submitButton.setOnAction(event -> {
             if (!submitButtonClicked) {
