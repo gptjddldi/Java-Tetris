@@ -33,7 +33,7 @@ public class TetrominoFactory {
         SpecialTetrominoType type = SpecialTetrominoType.values()[typeIndex];
         return switch (type) {
             case HEAVY_SHAPE ->
-                    new Tetromino(SpecialTetrominoType.HEAVY_SHAPE, new char[][]{{'O', 'O'}, {'O', 'O', 'O', 'O'}}, Color.GRAY);
+                    new Tetromino(SpecialTetrominoType.HEAVY_SHAPE, new char[][]{{'N', 'O', 'O', 'N'}, {'O', 'O', 'O', 'O'}}, Color.GRAY);
             case BOMB_SHAPE -> new Tetromino(SpecialTetrominoType.BOMB_SHAPE, new char[][]{{'B'}}, Color.BISQUE);
             case CROSS_SHAPE ->
                     new Tetromino(SpecialTetrominoType.CROSS_SHAPE, new char[][]{{'N', 'O', 'N'}, {'O', 'O', 'O'}, {'N', 'O', 'N'}}, Color.LIGHTPINK);

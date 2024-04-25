@@ -268,7 +268,7 @@ public class TetrisGame {
     private void handleCrossShape() {
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
-                if(y == currentY || x == currentX) {
+                if(y == currentY+1 || x == currentX+1) {
                     charBoard[y][x] = 'N';
                 }
             }
