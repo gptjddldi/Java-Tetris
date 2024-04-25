@@ -18,10 +18,11 @@ public class TetrisGame {
     private int currentX, currentY;
     private Tetromino currentTetromino;
     private Tetromino nextTetromino;
-    private final Timeline gameLoop;
+    private Timeline gameLoop;
     private boolean gameOver = false;
     private int score = 0;
     private int clearedLines = 0;
+    private int totalClearedLines = 0;
     private TetrominoFactory tetrominoFactory;
     private String mode;
     private Difficulty difficulty;
@@ -36,13 +37,27 @@ public class TetrisGame {
         for (char[] chars : charBoard) {
             Arrays.fill(chars, 'N');
         }
-
         colorBoard = new Color[BOARD_HEIGHT][BOARD_WIDTH];
-        spawnNewTetromino();
 
-        gameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> moveDown()));
+        spawnNewTetromino();
+        setupGameLoop();
+    }
+
+    private void setupGameLoop() {
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
+
+        double interval = calculateInterval();
+
+        gameLoop = new Timeline(new KeyFrame(Duration.seconds(interval), event -> moveDown()));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
+    }
+
+    private double calculateInterval() {
+        double speedFactor = Math.pow(1.02, totalClearedLines);
+        return difficulty.getBaseInterval() / speedFactor;
     }
 
 
@@ -95,7 +110,6 @@ public class TetrisGame {
     }
 
     private void generateTetromino() {
-        System.out.println("difficulty: " + difficulty);
         currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> tetrominoFactory.generateTetromino(difficulty));
         if (mode.equals("item") && clearedLines >= 1) {
             nextTetromino = tetrominoFactory.generateSpecialTetromino(difficulty);
@@ -157,6 +171,7 @@ public class TetrisGame {
 
     private void clearLines(int num) {
         clearedLines += num;
+        totalClearedLines += num;
         for (int y = BOARD_HEIGHT - 1; y >= 0; y--) {
             boolean lineFull = true;
             for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -184,6 +199,7 @@ public class TetrisGame {
             default -> {
             }
         }
+        setupGameLoop();
     }
 
     public int getScore() {
