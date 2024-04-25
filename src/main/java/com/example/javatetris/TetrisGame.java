@@ -106,7 +106,7 @@ public class TetrisGame {
 
     public void rotateClockwise() {
         Tetromino rotated = currentTetromino.rotateClockwise();
-        if (canMove(currentX, currentY, rotated)) {
+        if (canMove(currentX, currentY, rotated) && currentTetromino.tetrominoType() != SpecialTetrominoType.HEAVY_SHAPE) {
             currentTetromino = rotated;
         }
     }
@@ -182,9 +182,7 @@ public class TetrisGame {
                 }
             }
             if (lineFull) {
-                for (int yy = y; yy > 0; yy--) {
-                    System.arraycopy(charBoard[yy - 1], 0, charBoard[yy], 0, BOARD_WIDTH);
-                }
+                clearRow(y);
                 for (int x = 0; x < BOARD_WIDTH; x++) {
                     charBoard[0][x] = 'N';
                 }
@@ -295,11 +293,11 @@ public class TetrisGame {
     private void handleCrossShape() {
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
-                if(y == currentY+1 || x == currentX+1) {
-                    if (charBoard[y][x] != 'N') {
-                        score += difficulty.getBasePoint() / 6;
-                    }
-                    charBoard[y][x] = 'N';
+                if (charBoard[y][x] == 'C'){
+                    clearRow(y);
+                    clearColumn(x);
+                    break;
+
                 }
             }
         }
@@ -344,13 +342,9 @@ public class TetrisGame {
     }
 
     private void clearRow(int rowIndex) {
-        if (rowIndex >= 0 && rowIndex < BOARD_HEIGHT) {
-            for (int x = 0; x < BOARD_WIDTH; x++) {
-                if (charBoard[rowIndex][x] != 'N') {
-                    score += difficulty.getBasePoint() / 6;
-                }
-                charBoard[rowIndex][x] = 'N';
-            }
+        for (int yy = rowIndex; yy > 0; yy--) {
+            System.arraycopy(charBoard[yy - 1], 0, charBoard[yy], 0, BOARD_WIDTH);
+            System.arraycopy(colorBoard[yy - 1], 0, colorBoard[yy], 0, BOARD_WIDTH);
         }
     }
     private void clearColumn(int columnIndex) {
