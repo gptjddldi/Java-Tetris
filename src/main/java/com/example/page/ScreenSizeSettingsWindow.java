@@ -7,6 +7,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import static com.example.SaveFile.size.size;
+
 public class ScreenSizeSettingsWindow {
 
     public void show() {
@@ -15,12 +17,12 @@ public class ScreenSizeSettingsWindow {
         window.setTitle("게임 화면 크기 조절");
 
         GridPane layout = new GridPane();
-        layout.setVgap(10);
-        layout.setHgap(10);
+        layout.setVgap(10*size());
+        layout.setHgap(10*size());
 
         // 화면 크기 선택 ChoiceBox 생성
         ChoiceBox<String> screenSizeChoiceBox = new ChoiceBox<>();
-        screenSizeChoiceBox.getItems().addAll("800x600", "1024x768", "1280x720");
+        screenSizeChoiceBox.getItems().addAll("small", "normal", "big");
         screenSizeChoiceBox.setValue("800x600"); // 기본값 설정
 
         // 저장 버튼 추가
@@ -36,7 +38,7 @@ public class ScreenSizeSettingsWindow {
         layout.add(screenSizeChoiceBox, 0, 0);
         layout.add(saveButton, 0, 1);
 
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(layout,100*size(),100*size());
         window.setScene(scene);
         window.showAndWait();
     }
