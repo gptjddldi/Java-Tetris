@@ -47,12 +47,16 @@ public class ControlsSettingsWindow extends Application {
             Label keyLabel;
             if (i == 4) {
                 keyLabel = new Label("PAUSE: ");
+                keyLabel.setStyle("-fx-font-size: "+10*size()+"px;");
             } else if (i == 5) {
                 keyLabel = new Label("fall at once: ");
+                keyLabel.setStyle("-fx-font-size: "+10*size()+"px;");
             } else {
                 keyLabel = new Label(defaultKeys[i] + ": ");
+                keyLabel.setStyle("-fx-font-size: "+10*size()+"px;");
             }
             keyFields[i] = new TextField(); // 텍스트 필드 생성
+            keyFields[i].setStyle("-fx-font-size: "+10*size()+"px;-fx-pref-width: "+70*size()+"px; -fx-pref-height: "+10*size()+"px;");
             keyFields[i].setText(keyName[i]); // 초기값 설정
             int finalI1 = i;
             keyFields[i].textProperty().addListener((observable, oldValue, newValue) -> {
@@ -76,6 +80,7 @@ public class ControlsSettingsWindow extends Application {
 
         // 저장 버튼 추가
         Button saveButton = new Button("저장");
+        saveButton.setStyle("-fx-font-size: "+10*size()+"px;-fx-pref-width: "+70*size()+"px; -fx-pref-height: "+10*size()+"px;");
         saveButton.setOnAction(e -> {
             // 중복된 키가 있는지 확인하고 경고창을 표시
             for (int i = 0; i < defaultKeys.length; i++) {
@@ -111,7 +116,7 @@ public class ControlsSettingsWindow extends Application {
 
         layout.add(saveButton, 1, defaultKeys.length); // 저장 버튼을 레이아웃에 추가
 
-        Scene scene = new Scene(layout, 300*size(), 250*size());
+        Scene scene = new Scene(layout, 150*size(), 210*size());
         window.setScene(scene);
         window.showAndWait();
     }
