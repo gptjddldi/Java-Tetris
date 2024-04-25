@@ -2,6 +2,7 @@ package com.example.page;
 
 import com.example.SaveFile.Reset;
 import com.example.SaveFile.SaveSetting;
+import com.example.javatetris.Difficulty;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -74,10 +75,13 @@ public class SettingPage extends Application {
         });
 
         ComboBox<String> levelComboBox;
-        String[] levels = {"EASY", "NORMAL", "HARD"};
         levelComboBox = new ComboBox<>();
         levelComboBox.setStyle("-fx-font-size: "+12*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+30*size()+"px;");
-        levelComboBox.getItems().addAll(levels);
+
+        for (Difficulty level : Difficulty.values()) {
+            levelComboBox.getItems().add(level.toString());
+        }
+
         String level = SaveSetting.loadOneSettingFromFile(8);
         levelComboBox.setValue(level);
 

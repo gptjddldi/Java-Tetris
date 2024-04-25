@@ -11,7 +11,16 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class TetrisApplication extends Application {
-    private final TetrisGame tetrisGame = new TetrisGame();
+    private final TetrisGame tetrisGame;
+    public TetrisApplication() {
+        super();
+        tetrisGame = new TetrisGame("normal");
+    }
+
+    public TetrisApplication(String mode) {
+        super();
+        tetrisGame = new TetrisGame(mode);
+    }
 
     @Override
     public void start(Stage primaryStage) {

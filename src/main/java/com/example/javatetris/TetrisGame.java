@@ -23,10 +23,14 @@ public class TetrisGame {
     private int score = 0;
     private int clearedLines = 0;
     private TetrominoFactory tetrominoFactory;
+    private String mode;
+    private Difficulty difficulty;
 
-    public TetrisGame() {
+    public TetrisGame(String mode) {
+        this.mode = mode;
         String colorSetting = SaveSetting.loadOneSettingFromFile(7);
         tetrominoFactory = new TetrominoFactory(colorSetting);
+        difficulty = Difficulty.valueOf(SaveSetting.loadOneSettingFromFile(8));
 
         charBoard = new char[BOARD_HEIGHT][BOARD_WIDTH];
         for (char[] chars : charBoard) {
@@ -43,15 +47,7 @@ public class TetrisGame {
 
 
     private void spawnNewTetromino() {
-        currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> tetrominoFactory.generateTetromino(Difficulty.EASY));
-
-        if(clearedLines >= 1) {
-            nextTetromino = tetrominoFactory.generateSpecialTetromino(Difficulty.EASY);
-            clearedLines -= 1;
-        } else {
-            nextTetromino = tetrominoFactory.generateTetromino(Difficulty.EASY);
-        }
-
+        generateTetromino();
         currentX = BOARD_WIDTH / 2 - currentTetromino.getWidth() / 2;
         currentY = 0;
         if (!canMove(currentX, currentY, currentTetromino)) {
@@ -88,6 +84,17 @@ public class TetrisGame {
         Tetromino rotated = currentTetromino.rotateClockwise();
         if (canMove(currentX, currentY, rotated)) {
             currentTetromino = rotated;
+        }
+    }
+
+    private void generateTetromino() {
+        System.out.println("difficulty: " + difficulty);
+        currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> tetrominoFactory.generateTetromino(difficulty));
+        if (mode.equals("item") && clearedLines >= 1) {
+            nextTetromino = tetrominoFactory.generateSpecialTetromino(difficulty);
+            clearedLines -= 1;
+        } else {
+            nextTetromino = tetrominoFactory.generateTetromino(difficulty);
         }
     }
 
