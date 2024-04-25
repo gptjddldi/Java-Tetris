@@ -57,11 +57,13 @@ public class StartPage extends Application {
 
         startButton.setOnAction(e -> {
             colormode = SaveSetting.loadOneSettingFromFile(7);
-            changeScene(new TetrisApplication("normal"), primaryStage);
+            mode = "normal";
+            changeScene(new TetrisApplication(mode), primaryStage);
         });
         startITEMButton.setOnAction(e -> {
             colormode = SaveSetting.loadOneSettingFromFile(7);
-            changeScene(new TetrisApplication("item"), primaryStage);
+            mode = "item";
+            changeScene(new TetrisApplication(mode), primaryStage);
         });
         settingButton.setOnAction(e -> changeScene(new SettingPage(), primaryStage));
         scoreboardButton.setOnAction(e -> changeScene(new ScoreBoardAtStartPage(), primaryStage));
