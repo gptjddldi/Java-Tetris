@@ -19,6 +19,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.example.SaveFile.size.size;
+
 public class ScoreBoardAtGameEnd extends Application {
     private boolean submitButtonClicked = false;
     private int score;
@@ -57,8 +59,8 @@ public class ScoreBoardAtGameEnd extends Application {
     public void start(Stage primaryStage) {
         GridPane scoreBoardLayout = new GridPane();
         scoreBoardLayout.setAlignment(Pos.CENTER);
-        scoreBoardLayout.setVgap(10);
-        scoreBoardLayout.setHgap(10);
+        scoreBoardLayout.setVgap(10*size());
+        scoreBoardLayout.setHgap(10*size());
         int nomal_mode = getPlace10(10);
         int item_mode = getPlace10(20);
         String mode_game = SaveSetting.loadOneSettingFromFile(8);
@@ -89,8 +91,8 @@ public class ScoreBoardAtGameEnd extends Application {
         }
 
 
-        Button backButton = new Button("MainMenu");
-
+        Button backButton = new Button("메인메뉴");
+        backButton.setStyle("-fx-font-size: "+10*size()+"px; -fx-pref-width: "+70*size()+"px; -fx-pref-height: "+30*size()+"px;");
         backButton.setOnAction(e -> {
             StartPage startPage = new StartPage();
             startPage.start(primaryStage);
@@ -99,15 +101,17 @@ public class ScoreBoardAtGameEnd extends Application {
         scoreBoardLayout.add(backButton, 0, 0);
 
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(300, 500);
-        scoreBoardLayout.add(scrollPane, 0, 3, 2, 1);
+        scrollPane.setStyle("-fx-font-size: "+12*size()+"px;");
+        scrollPane.setPrefSize(270*size(), 385*size());
+        scoreBoardLayout.add(scrollPane, 0, 1, 2, 1);
 
 
         Label label = new Label("랭킹 업데이트를 위해 이름을 입력하세요");
-        scoreBoardLayout.add(label, 0, 4);
+        label.setStyle("-fx-font-size: " + (12 * size()) + "px;");
+        scoreBoardLayout.add(label, 0, 2);
 
         TextField inputField = new TextField("");
-        inputField.setPrefWidth(250);
+        inputField.setPrefWidth(230*size());
 
         inputField.addEventFilter(KeyEvent.KEY_TYPED, event -> { // 쉼표 입력을 막음
             if (event.getCharacter().equals(",")) {
@@ -122,6 +126,7 @@ public class ScoreBoardAtGameEnd extends Application {
         }
         
         Button submitButton = new Button("저장");
+        submitButton.setStyle("-fx-font-size: " + (10 * size()) + "px;");
         submitButton.setOnAction(event -> {
             if (!submitButtonClicked) {
                 ScoreBoardData.saveRanking(inputField.getText(), score);
@@ -135,10 +140,10 @@ public class ScoreBoardAtGameEnd extends Application {
             }
         });
 
-        scoreBoardLayout.add(inputField, 0, 5);
-        scoreBoardLayout.add(submitButton, 1, 5);
+        scoreBoardLayout.add(inputField, 0, 3);
+        scoreBoardLayout.add(submitButton, 1, 3);
 
-        Scene scoreBoardPage = new Scene(scoreBoardLayout, 311, 621);
+        Scene scoreBoardPage = new Scene(scoreBoardLayout, 292*size(), 492*size());
 
         primaryStage.setScene(scoreBoardPage);
         primaryStage.setTitle("scoreBoard");

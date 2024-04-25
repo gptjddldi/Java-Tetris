@@ -14,6 +14,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import static com.example.SaveFile.size.size;
+
 public class ControlsSettingsWindow extends Application {
 
     public static void main(String[] args) {
@@ -31,8 +33,8 @@ public class ControlsSettingsWindow extends Application {
         window.setTitle("조작키 설정");
 
         GridPane layout = new GridPane();
-        layout.setVgap(10);
-        layout.setHgap(10);
+        layout.setVgap(10*size());
+        layout.setHgap(10*size());
         String[] keyName = SaveSetting.loadKeySettingsFromFile();
         // 각 조작키에 대한 레이블과 텍스트 필드를 생성
         KeyCode[] defaultKeys = {KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT, KeyCode.SPACE, KeyCode.X};
@@ -109,7 +111,7 @@ public class ControlsSettingsWindow extends Application {
 
         layout.add(saveButton, 1, defaultKeys.length); // 저장 버튼을 레이아웃에 추가
 
-        Scene scene = new Scene(layout, 300, 250);
+        Scene scene = new Scene(layout, 300*size(), 250*size());
         window.setScene(scene);
         window.showAndWait();
     }

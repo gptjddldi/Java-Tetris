@@ -16,6 +16,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import static com.example.SaveFile.size.size;
+
 public class TetrisUI {
     private final int BOARD_WIDTH = 12;
     private final int BOARD_HEIGHT = 22;
@@ -114,10 +116,10 @@ public class TetrisUI {
     }
 
     private VBox createSidePane() {
-        VBox sidePane = new VBox(50);
+        VBox sidePane = new VBox(50*size());
 
         scoreLabel = new Label("Score: 0");
-        scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20*size()));
 
         nextTetrominoDisplay = new GridPane();
         for (int y = 0; y < 5; y++) {
@@ -126,7 +128,7 @@ public class TetrisUI {
                 nextTetrominoDisplay.add(block, x, y);
             }
         }
-        nextTetrominoDisplay.setPrefSize(100, 100);
+        nextTetrominoDisplay.setPrefSize(100*size(), 100*size());
         nextTetrominoDisplay.setStyle("-fx-background-color: black;");
         updateNextTetrominoDisplay();
 
@@ -153,15 +155,15 @@ public class TetrisUI {
         Pane pausePane = new Pane();
 
         Button continueButton = new Button("Continue");
-        continueButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
-        continueButton.setLayoutX(80);
-        continueButton.setLayoutY(200);
+        continueButton.setStyle("-fx-font-size: "+20*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+50*size()+"px;");
+        continueButton.setLayoutX(80*size());
+        continueButton.setLayoutY(200*size());
         continueButton.setOnAction(e -> continueGame());
 
         Button exitButton = new Button("Exit");
-        exitButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
-        exitButton.setLayoutX(80);
-        exitButton.setLayoutY(300);
+        exitButton.setStyle("-fx-font-size: "+20*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+50*size()+"px;");
+        exitButton.setLayoutX(80*size());
+        exitButton.setLayoutY(300*size());
         exitButton.setOnAction((ActionEvent e) -> quitGame());
 
         pausePane.getChildren().addAll(continueButton, exitButton);
@@ -173,14 +175,14 @@ public class TetrisUI {
         Pane gameOverPane = new Pane();
 
         Label gameOverLabel = new Label("Game Over");
-        gameOverLabel.setStyle("-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: red;");
-        gameOverLabel.setLayoutX(50);
-        gameOverLabel.setLayoutY(200);
+        gameOverLabel.setStyle("-fx-font-size: "+ 40*size() +"px; -fx-font-weight: bold; -fx-text-fill: red;");
+        gameOverLabel.setLayoutX(50*size());
+        gameOverLabel.setLayoutY(200*size());
 
         Button rankingButton = new Button("Ranking");
-        rankingButton.setStyle("-fx-font-size: 20px; -fx-pref-width: 150px; -fx-pref-height: 50px;");
-        rankingButton.setLayoutX(80);
-        rankingButton.setLayoutY(300);
+        rankingButton.setStyle("-fx-font-size: "+20*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+50*size()+"px;");
+        rankingButton.setLayoutX(80*size());
+        rankingButton.setLayoutY(300*size());
         rankingButton.setOnAction(e -> endGame());
 
         gameOverPane.getChildren().addAll(gameOverLabel, rankingButton);
@@ -211,7 +213,7 @@ public class TetrisUI {
 
     private Text createText(String text, Color color) {
         Text t = new Text(text);
-        t.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        t.setFont(Font.font("Arial", FontWeight.BOLD, 20*size()));
         t.setFill(color);
         return t;
     }

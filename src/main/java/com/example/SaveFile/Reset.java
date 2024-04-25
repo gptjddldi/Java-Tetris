@@ -2,8 +2,6 @@ package com.example.SaveFile;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,7 +33,7 @@ public class Reset {
     public void SettingReset() {
         try (BufferedReader reader = new BufferedReader(new FileReader(SETTING_RESET_FILE_PATH));
              BufferedWriter writer = new BufferedWriter(new FileWriter(SETTING_FILE_PATH))) {
-            reader.lines().limit(8).forEach(line -> {
+            reader.lines().limit(9).forEach(line -> {
                 try {
                     writer.write(line);
                     writer.newLine();
@@ -47,4 +45,5 @@ public class Reset {
             e.printStackTrace();
         }
     }
+
 }

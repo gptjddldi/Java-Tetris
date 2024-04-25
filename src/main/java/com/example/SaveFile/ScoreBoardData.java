@@ -96,9 +96,9 @@ public class ScoreBoardData {
         for (int i = 0; i < 10; i++) {
             obj.getScr(i);
             Label label = new Label(String.format("점수: %-10d이름: %s%s", obj.score, obj.name,obj.level));
-            label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold; -fx-font-size: 12px;");
+            label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold; -fx-font-size: "+12*size.size()+"px;");
             if (obj.score == lastEnteredScore && obj.name.equals(lastEnteredName)) {
-                label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold;-fx-text-fill: red;");
+                label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold;-fx-text-fill: red;-fx-font-size: "+12*size.size()+"px;");
             }
             container.getChildren().add(label);
         }
@@ -107,9 +107,9 @@ public class ScoreBoardData {
         for (int i = 10; i < 20; i++) {
             obj.getScr(i);
             Label label = new Label(String.format("점수: %-10d이름: %s%s", obj.score, obj.name,obj.level));
-            label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold; -fx-font-size: 12px;");
+            label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold; -fx-font-size: "+12*size.size()+"px;");
             if (obj.score == lastEnteredScore && obj.name.equals(lastEnteredName)) {
-                label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold;-fx-text-fill: red;");
+                label.setStyle("-fx-font-family: 'Courier New';-fx-font-weight: bold;-fx-text-fill: red;-fx-font-size: "+12*size.size()+"px;");
             }
             container.getChildren().add(label);
         }
@@ -127,7 +127,7 @@ public class ScoreBoardData {
         for (int i = 0; i < 10; i++) {
             obj.getScr(i);
             Label label = new Label(String.format("점수: %-10d이름: %s%s" + "\n", obj.score, obj.name,obj.level));
-            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold;-fx-font-size: 12px;");
+            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold;-fx-font-size: "+12*size.size()+"px;");
             container.getChildren().add(label);
         }
         Label mode_item = new Label("\n<아이템 모드>");
@@ -135,7 +135,7 @@ public class ScoreBoardData {
         for (int i = 10; i < 20; i++) {
             obj.getScr(i);
             Label label = new Label(String.format("점수: %-10d이름: %s%s", obj.score, obj.name,obj.level));
-            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold;-fx-font-size: 12px;");
+            label.setStyle("-fx-font-family: 'Courier New'; -fx-font-weight: bold;-fx-font-size: "+12*size.size()+"px;");
             container.getChildren().add(label);
         }
 

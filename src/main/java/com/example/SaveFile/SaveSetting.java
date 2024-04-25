@@ -12,6 +12,19 @@ public class SaveSetting {
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
+                // 파일이 존재하지 않는 경우 resetsetting.txt 내용을 setting.txt에 복사
+                String resetFilePath = "src/main/java/com/example/SaveFile/resetsetting.txt";
+                File resetFile = new File(resetFilePath);
+                if (resetFile.exists()) {
+                    try (BufferedReader resetReader = new BufferedReader(new FileReader(resetFile));
+                         BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                        String line;
+                        while ((line = resetReader.readLine()) != null) {
+                            writer.write(line);
+                            writer.newLine();
+                        }
+                    }
+                }
             }
 
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -46,6 +59,7 @@ public class SaveSetting {
             e.printStackTrace();
         }
     }
+
     public static void saveOneSettingsToFile(String newValue, int place) {
         String filePath = "src/main/java/com/example/SaveFile/setting.txt";
         ArrayList<String> lines = new ArrayList<>();
@@ -53,6 +67,19 @@ public class SaveSetting {
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
+                // 파일이 존재하지 않는 경우 resetsetting.txt 내용을 setting.txt에 복사
+                String resetFilePath = "src/main/java/com/example/SaveFile/resetsetting.txt";
+                File resetFile = new File(resetFilePath);
+                if (resetFile.exists()) {
+                    try (BufferedReader resetReader = new BufferedReader(new FileReader(resetFile));
+                         BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                        String line;
+                        while ((line = resetReader.readLine()) != null) {
+                            writer.write(line);
+                            writer.newLine();
+                        }
+                    }
+                }
             }
 
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -73,29 +100,6 @@ public class SaveSetting {
                 }
                 writer.flush();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveAll() {
-
-        String Path = "src/main/java/com/example/SaveFile/setting.txt";
-
-        try {
-            // 파일 읽기
-            BufferedReader reader = new BufferedReader(new FileReader(Path));
-            StringBuilder content = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-            reader.close();
-
-            // 파일 쓰기
-            BufferedWriter writer = new BufferedWriter(new FileWriter(Path));
-            writer.write(content.toString());
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,5 +141,4 @@ public class SaveSetting {
         }
         return null;
     }
-
 }
