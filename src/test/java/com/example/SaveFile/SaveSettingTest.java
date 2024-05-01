@@ -2,8 +2,7 @@ package com.example.SaveFile;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +10,7 @@ public class SaveSettingTest {
 
     @Test
     void testSaveKeySettingsToFile() {
-        String[] keyNames = {"Key1", "Key2", "Key3", "Key4", "Key5", "Key6"};
+        String[] keyNames = {"UP", "DOWN", "LEFT", "RIGHT", "SPACE", "X", "off", "MEDIUM", "NORMAL"};
         SaveSetting.saveKeySettingsToFile(keyNames);
 
         String[] loadedSettings = SaveSetting.loadKeySettingsFromFile();
@@ -19,22 +18,32 @@ public class SaveSettingTest {
     }
 
     @Test
-    void testSaveOneSettingsToFile() {
-        SaveSetting.saveOneSettingsToFile("NewValue", 3);
+    public void testSaveOneSettingsToFile() throws IOException {
+        // 임시 파일 경로 생성
+        String filePath = "src/main/java/com/example/SaveFile/setting.txt";
 
-        String loadedSetting = SaveSetting.loadOneSettingFromFile(3);
-        assertEquals("NewValue", loadedSetting);
+        // 테스트를 위한 새로운 파일 생성
+        File testFile = new File(filePath);
+
+        // 메서드 호출
+        SaveSetting.saveOneSettingsToFile("UP", 1);
+
+        // 파일이 생성되었는지 확인
+        assertTrue(testFile.exists());
+
+        // 파일에서 설정 값 읽어오기
+        BufferedReader reader = new BufferedReader(new FileReader(testFile));
+        String line = reader.readLine();
+        reader.close();
+
+        // 설정 값이 올바르게 변경되었는지 확인
+        assertEquals("UP", line);
     }
 
     @Test
-    void testLoadKeySettingsFromFileWhenFileDoesNotExist() {
-        Throwable exception = assertThrows(Exception.class, () -> SaveSetting.loadKeySettingsFromFile());
-        assertEquals("src/main/java/com/example/SaveFile/setting.txt (지정된 파일을 찾을 수 없습니다)", exception.getMessage());
-    }
-
-    @Test
-    void testLoadOneSettingFromFileWhenFileDoesNotExist() {
-        // 파일이 존재하지 않는 상황에서의 예외 처리 테스트
-        assertThrows(FileNotFoundException.class, () -> SaveSetting.loadOneSettingFromFile(1));
+    public void testLoadOneSettingFromFile() throws IOException {
+        assertEquals("UP", SaveSetting.loadOneSettingFromFile(1));
+        assertEquals("DOWN", SaveSetting.loadOneSettingFromFile(2));
+        assertEquals("LEFT", SaveSetting.loadOneSettingFromFile(3));
     }
 }

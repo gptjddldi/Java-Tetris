@@ -45,7 +45,7 @@ public class ScoreBoardAtStartPage extends Application {
             e.printStackTrace();
         }
 
-        Scene scoreBoardPage = new Scene(scoreBoardLayout, 292*size(), 492*size());
+        Scene scoreBoardPage = new Scene(scoreBoardLayout, 290*size(), 492*size());
 
         primaryStage.setScene(scoreBoardPage);
         primaryStage.setTitle("scoreBoard");

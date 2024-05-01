@@ -108,7 +108,7 @@ public class SettingPage extends Application {
         settingLayout.getChildren().addAll(sizeLabel,screenSizeComboBox, setControlsButton,
                 colorBlindCheckBox, levelLabel, levelComboBox, resetSetting, resetScoreboard,returnStartPage);
 
-        Scene settingPage = new Scene(settingLayout, 292*size(), 492*size());
+        Scene settingPage = new Scene(settingLayout, 290*size(), 492*size());
         primaryStage.setScene(settingPage);
         primaryStage.setTitle("Setting");
         primaryStage.show();

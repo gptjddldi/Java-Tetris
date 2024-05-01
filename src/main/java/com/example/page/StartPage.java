@@ -32,13 +32,14 @@ public class StartPage extends Application {
         gameTitleLabel.setStyle("-fx-font-size: "+ 40*size()+"px; -fx-font-weight: bold;");
         Button startButton = createMenuButton("일반모드");
         Button startITEMButton = createMenuButton("아이템모드");
+        Button startBATTLEButton = createMenuButton("배틀모드");
         Button settingButton = createMenuButton("설정");
         Button scoreboardButton = createMenuButton("스코어보드");
         Button exitButton = createMenuButton("게임종료");
 
-        startLayout.getChildren().addAll(gameTitleLabel, startButton, startITEMButton, settingButton, scoreboardButton, exitButton);
+        startLayout.getChildren().addAll(gameTitleLabel, startButton, startITEMButton, startBATTLEButton,  settingButton, scoreboardButton, exitButton);
 
-        Scene startPage = new Scene(startLayout,292 *size(), 492*size());
+        Scene startPage = new Scene(startLayout,290 *size(), 492*size());
         primaryStage.setScene(startPage);
         primaryStage.setTitle("Start");
         primaryStage.setResizable(false);
@@ -57,11 +58,17 @@ public class StartPage extends Application {
 
         startButton.setOnAction(e -> {
             colormode = SaveSetting.loadOneSettingFromFile(7);
-            changeScene(new TetrisApplication("normal"), primaryStage);
+            mode = "normal";
+            changeScene(new TetrisApplication(mode), primaryStage);
         });
         startITEMButton.setOnAction(e -> {
             colormode = SaveSetting.loadOneSettingFromFile(7);
-            changeScene(new TetrisApplication("item"), primaryStage);
+            mode = "item";
+            changeScene(new TetrisApplication(mode), primaryStage);
+        });
+        startBATTLEButton.setOnAction(e -> {
+            colormode = SaveSetting.loadOneSettingFromFile(7);
+            changeScene(new SelectBattleMode(), primaryStage);
         });
         settingButton.setOnAction(e -> changeScene(new SettingPage(), primaryStage));
         scoreboardButton.setOnAction(e -> changeScene(new ScoreBoardAtStartPage(), primaryStage));
@@ -70,7 +77,7 @@ public class StartPage extends Application {
 
     private Button createMenuButton(String text) {
         Button button = new Button(text);
-        button.setStyle("-fx-font-size: "+20*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+50*size()+"px;");
+        button.setStyle("-fx-font-size: "+20*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+40*size()+"px;");
         return button;
     }
 

@@ -143,7 +143,7 @@ public class ScoreBoardAtGameEnd extends Application {
         scoreBoardLayout.add(inputField, 0, 3);
         scoreBoardLayout.add(submitButton, 1, 3);
 
-        Scene scoreBoardPage = new Scene(scoreBoardLayout, 292*size(), 492*size());
+        Scene scoreBoardPage = new Scene(scoreBoardLayout, 290*size(), 492*size());
 
         primaryStage.setScene(scoreBoardPage);
         primaryStage.setTitle("scoreBoard");

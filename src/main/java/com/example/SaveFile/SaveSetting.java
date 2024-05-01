@@ -12,19 +12,6 @@ public class SaveSetting {
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
-                // 파일이 존재하지 않는 경우 resetsetting.txt 내용을 setting.txt에 복사
-                String resetFilePath = "src/main/java/com/example/SaveFile/resetsetting.txt";
-                File resetFile = new File(resetFilePath);
-                if (resetFile.exists()) {
-                    try (BufferedReader resetReader = new BufferedReader(new FileReader(resetFile));
-                         BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                        String line;
-                        while ((line = resetReader.readLine()) != null) {
-                            writer.write(line);
-                            writer.newLine();
-                        }
-                    }
-                }
             }
 
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -67,19 +54,6 @@ public class SaveSetting {
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
-                // 파일이 존재하지 않는 경우 resetsetting.txt 내용을 setting.txt에 복사
-                String resetFilePath = "src/main/java/com/example/SaveFile/resetsetting.txt";
-                File resetFile = new File(resetFilePath);
-                if (resetFile.exists()) {
-                    try (BufferedReader resetReader = new BufferedReader(new FileReader(resetFile));
-                         BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                        String line;
-                        while ((line = resetReader.readLine()) != null) {
-                            writer.write(line);
-                            writer.newLine();
-                        }
-                    }
-                }
             }
 
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
