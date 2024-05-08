@@ -7,3 +7,9 @@ X
 off
 MEDIUM
 NORMAL
+W
+S
+A
+D
+F
+G

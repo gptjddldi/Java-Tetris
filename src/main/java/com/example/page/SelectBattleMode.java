@@ -1,6 +1,7 @@
 package com.example.page;
 
 import com.example.javatetris.TetrisApplication;
+import com.example.javatetris.TetrisBattleApplication;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,14 +30,14 @@ public class SelectBattleMode extends Application {
         SelectBattleModeLayout.getChildren().addAll(NORMALButton,ITEMButton,timeATTACKButton);
         NORMALButton.setOnAction(e -> {
             battlemode = "normal";
-            changeScene(new TetrisApplication(battlemode), primaryStage);
+            changeScene(new TetrisBattleApplication(battlemode), primaryStage);
         });
         ITEMButton.setOnAction(e -> {
             battlemode = "item";
             changeScene(new TetrisApplication(battlemode), primaryStage);
         });
         timeATTACKButton.setOnAction(e -> {
-            battlemode = "item";
+            battlemode = "time";
             changeScene(new TetrisApplication(battlemode), primaryStage);
         });
 
