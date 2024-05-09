@@ -36,7 +36,7 @@ public class SelectBattleMode extends Application {
             changeScene(new TetrisApplication(battlemode), primaryStage);
         });
         timeATTACKButton.setOnAction(e -> {
-            battlemode = "item";
+            battlemode = "timeattack";
             changeScene(new TetrisApplication(battlemode), primaryStage);
         });
 

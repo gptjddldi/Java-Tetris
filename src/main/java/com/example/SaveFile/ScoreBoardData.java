@@ -18,19 +18,15 @@ public class ScoreBoardData {
     String level;
     public static int lastEnteredScore;
     public static String lastEnteredName;
-
+    private static final String FILE_PATH = SaveSetting.getFileAbsolutePath("score.txt");
     // 파일로 저장하는 것
     public static void SaveToFile(String text, int score) {
-        String filePath = "src/main/java/com/example/SaveFile/score.txt";
-        try {
-            File file = new File(filePath);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
 
-            String gameLevel = SaveSetting.loadOneSettingFromFile(8);
+        try {
+
+            String gameLevel = SaveSetting.loadOneSettingFromFile(13);
             List<String> lines = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     lines.add(line);
@@ -66,7 +62,7 @@ public class ScoreBoardData {
                 lines.addAll(newList);
             }
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
                 for (String sortedLine : lines) {
                     writer.write(sortedLine);
                     writer.newLine();
@@ -156,7 +152,7 @@ public class ScoreBoardData {
 
     public void getScore() throws IOException { // 데이터 읽어오는 핵심 코드
         try {
-            BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/example/SaveFile/score.txt"));
+            BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
             String str;
 
             int i = 0;

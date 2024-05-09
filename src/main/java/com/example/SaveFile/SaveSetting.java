@@ -6,13 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SaveSetting {
+    public static String getFileAbsolutePath(String fileName) {
+        File file = new File(fileName);
+        return file.getAbsolutePath();
+    }
     public static void saveKeySettingsToFile(String[] keyNames) {
-        String filePath = "src/main/java/com/example/SaveFile/setting.txt";
+        String filePath = getFileAbsolutePath("setting.txt");
         try {
             File file = new File(filePath);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
 
             BufferedReader reader = new BufferedReader(new FileReader(file));
             ArrayList<String> lines = new ArrayList<>();
@@ -48,13 +49,10 @@ public class SaveSetting {
     }
 
     public static void saveOneSettingsToFile(String newValue, int place) {
-        String filePath = "src/main/java/com/example/SaveFile/setting.txt";
+        String filePath = getFileAbsolutePath("setting.txt");
         ArrayList<String> lines = new ArrayList<>();
         try {
             File file = new File(filePath);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
 
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
@@ -80,7 +78,7 @@ public class SaveSetting {
     }
 
     public static String[] loadKeySettingsFromFile() {
-        String filePath = "src/main/java/com/example/SaveFile/setting.txt";
+        String filePath = getFileAbsolutePath("setting.txt");
         List<String> keyNames = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -96,7 +94,7 @@ public class SaveSetting {
     }
 
     public static String loadOneSettingFromFile(int place) {
-        String filePath = "src/main/java/com/example/SaveFile/setting.txt";
+        String filePath = getFileAbsolutePath("setting.txt");
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             ArrayList<String> lines = new ArrayList<>();

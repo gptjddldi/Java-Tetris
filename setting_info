@@ -1,0 +1,6 @@
+1~5번째 줄 P1 방향키 (defalt = 위 아래 왼 오 P)
+6~10번째 줄 P2 방향키 (defalt = W S A D V)
+11번째 줄 게임중지 (defalt = 스페이스바)
+12번째 줄 색상 (defalt = 1(정상) 2(색맹모드))
+13번쨰 줄 난이도(defalt = MEDIUM)
+14번째 줄 화면 크기 (defalt = NORMAL)
