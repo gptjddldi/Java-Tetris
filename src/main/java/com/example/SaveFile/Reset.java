@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.io.*;
 
 public class Reset {
-    private static final String SCORE_FILE_PATH = SaveSetting.getFileAbsolutePath("score.txt");
-    private static final String SCORE_RESET_FILE_PATH = SaveSetting.getFileAbsolutePath("resetscore.txt");
-    private static final String SETTING_FILE_PATH = SaveSetting.getFileAbsolutePath("setting.txt");
-    private static final String SETTING_RESET_FILE_PATH = SaveSetting.getFileAbsolutePath("resetsetting.txt");
+    private static final String SCORE_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/score.txt");
+    private static final String SCORE_RESET_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/resetscore.txt");
+    private static final String SETTING_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/setting.txt");
+    private static final String SETTING_RESET_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/resetsetting.txt");
 
     public void ScoreReset() {
         try (BufferedReader reader = new BufferedReader(new FileReader(SCORE_RESET_FILE_PATH));

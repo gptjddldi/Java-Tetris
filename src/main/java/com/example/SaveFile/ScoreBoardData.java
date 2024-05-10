@@ -18,7 +18,7 @@ public class ScoreBoardData {
     String level;
     public static int lastEnteredScore;
     public static String lastEnteredName;
-    private static final String FILE_PATH = SaveSetting.getFileAbsolutePath("score.txt");
+    private static final String FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/score.txt");
     // 파일로 저장하는 것
     public static void SaveToFile(String text, int score) {
 

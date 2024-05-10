@@ -11,7 +11,7 @@ public class SaveSetting {
         return file.getAbsolutePath();
     }
     public static void saveKeySettingsToFile(String[] keyNames) {
-        String filePath = getFileAbsolutePath("setting.txt");
+        String filePath = getFileAbsolutePath("src/main/java/com/example/SaveFile/setting.txt");
         try {
             File file = new File(filePath);
 
@@ -49,7 +49,7 @@ public class SaveSetting {
     }
 
     public static void saveOneSettingsToFile(String newValue, int place) {
-        String filePath = getFileAbsolutePath("setting.txt");
+        String filePath = getFileAbsolutePath("src/main/java/com/example/SaveFile/setting.txt");
         ArrayList<String> lines = new ArrayList<>();
         try {
             File file = new File(filePath);
@@ -78,7 +78,7 @@ public class SaveSetting {
     }
 
     public static String[] loadKeySettingsFromFile() {
-        String filePath = getFileAbsolutePath("setting.txt");
+        String filePath = getFileAbsolutePath("src/main/java/com/example/SaveFile/setting.txt");
         List<String> keyNames = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -94,7 +94,7 @@ public class SaveSetting {
     }
 
     public static String loadOneSettingFromFile(int place) {
-        String filePath = getFileAbsolutePath("setting.txt");
+        String filePath = getFileAbsolutePath("src/main/java/com/example/SaveFile/setting.txt");
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             ArrayList<String> lines = new ArrayList<>();

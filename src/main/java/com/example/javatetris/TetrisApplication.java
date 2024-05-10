@@ -36,7 +36,6 @@ public class TetrisApplication extends Application {
 
         KeyCode[] controlKeys = new KeyCode[11];
         String[] keyNames = SaveSetting.loadKeySettingsFromFile();
-        System.out.println(Arrays.toString(keyNames));
         for (int i = 0; i < 11; i++) {
             controlKeys[i] = KeyCode.valueOf(keyNames[i]);
         }
