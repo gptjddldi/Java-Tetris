@@ -11,5 +11,5 @@ W
 S
 A
 D
-F
+SPACE
 G

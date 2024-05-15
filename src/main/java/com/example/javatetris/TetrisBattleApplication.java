@@ -26,15 +26,15 @@ public class TetrisBattleApplication extends Application {
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
 
-        TetrisUI player1UI = new TetrisUI(player1TetrisGame, root, primaryStage);
-        TetrisUI player2UI = new TetrisUI(player2TetrisGame, root, primaryStage);
-
+        TetrisBattleUI playerUI = new TetrisBattleUI(player1TetrisGame, player2TetrisGame, root, primaryStage);
 
         HBox hbox = new HBox(10); // 10은 컴포넌트 사이의 간격
-        hbox.getChildren().addAll(player1UI.getGameBoard(), player1UI.getSidePane(),
-                player2UI.getGameBoard(), player2UI.getSidePane());
+        hbox.getChildren().addAll(playerUI.getPlayer1GameBoard(), playerUI.getSide1Pane(),
+                playerUI.getPlayer2GameBoard(), playerUI.getSide2Pane());
 
-        Scene scene = new Scene(hbox, 800, 600);
+        root.setCenter(hbox);
+
+        Scene scene = new Scene(root, 800, 600);
 
         KeyCode[] player1Keys = new KeyCode[6];
         KeyCode[] player2Keys = new KeyCode[6];
@@ -46,22 +46,26 @@ public class TetrisBattleApplication extends Application {
 
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
+
             if (code == player1Keys[2]) player1TetrisGame.moveLeft();
             else if (code == player1Keys[3]) player1TetrisGame.moveRight();
             else if (code == player1Keys[1]) player1TetrisGame.moveDown();
             else if (code == player1Keys[0]) player1TetrisGame.rotateClockwise();
-            else if (code == player1Keys[4]) player1TetrisGame.pauseGame();
+            if (code == player1Keys[4]) {
+                playerUI.pauseGame();
+            }
+
             else if(code == player1Keys[5]) player1TetrisGame.moveDownAll();
 
             if (code == player2Keys[2]) player2TetrisGame.moveLeft();
             else if (code == player2Keys[3]) player2TetrisGame.moveRight();
             else if (code == player2Keys[1]) player2TetrisGame.moveDown();
             else if (code == player2Keys[0]) player2TetrisGame.rotateClockwise();
-            else if (code == player2Keys[4]) player2TetrisGame.pauseGame();
+                //else if (code == player2Keys[4]) player2UI.pauseGame();
             else if(code == player2Keys[5]) player2TetrisGame.moveDownAll();
 
-            player1UI.updateGameBoard();
-            player2UI.updateGameBoard();
+            playerUI.updatePlayer1GameBoard();
+            playerUI.updatePlayer2GameBoard();
         });
 
         primaryStage.setScene(scene);
@@ -69,15 +73,15 @@ public class TetrisBattleApplication extends Application {
         primaryStage.show();
 
         // Game loops
-        Timeline player1GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> player1UI.updateGameBoard()));
+        Timeline player1GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> playerUI.updatePlayer1GameBoard()));
         player1GameLoop.setCycleCount(Timeline.INDEFINITE);
         player1GameLoop.play();
-        player1UI.setGameLoop(player1GameLoop);
+        playerUI.setPlayer1GameLoop(player1GameLoop);
 
-        Timeline player2GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> player2UI.updateGameBoard()));
+        Timeline player2GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> playerUI.updatePlayer2GameBoard()));
         player2GameLoop.setCycleCount(Timeline.INDEFINITE);
         player2GameLoop.play();
-        player2UI.setGameLoop(player2GameLoop);
+        playerUI.setPlayer2GameLoop(player2GameLoop);
     }
 
     public static void main(String[] args) {
