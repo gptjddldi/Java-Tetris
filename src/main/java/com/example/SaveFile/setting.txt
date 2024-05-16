@@ -8,7 +8,7 @@ A
 S
 D
 V
-ESC
+SPACE
 off
 MEDIUM
-NORMAL
+SMALL

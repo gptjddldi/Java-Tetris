@@ -5,12 +5,13 @@ import java.io.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ResetTest {
-    private static final String SCORE_FILE_PATH = "src/main/java/com/example/SaveFile/score.txt";
-    private static final String SCORE_RESET_FILE_PATH = "src/main/java/com/example/SaveFile/resetscore.txt";
-    private static final String SETTING_FILE_PATH = "src/main/java/com/example/SaveFile/setting.txt";
-    private static final String SETTING_RESET_FILE_PATH = "src/main/java/com/example/SaveFile/resetsetting.txt";
-    private static final String TEST_SCORE_FILE_PATH = "src/main/java/com/example/SaveFile/testscore.txt";
-    private static final String TEST_SETTING_FILE_PATH = "src/main/java/com/example/SaveFile/testsetting.txt";
+    private static final String SCORE_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/score.txt");
+    private static final String SCORE_RESET_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/resetscore.txt");
+    private static final String SETTING_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/setting.txt");
+    private static final String SETTING_RESET_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/resetsetting.txt");
+
+    private static final String TEST_SCORE_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/testscore.txt");
+    private static final String TEST_SETTING_FILE_PATH = SaveSetting.getFileAbsolutePath("src/main/java/com/example/SaveFile/testsetting.txt");
 
     private Reset reset;
 

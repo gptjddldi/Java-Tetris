@@ -10,6 +10,6 @@ public class size {
         } else if ("SMALL".equals(size)) {
             return 1.0;
         }
-        return 1.0;
+        return 1.2;
     }
 }
