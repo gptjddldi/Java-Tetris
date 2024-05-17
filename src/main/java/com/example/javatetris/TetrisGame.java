@@ -29,9 +29,9 @@ public class TetrisGame {
 
     public TetrisGame(String mode) {
         this.mode = mode;
-        String colorSetting = SaveSetting.loadOneSettingFromFile(7);
+        String colorSetting = SaveSetting.loadOneSettingFromFile(12);
         tetrominoFactory = new TetrominoFactory(colorSetting);
-        difficulty = Difficulty.valueOf(SaveSetting.loadOneSettingFromFile(8));
+        difficulty = Difficulty.valueOf(SaveSetting.loadOneSettingFromFile(13));
 
         charBoard = new char[BOARD_HEIGHT][BOARD_WIDTH];
         for (char[] chars : charBoard) {

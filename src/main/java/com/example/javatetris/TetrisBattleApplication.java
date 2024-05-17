@@ -40,7 +40,7 @@ public class TetrisBattleApplication extends Application {
         KeyCode[] player2Keys = new KeyCode[6];
         String[] keyNames = SaveSetting.loadKeySettingsFromFile();
         for (int i = 0; i < 6; i++) {
-            player1Keys[i] = KeyCode.valueOf(keyNames[i+9]);
+            player1Keys[i] = KeyCode.valueOf(keyNames[i+5])
             player2Keys[i] = KeyCode.valueOf(keyNames[i]); // Assuming both players have the same key settings
         }
 
@@ -61,6 +61,9 @@ public class TetrisBattleApplication extends Application {
             else if (code == player2Keys[3]) player2TetrisGame.moveRight();
             else if (code == player2Keys[1]) player2TetrisGame.moveDown();
             else if (code == player2Keys[0]) player2TetrisGame.rotateClockwise();
+            /*if (code == player2Keys[10]) {
+                playerUI.pauseGame();
+            }*/
                 //else if (code == player2Keys[4]) player2UI.pauseGame();
             else if(code == player2Keys[5]) player2TetrisGame.moveDownAll();
 
