@@ -50,7 +50,7 @@ public class ControlsSettingsWindowTest {
     @Test
     public void testDuplicateKeysCheck() {
         Platform.runLater(() -> {
-            String[] duplicateKeySettings = {"W", "W", "A", "D", "SPACE", "UP", "DOWN", "LEFT", "RIGHT", "SHIFT", "P"};
+            String[] duplicateKeySettings = { "UP", "UP", "LEFT", "RIGHT", "P","W", "S", "A", "D", "V", "SPACE"};
             SaveSetting.saveKeySettingsToFile(duplicateKeySettings);
             controlsSettingsWindow.showAndWait();
 
