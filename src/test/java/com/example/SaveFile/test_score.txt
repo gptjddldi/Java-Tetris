@@ -1,2 +1,0 @@
-100,John,Easy
-200,Alice,Medium
