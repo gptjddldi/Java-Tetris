@@ -2,8 +2,13 @@ UP
 DOWN
 LEFT
 RIGHT
+P
+W
+S
+A
+D
+V
 SPACE
-X
 off
 MEDIUM
 SMALL

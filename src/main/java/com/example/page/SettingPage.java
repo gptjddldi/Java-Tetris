@@ -51,15 +51,15 @@ public class SettingPage extends Application {
 
         CheckBox colorBlindCheckBox = new CheckBox("색맹모드");
         colorBlindCheckBox.setStyle("-fx-font-size: "+15*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+30*size()+"px;");
-        String colorSetting = SaveSetting.loadOneSettingFromFile(7);
+        String colorSetting = SaveSetting.loadOneSettingFromFile(12);
         if (colorSetting.equals("on")) {
             colorBlindCheckBox.setSelected(true);
         }
         colorBlindCheckBox.setOnAction(e -> {
             if (colorBlindCheckBox.isSelected()) {
-                SaveSetting.saveOneSettingsToFile("on", 7);
+                SaveSetting.saveOneSettingsToFile("on", 12);
             } else {
-                SaveSetting.saveOneSettingsToFile("off", 7);
+                SaveSetting.saveOneSettingsToFile("off", 12);
             }
         });
         ComboBox<String> screenSizeComboBox;
@@ -67,11 +67,11 @@ public class SettingPage extends Application {
         screenSizeComboBox = new ComboBox<>();
         screenSizeComboBox.setStyle("-fx-font-size: "+12*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+30*size()+"px;");
         screenSizeComboBox.getItems().addAll(screenSizes);
-        String screenSize = SaveSetting.loadOneSettingFromFile(9);
+        String screenSize = SaveSetting.loadOneSettingFromFile(14);
         screenSizeComboBox.setValue(screenSize);
         screenSizeComboBox.setOnAction(e -> {
             String selectedsize = screenSizeComboBox.getValue();
-            SaveSetting.saveOneSettingsToFile(selectedsize, 9);
+            SaveSetting.saveOneSettingsToFile(selectedsize, 14);
         });
 
         ComboBox<String> levelComboBox;
@@ -82,13 +82,13 @@ public class SettingPage extends Application {
             levelComboBox.getItems().add(level.toString());
         }
 
-        String level = SaveSetting.loadOneSettingFromFile(8);
+        String level = SaveSetting.loadOneSettingFromFile(13);
         levelComboBox.setValue(level);
 
 
         levelComboBox.setOnAction(e -> {
             String selectedLevel = levelComboBox.getValue();
-            SaveSetting.saveOneSettingsToFile(selectedLevel, 8);
+            SaveSetting.saveOneSettingsToFile(selectedLevel, 13);
         });
 
 
@@ -108,7 +108,7 @@ public class SettingPage extends Application {
         settingLayout.getChildren().addAll(sizeLabel,screenSizeComboBox, setControlsButton,
                 colorBlindCheckBox, levelLabel, levelComboBox, resetSetting, resetScoreboard,returnStartPage);
 
-        Scene settingPage = new Scene(settingLayout, 292*size(), 492*size());
+        Scene settingPage = new Scene(settingLayout, 290*size(), 492*size());
         primaryStage.setScene(settingPage);
         primaryStage.setTitle("Setting");
         primaryStage.show();

@@ -2,8 +2,13 @@ UP
 DOWN
 LEFT
 RIGHT
+P
+W
+A
+S
+D
+V
 SPACE
-X
 off
 MEDIUM
 NORMAL

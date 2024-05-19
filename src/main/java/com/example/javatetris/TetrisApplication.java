@@ -10,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Arrays;
+
 public class TetrisApplication extends Application {
     private final TetrisGame tetrisGame;
     public TetrisApplication() {
@@ -32,9 +34,9 @@ public class TetrisApplication extends Application {
 
         Scene scene = new Scene(root);
 
-        KeyCode[] controlKeys = new KeyCode[6];
+        KeyCode[] controlKeys = new KeyCode[11];
         String[] keyNames = SaveSetting.loadKeySettingsFromFile();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 11; i++) {
             controlKeys[i] = KeyCode.valueOf(keyNames[i]);
         }
 
@@ -44,8 +46,8 @@ public class TetrisApplication extends Application {
             else if (code == controlKeys[3]) tetrisGame.moveRight();
             else if (code == controlKeys[1]) tetrisGame.moveDown();
             else if (code == controlKeys[0]) tetrisGame.rotateClockwise();
-            else if (code == controlKeys[4]) tetrisUI.pauseGame();
-            else if(code == controlKeys[5]) tetrisGame.moveDownAll();
+            else if (code == controlKeys[10]) tetrisUI.pauseGame();
+            else if(code == controlKeys[4]) tetrisGame.moveDownAll();
             tetrisUI.updateGameBoard();
         });
 

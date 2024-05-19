@@ -10,7 +10,7 @@ public class SaveSettingTest {
 
     @Test
     void testSaveKeySettingsToFile() {
-        String[] keyNames = {"UP", "DOWN", "LEFT", "RIGHT", "SPACE", "X", "off", "MEDIUM", "NORMAL"};
+        String[] keyNames = {"UP", "DOWN", "LEFT", "RIGHT", "P", "W", "A", "S", "D","V","SPACE","off","MEDIUM","NORMAL"};
         SaveSetting.saveKeySettingsToFile(keyNames);
 
         String[] loadedSettings = SaveSetting.loadKeySettingsFromFile();

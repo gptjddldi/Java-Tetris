@@ -32,12 +32,16 @@ application {
 javafx {
     version = '17.0.2'
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.media']
+    applicationDefaultJvmArgs = ["--module-path", "/path/to/javafx-sdk-17/lib", "--add-modules", "javafx.controls,javafx.fxml"]
 }
 
 dependencies {
     implementation('com.github.almasb:fxgl:17.2') {
         exclude(group: 'org.openjfx')
     }
+    implementation 'org.openjfx:javafx-controls:17'
+    implementation 'org.openjfx:javafx-graphics:17'
+    implementation 'org.openjfx:javafx-base:17'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
