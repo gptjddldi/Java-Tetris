@@ -4,6 +4,7 @@ import com.example.page.ScoreBoardAtGameEnd;
 import com.example.page.StartPage;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -21,8 +22,8 @@ import static com.example.SaveFile.size.size;
 public class TetrisBattleUI {
     private final int BOARD_WIDTH = 12;
     private final int BOARD_HEIGHT = 22;
-    private final TetrisGame player1TetrisGame;
-    private final TetrisGame player2TetrisGame;
+    private final TetrisGameBattle player1TetrisGame;
+    private final TetrisGameBattle player2TetrisGame;
     private final GridPane player1GameBoard;
     private final GridPane player2GameBoard;
     private final VBox side1Pane;
@@ -30,6 +31,10 @@ public class TetrisBattleUI {
     private final Pane pausePane;
     private GridPane nextTetrominoDisplay1;
     private GridPane nextTetrominoDisplay2;
+    private GridPane nextAttackDisplay1;
+    private GridPane nextAttackDisplay2;
+    private Text[][] player1DisplayGrid = new Text[BOARD_HEIGHT-2][BOARD_WIDTH-2];
+    private Text[][] player2DisplayGrid = new Text[BOARD_HEIGHT-2][BOARD_WIDTH-2];
     private Text[][] player1BoardGrid = new Text[BOARD_HEIGHT][BOARD_WIDTH];
     private Text[][] player2BoardGrid = new Text[BOARD_HEIGHT][BOARD_WIDTH];
     private Label player1ScoreLabel;
@@ -39,7 +44,7 @@ public class TetrisBattleUI {
     private Timeline player1GameLoop;
     private Timeline player2GameLoop;
 
-    public TetrisBattleUI(TetrisGame player1TetrisGame, TetrisGame player2TetrisGame, BorderPane root, Stage window) {
+    public TetrisBattleUI(TetrisGameBattle player1TetrisGame, TetrisGameBattle player2TetrisGame, BorderPane root, Stage window) {
         this.player1TetrisGame = player1TetrisGame;
         this.player2TetrisGame = player2TetrisGame;
         this.root = root;
@@ -106,15 +111,13 @@ public class TetrisBattleUI {
         scoreLabel.setText("Score: " + tetrisGame.getScore());
         updateNextTetrominoDisplay("player1");
         updateNextTetrominoDisplay("player2");
+        updateNextAttackDisplay("player1", player1DisplayGrid);
+        updateNextAttackDisplay("player2", player2DisplayGrid);
     }
 
     private GridPane createGameBoard(String player) {
-        Text [][] boardGrid;
-        if (player.equals("player1")) {
-            boardGrid = player1BoardGrid;
-        } else {
-            boardGrid = player2BoardGrid;
-        }
+        Text [][] boardGrid = new Text[BOARD_HEIGHT][BOARD_WIDTH];
+
         GridPane gridPane = new GridPane();
         for (int y = 0; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -162,7 +165,8 @@ public class TetrisBattleUI {
 
     private VBox createSidePane(String player) {
         Label scoreLabel;
-        VBox sidePane = new VBox(50*size());
+        VBox sidePane = new VBox(5*size());
+        Text[][] displayGrid = new Text[BOARD_HEIGHT-1][BOARD_WIDTH-1];
 
         scoreLabel = new Label("Score: 0");
         scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20*size()));
@@ -174,20 +178,43 @@ public class TetrisBattleUI {
                 nextTetrominoDisplay.add(block, x, y);
             }
         }
-        nextTetrominoDisplay.setPrefSize(100*size(), 100*size());
+        nextTetrominoDisplay.setPrefSize( size() * 100, size() * 100);
         nextTetrominoDisplay.setStyle("-fx-background-color: black;");
+
+        GridPane nextAttackDisplay = new GridPane();
+        for (int y = 0; y < BOARD_HEIGHT-2; y++) {
+            for (int x = 0; x < BOARD_WIDTH-2; x++) {
+                Text block = createText("", Color.BLACK);
+                nextAttackDisplay.add(block, x, y);
+                displayGrid[y][x] = block;
+            }
+        }
+
+        nextAttackDisplay.setPrefSize(BOARD_WIDTH * size() * 10, BOARD_HEIGHT * size() * 20);
+        nextAttackDisplay.setStyle("-fx-background-color: black;");
+        nextAttackDisplay.setScaleX(0.5);
+        nextAttackDisplay.setScaleY(0.5);
 
         if (player.equals("player1")) {
             player1ScoreLabel = scoreLabel;
             nextTetrominoDisplay1 = nextTetrominoDisplay;
-            sidePane.getChildren().addAll(player1ScoreLabel, nextTetrominoDisplay1);
+            nextAttackDisplay1 = nextAttackDisplay;
+            player1DisplayGrid = displayGrid;
+            updateNextTetrominoDisplay(player);
+            sidePane.getChildren().addAll(player1ScoreLabel, nextTetrominoDisplay1, nextAttackDisplay1);
+
+            VBox.setMargin(nextTetrominoDisplay1, new Insets(0, 0, 5 * size(), 0));
         } else {
             player2ScoreLabel = scoreLabel;
             nextTetrominoDisplay2 = nextTetrominoDisplay;
-            sidePane.getChildren().addAll(player2ScoreLabel, nextTetrominoDisplay2);
+            nextAttackDisplay2 = nextAttackDisplay;
+            player2DisplayGrid = displayGrid;
+            updateNextTetrominoDisplay(player);
+            sidePane.getChildren().addAll(player2ScoreLabel, nextTetrominoDisplay2, nextAttackDisplay2);
+
+            VBox.setMargin(nextTetrominoDisplay2, new Insets(0, 0, 5 * size(), 0));
         }
 
-        updateNextTetrominoDisplay(player);
 
         return sidePane;
     }
@@ -220,6 +247,48 @@ public class TetrisBattleUI {
             nextTetrominoDisplay1 = nextTetrominoDisplay;
         } else {
             nextTetrominoDisplay2 = nextTetrominoDisplay;
+        }
+    }
+
+    private void updateNextAttackDisplay(String player, Text[][] displayGrid) {
+        GridPane nextAttackDisplay;
+        TetrisGameBattle tetrisGame;
+        if (player.equals("player1")) {
+            nextAttackDisplay = nextAttackDisplay1;
+            tetrisGame = player1TetrisGame;
+        } else {
+            nextAttackDisplay = nextAttackDisplay2;
+            tetrisGame = player2TetrisGame;
+        }
+
+        char[][] nextAttack = tetrisGame.getNextAttack();
+        if (nextAttack == null) {
+            for (int y = 0; y < BOARD_HEIGHT-2; y++) {
+                for (int x = 0; x < BOARD_WIDTH-2; x++) {
+                    displayGrid[y][x].setText(" ");
+                }
+            }
+            return;
+        }
+
+        Color nextColor = Color.rgb(136, 204, 238); //cyan
+        int num = nextAttack.length;
+        for(int y = BOARD_HEIGHT-2; y > BOARD_HEIGHT-2-num; y--) {
+            for (int x = 1; x < BOARD_WIDTH-2; x++) {
+                if (nextAttack[BOARD_HEIGHT-2-y][x-1] != 'N') {
+                    displayGrid[BOARD_HEIGHT-2-y][x-1].setText("O");
+                    displayGrid[BOARD_HEIGHT-2-y][x-1].setFill(nextColor);
+                } else {
+                    displayGrid[BOARD_HEIGHT-2-y][x-1].setText(" ");
+                    displayGrid[BOARD_HEIGHT-2-y][x-1].setFill(nextColor);
+                }
+            }
+        }
+
+        if(player.equals("player1")){
+            nextAttackDisplay1 = nextAttackDisplay;
+        } else {
+            nextAttackDisplay2 = nextAttackDisplay;
         }
     }
 

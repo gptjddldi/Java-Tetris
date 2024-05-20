@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class TetrisBattleApplication extends Application {
-    private final TetrisGame player1TetrisGame;
-    private final TetrisGame player2TetrisGame;
+    private final TetrisGameBattle player1TetrisGame;
+    private final TetrisGameBattle player2TetrisGame;
 
     public TetrisBattleApplication(String mode) {
         super();
@@ -37,7 +37,7 @@ public class TetrisBattleApplication extends Application {
 
         root.setCenter(hbox);
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root);
 
         KeyCode[] player1Keys = new KeyCode[6];
         KeyCode[] player2Keys = new KeyCode[6];

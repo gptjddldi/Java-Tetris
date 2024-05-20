@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TetrisGameBattle extends TetrisGame {
     private TetrisGameBattle opponent;
-    private char[][] attackedBoard;
+    private char[][] nextAttack;
     public TetrisGameBattle(String mode) {
         super(mode);
     }
@@ -17,13 +17,17 @@ public class TetrisGameBattle extends TetrisGame {
     }
 
     public void receiveAttack(char[][] clearedLines) {
-        attackedBoard = clearedLines;
+        nextAttack = clearedLines;
+    }
+
+    public char[][] getNextAttack() {
+        return nextAttack;
     }
 
     @Override
     protected void spawnNewTetromino() {
-        if(attackedBoard != null) {
-            generateAttackedBoard();
+        if(nextAttack != null) {
+            generateNextAttack();
         }
         super.spawnNewTetromino();
     }
@@ -94,8 +98,8 @@ public class TetrisGameBattle extends TetrisGame {
         opponent.receiveAttack(clearedLines);
     }
 
-    private void generateAttackedBoard() {
-        int num = attackedBoard.length;
+    private void generateNextAttack() {
+        int num = nextAttack.length;
 
         for(int y = num; y < BOARD_HEIGHT; y++) {
                 System.arraycopy(charBoard[y], 0, charBoard[y-num], 0, BOARD_WIDTH);
@@ -105,15 +109,15 @@ public class TetrisGameBattle extends TetrisGame {
 
         for(int y = BOARD_HEIGHT - num; y < BOARD_HEIGHT; y++) {
             for (int x = 0; x < BOARD_WIDTH; x++) {
-                if (attackedBoard[y - BOARD_HEIGHT + num][x] != 'N') {
-                    charBoard[y][x] = attackedBoard[y - BOARD_HEIGHT + num][x];
+                if (nextAttack[y - BOARD_HEIGHT + num][x] != 'N') {
+                    charBoard[y][x] = nextAttack[y - BOARD_HEIGHT + num][x];
                     colorBoard[y][x] = Color.rgb(136, 204, 238); //cyan
                 } else {
                     charBoard[y][x] = 'N';
                 }
             }
         }
-        attackedBoard = null;
+        nextAttack = null;
     }
 }
 
