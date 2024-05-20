@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import static com.example.SaveFile.size.size;
+
 public class TetrisBattleApplication extends Application {
     private final TetrisGameBattle player1TetrisGame;
     private final TetrisGameBattle player2TetrisGame;
@@ -35,7 +37,7 @@ public class TetrisBattleApplication extends Application {
         hbox.getChildren().addAll(playerUI.getPlayer1GameBoard(), playerUI.getSide1Pane(),
                 playerUI.getPlayer2GameBoard(), playerUI.getSide2Pane());
 
-        hbox.setPrefSize(1000, 0); // 필요한 크기로 설정, 이 부분을 지우면 크기 잘리는 문제 발생
+        hbox.setPrefSize(750 * size(), 0); // 필요한 크기로 설정, 이 부분을 지우면 크기 잘리는 문제 발생
         //hbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 
