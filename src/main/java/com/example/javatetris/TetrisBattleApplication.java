@@ -18,8 +18,11 @@ public class TetrisBattleApplication extends Application {
 
     public TetrisBattleApplication(String mode) {
         super();
-        player1TetrisGame = new TetrisGame(mode);
-        player2TetrisGame = new TetrisGame(mode);
+        player1TetrisGame = new TetrisGameBattle(mode);
+        player2TetrisGame = new TetrisGameBattle(mode);
+
+        ((TetrisGameBattle) player1TetrisGame).setOpponent((TetrisGameBattle) player2TetrisGame);
+        ((TetrisGameBattle) player2TetrisGame).setOpponent((TetrisGameBattle) player1TetrisGame);
     }
 
     @Override

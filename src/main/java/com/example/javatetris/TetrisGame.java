@@ -10,22 +10,22 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class TetrisGame {
-    private final int BOARD_WIDTH = 10;
-    private final int BOARD_HEIGHT = 20;
-    private final char[][] charBoard;
+    protected final int BOARD_WIDTH = 10;
+    protected final int BOARD_HEIGHT = 20;
+    protected final char[][] charBoard;
 
-    private final Color[][] colorBoard;
-    private int currentX, currentY;
-    private Tetromino currentTetromino;
+    protected final Color[][] colorBoard;
+    protected int currentX, currentY;
+    protected Tetromino currentTetromino;
     private Tetromino nextTetromino;
     private Timeline gameLoop;
     private boolean gameOver = false;
-    private int score = 0;
-    private int clearedLines = 0;
-    private int totalClearedLines = 0;
+    protected int score = 0;
+    protected int clearedLines = 0;
+    protected int totalClearedLines = 0;
     private TetrominoFactory tetrominoFactory;
     private String mode;
-    private Difficulty difficulty;
+    protected Difficulty difficulty;
 
     public TetrisGame(String mode) {
         this.mode = mode;
@@ -43,7 +43,7 @@ public class TetrisGame {
         setupGameLoop();
     }
 
-    private void setupGameLoop() {
+    protected void setupGameLoop() {
         if (gameLoop != null) {
             gameLoop.stop();
         }
@@ -61,7 +61,7 @@ public class TetrisGame {
     }
 
 
-    private void spawnNewTetromino() {
+    protected void spawnNewTetromino() {
         generateTetromino();
         currentX = BOARD_WIDTH / 2 - currentTetromino.getWidth() / 2;
         currentY = 0;
@@ -121,7 +121,7 @@ public class TetrisGame {
         }
     }
 
-    private void fixTetromino() {
+    protected void fixTetromino() {
         char[][] shape = currentTetromino.shape();
         Color color = currentTetromino.color();
         int num = 0;
@@ -170,7 +170,7 @@ public class TetrisGame {
         spawnNewTetromino();
     }
 
-    private void clearLines(int num) {
+    protected void clearLines(int num) {
         clearedLines += num;
         totalClearedLines += num;
         for (int y = BOARD_HEIGHT - 1; y >= 0; y--) {
@@ -341,7 +341,7 @@ public class TetrisGame {
         }
     }
 
-    private void clearRow(int rowIndex) {
+    protected void clearRow(int rowIndex) {
         for (int yy = rowIndex; yy > 0; yy--) {
             System.arraycopy(charBoard[yy - 1], 0, charBoard[yy], 0, BOARD_WIDTH);
             System.arraycopy(colorBoard[yy - 1], 0, colorBoard[yy], 0, BOARD_WIDTH);
