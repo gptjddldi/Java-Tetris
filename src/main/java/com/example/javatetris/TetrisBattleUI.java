@@ -265,7 +265,8 @@ public class TetrisBattleUI {
         if (nextAttack == null) {
             for (int y = 0; y < BOARD_HEIGHT-2; y++) {
                 for (int x = 0; x < BOARD_WIDTH-2; x++) {
-                    displayGrid[y][x].setText(" ");
+                    displayGrid[y][x].setText("O");
+                    displayGrid[y][x].setFill(Color.TRANSPARENT);
                 }
             }
             return;
@@ -274,13 +275,14 @@ public class TetrisBattleUI {
         Color nextColor = Color.rgb(136, 204, 238); //cyan
         int num = nextAttack.length;
         for(int y = BOARD_HEIGHT-2; y > BOARD_HEIGHT-2-num; y--) {
-            for (int x = 1; x < BOARD_WIDTH-2; x++) {
-                if (nextAttack[BOARD_HEIGHT-2-y][x-1] != 'N') {
-                    displayGrid[BOARD_HEIGHT-2-y][x-1].setText("O");
-                    displayGrid[BOARD_HEIGHT-2-y][x-1].setFill(nextColor);
+            for (int x = 0; x < BOARD_WIDTH-2; x++) {
+                if (nextAttack[BOARD_HEIGHT-2-y][x] != 'N') {
+                    displayGrid[BOARD_HEIGHT-2-y][x].setText("O");
+                    displayGrid[BOARD_HEIGHT-2-y][x].setFill(nextColor);
                 } else {
-                    displayGrid[BOARD_HEIGHT-2-y][x-1].setText(" ");
-                    displayGrid[BOARD_HEIGHT-2-y][x-1].setFill(nextColor);
+                    displayGrid[BOARD_HEIGHT-2-y][x].setText("O");
+                    //displayGrid[BOARD_HEIGHT-2-y][x].setFill(nextColor);
+                    displayGrid[BOARD_HEIGHT-2-y][x].setFill(Color.TRANSPARENT);
                 }
             }
         }
