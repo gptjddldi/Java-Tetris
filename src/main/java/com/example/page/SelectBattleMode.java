@@ -49,13 +49,13 @@ public class SelectBattleMode extends Application {
 
     }
 
-    private Button createMenuButton(String text) {
+    Button createMenuButton(String text) {
         Button button = new Button(text);
         button.setStyle("-fx-font-size: "+20*size()+"px; -fx-pref-width: "+150*size()+"px; -fx-pref-height: "+50*size()+"px;");
         return button;
     }
 
-    private void changeScene(Application application, Stage primaryStage) {
+    void changeScene(Application application, Stage primaryStage) {
         try {
             application.start(primaryStage);
         } catch (Exception e) {

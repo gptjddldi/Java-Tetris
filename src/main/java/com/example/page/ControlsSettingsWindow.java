@@ -19,9 +19,6 @@ import static com.example.SaveFile.size.size;
 
 public class ControlsSettingsWindow extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
     public void start(Stage primaryStage) {

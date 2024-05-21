@@ -60,7 +60,6 @@ public class ControlsSettingsWindowTest {
         });
     }
 
-    // Helper method to extract key fields using reflection (as getKeyFields is a private method)
     private TextField[] getKeyFields(ControlsSettingsWindow controlsSettingsWindow) {
         try {
             java.lang.reflect.Field field = ControlsSettingsWindow.class.getDeclaredField("keyFields");
@@ -71,7 +70,6 @@ public class ControlsSettingsWindowTest {
         }
     }
 
-    // Mocking the checkForDuplicateKeys method
     private boolean checkForDuplicateKeys(TextField[] keyFields) {
         for (int i = 0; i < keyFields.length; i++) {
             String currentKey = keyFields[i].getText().toUpperCase();
