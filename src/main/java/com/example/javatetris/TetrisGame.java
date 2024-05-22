@@ -27,6 +27,8 @@ public class TetrisGame {
     private String mode;
     protected Difficulty difficulty;
 
+    private boolean sideFixed = false;
+
     public TetrisGame(String mode) {
         this.mode = mode;
         String colorSetting = SaveSetting.loadOneSettingFromFile(12);
@@ -72,13 +74,13 @@ public class TetrisGame {
     }
 
     public void moveLeft() {
-        if (canMove(currentX - 1, currentY, currentTetromino)) {
+        if (canMove(currentX - 1, currentY, currentTetromino) && !sideFixed) {
             currentX--;
         }
     }
 
     public void moveRight() {
-        if (canMove(currentX + 1, currentY, currentTetromino)) {
+        if (canMove(currentX + 1, currentY, currentTetromino) && !sideFixed) {
             currentX++;
         }
     }
@@ -89,6 +91,7 @@ public class TetrisGame {
             score += difficulty.getBasePoint() / 6;
             if(currentTetromino.tetrominoType() == SpecialTetrominoType.HEAVY_SHAPE) {
                 clearCell(currentX, currentY, currentTetromino);
+                sideFixed = true;
             }
         } else {
             fixTetromino();
@@ -113,7 +116,7 @@ public class TetrisGame {
 
     private void generateTetromino() {
         currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> tetrominoFactory.generateTetromino(difficulty));
-        if (mode.equals("item") && clearedLines >= 10) {
+        if (mode.equals("item") && clearedLines >= 1) {
             nextTetromino = tetrominoFactory.generateSpecialTetromino(difficulty);
             clearedLines -= 10;
         } else {
@@ -122,6 +125,7 @@ public class TetrisGame {
     }
 
     protected void fixTetromino() {
+        sideFixed = false;
         char[][] shape = currentTetromino.shape();
         Color color = currentTetromino.color();
         int num = 0;
