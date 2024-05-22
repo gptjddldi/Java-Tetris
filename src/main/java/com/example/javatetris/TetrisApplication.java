@@ -56,7 +56,7 @@ public class TetrisApplication extends Application {
         primaryStage.show();
 
         // Game loop
-        Timeline gameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> tetrisUI.updateGameBoard()));
+        Timeline gameLoop = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> tetrisUI.updateGameBoard()));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
         tetrisUI.setGameLoop(gameLoop);

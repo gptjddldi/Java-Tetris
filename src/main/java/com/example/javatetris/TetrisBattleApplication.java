@@ -86,12 +86,12 @@ public class TetrisBattleApplication extends Application {
         primaryStage.show();
 
         // Game loops
-        Timeline player1GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> playerUI.updatePlayer1GameBoard()));
+        Timeline player1GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> playerUI.updatePlayer1GameBoard()));
         player1GameLoop.setCycleCount(Timeline.INDEFINITE);
         player1GameLoop.play();
         playerUI.setPlayer1GameLoop(player1GameLoop);
 
-        Timeline player2GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> playerUI.updatePlayer2GameBoard()));
+        Timeline player2GameLoop = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> playerUI.updatePlayer2GameBoard()));
         player2GameLoop.setCycleCount(Timeline.INDEFINITE);
         player2GameLoop.play();
         playerUI.setPlayer2GameLoop(player2GameLoop);
