@@ -56,6 +56,19 @@ public class ScoreBoardAtGameEnd extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        int normal_mode = getPlace10(10);
+        int item_mode = getPlace10(20);
+        if (Objects.equals(mode, "normal")) {
+            if (normal_mode > score) {
+                showAlertAndReturnToMainMenu(primaryStage, "10등 안에 들지 못했습니다.\n메인 메뉴로 돌아갑니다.");
+                return;
+            }
+        } else if (Objects.equals(mode, "item")) {
+            if (item_mode > score) {
+                showAlertAndReturnToMainMenu(primaryStage, "10등 안에 들지 못했습니다.\n메인 메뉴로 돌아갑니다.");
+                return;
+            }
+        }
         GridPane scoreBoardLayout = createScoreBoardLayout(primaryStage);
         Scene scoreBoardPage = new Scene(scoreBoardLayout, 290 * size(), 492 * size());
 
@@ -70,20 +83,6 @@ public class ScoreBoardAtGameEnd extends Application {
         scoreBoardLayout.setVgap(10 * size());
         scoreBoardLayout.setHgap(10 * size());
 
-        int normal_mode = getPlace10(10);
-        int item_mode = getPlace10(20);
-
-        if (Objects.equals(mode, "normal")) {
-            if (normal_mode > score) {
-                showAlertAndReturnToMainMenu(primaryStage, "10등 안에 들지 못했습니다.\n메인 메뉴로 돌아갑니다.");
-                return scoreBoardLayout;
-            }
-        } else if (Objects.equals(mode, "item")) {
-            if (item_mode > score) {
-                showAlertAndReturnToMainMenu(primaryStage, "10등 안에 들지 못했습니다.\n메인 메뉴로 돌아갑니다.");
-                return scoreBoardLayout;
-            }
-        }
 
         Button backButton = createBackButton(primaryStage);
         scoreBoardLayout.add(backButton, 0, 0);
