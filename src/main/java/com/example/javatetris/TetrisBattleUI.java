@@ -400,7 +400,10 @@ public class TetrisBattleUI {
         player2GameLoop.play();
         player1TetrisGame.resumeGame();
         player2TetrisGame.resumeGame();
-        timer.play();
+        //timer.play();
+        if(mode.equals("time")){
+            timer.pause();
+        }
         root.getChildren().remove(pausePane);
     }
 
