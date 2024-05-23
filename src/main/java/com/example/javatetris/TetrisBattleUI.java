@@ -402,7 +402,7 @@ public class TetrisBattleUI {
         player2TetrisGame.resumeGame();
         //timer.play();
         if(mode.equals("time")){
-            timer.pause();
+            timer.play();
         }
         root.getChildren().remove(pausePane);
     }

@@ -1,0 +1,34 @@
+<component name="ArtifactManager">
+  <artifact name="java-tetris.main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/java_tetris_main_jar</output-path>
+    <root id="root">
+      <element id="archive" name="java-tetris.main.jar">
+        <element id="module-output" name="java-tetris.main" />
+      </element>
+      <element id="library" level="project" name="Gradle: com.github.almasb:fxgl-gameplay:17.2" />
+      <element id="library" level="project" name="Gradle: com.gluonhq.attach:audio:4.0.13" />
+      <element id="library" level="project" name="Gradle: com.github.almasb:fxgl-scene:17.2" />
+      <element id="library" level="project" name="Gradle: com.github.almasb:fxgl-io:17.2" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-fxml:win:17.0.2" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-controls:win:17.0.2" />
+      <element id="library" level="project" name="Gradle: com.github.almasb:fxgl:17.2" />
+      <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.12.1" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-graphics:win:17.0.2" />
+      <element id="library" level="project" name="Gradle: com.gluonhq.attach:storage:4.0.13" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-base:win:17.0.2" />
+      <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:modular:1.6.0" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-graphics:17.0.2" />
+      <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.12.1" />
+      <element id="library" level="project" name="Gradle: com.github.almasb:fxgl-entity:17.2" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-media:win:17.0.2" />
+      <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.12.1" />
+      <element id="library" level="project" name="Gradle: com.github.almasb:fxgl-core:17.2" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-controls:17.0.2" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-base:17.0.2" />
+      <element id="library" level="project" name="Gradle: org.jetbrains:annotations:13.0" />
+      <element id="library" level="project" name="Gradle: com.gluonhq.attach:lifecycle:4.0.13" />
+      <element id="library" level="project" name="Gradle: com.gluonhq.attach:util:4.0.13" />
+      <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.0" />
+    </root>
+  </artifact>
+</component>
