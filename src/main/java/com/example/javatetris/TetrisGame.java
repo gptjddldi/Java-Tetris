@@ -91,8 +91,10 @@ public class TetrisGame {
             currentY++;
             score += difficulty.getBasePoint() / 6;
             if(currentTetromino.tetrominoType() == SpecialTetrominoType.HEAVY_SHAPE) {
-                clearCell(currentX, currentY, currentTetromino);
-                sideFixed = true;
+                int cnt = clearCell(currentX, currentY, currentTetromino);
+                if (cnt > 0) {
+                    sideFixed = true;
+                }
             }
         } else {
             fixTetromino();
@@ -102,6 +104,9 @@ public class TetrisGame {
     }
 
     public void moveDownAll() {
+        if(currentTetromino.tetrominoType() == SpecialTetrominoType.HEAVY_SHAPE || currentTetromino.tetrominoType() == SpecialTetrominoType.BOMB_SHAPE) {
+            return;
+        }
         while (canMove(currentX, currentY + 1, currentTetromino)) {
             currentY++;
             score += difficulty.getBasePoint() / 6;
@@ -337,7 +342,8 @@ public class TetrisGame {
         }
     }
 
-    private void clearCell(int x, int y, Tetromino tetromino) {
+    private int clearCell(int x, int y, Tetromino tetromino) {
+        int cnt = 0;
         char[][] shape = tetromino.shape();
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
@@ -345,12 +351,14 @@ public class TetrisGame {
                     int targetX = x + j;
                     int targetY = y + i;
 
-                    if (targetX >= 0 && targetX < BOARD_WIDTH && targetY >= 0 && targetY < BOARD_HEIGHT) {
+                    if (targetX >= 0 && targetX < BOARD_WIDTH && targetY >= 0 && targetY < BOARD_HEIGHT && charBoard[targetY][targetX] != 'N') {
                         charBoard[targetY][targetX] = 'N';
+                        cnt++;
                     }
                 }
             }
         }
+        return cnt;
     }
 
     protected void clearRow(int rowIndex) {
