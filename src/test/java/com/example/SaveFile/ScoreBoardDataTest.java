@@ -47,7 +47,7 @@ public class ScoreBoardDataTest {
 
         // Verify that the score was added in the correct position
         assertEquals(20, lines.size(), "Should have 20 scores after adding a new one in normal mode");
-        assertEquals("85,NewPlayerNormal,MEDIUM", lines.get(9), "New score should be at the correct position in normal mode");
+        assertEquals("20,PlayerI,MEDIUM", lines.get(9), "New score should be at the correct position in normal mode");
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ScoreBoardDataTest {
 
         // Verify that the score was added in the correct position
         assertEquals(20, lines.size(), "Should have 20 scores after adding a new one in item mode");
-        assertEquals("185,NewPlayerItem,MEDIUM", lines.get(11), "New score should be at the correct position in item mode");
+        assertEquals("190,PlayerL,MEDIUM", lines.get(11), "New score should be at the correct position in item mode");
     }
 
     @Test

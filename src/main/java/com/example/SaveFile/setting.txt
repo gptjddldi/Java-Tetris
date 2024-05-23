@@ -4,8 +4,8 @@ LEFT
 RIGHT
 P
 W
-S
 A
+S
 D
 V
 SPACE
