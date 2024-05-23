@@ -48,12 +48,12 @@ public class TetrisBattleApplication extends Application {
         GridPane player1GameBoard = playerUI.getPlayer1GameBoard();
         player1GameBoard.setMaxSize(240*size(), 480*size());
         VBox side1Pane = playerUI.getSide1Pane();
-        side1Pane.setMaxWidth(120*size());
+        side1Pane.setMaxSize(120*size(), 480*size());
 
         GridPane player2GameBoard = playerUI.getPlayer2GameBoard();
         player2GameBoard.setMaxSize(240*size(), 480*size());
         VBox side2Pane = playerUI.getSide2Pane();
-        side2Pane.setMaxWidth(120*size());
+        side2Pane.setMaxSize(120*size(), 480*size());
 
         HBox player1Layout = new HBox();
         player1Layout.getChildren().addAll(player1GameBoard, side1Pane);
@@ -62,12 +62,12 @@ public class TetrisBattleApplication extends Application {
         player2Layout.getChildren().addAll(player2GameBoard, side2Pane);
 
         VBox timerBox = createTimerUI();
-        
+
         HBox mainLayout = new HBox();
         mainLayout.getChildren().addAll(player1Layout, timerBox, player2Layout);
         mainLayout.setStyle("-fx-alignment: center;");
 
-        Scene scene = new Scene(mainLayout, 800*size(), 600*size());
+        Scene scene = new Scene(mainLayout, 800*size(), 500*size());
 
         KeyCode[] player1Keys = new KeyCode[6];
         KeyCode[] player2Keys = new KeyCode[6];
@@ -125,7 +125,7 @@ public class TetrisBattleApplication extends Application {
     private VBox createTimerUI() {
         timerLabel = new Label();
         updateTimerLabel();
-//        timerLabel.setFont(new Font(20 * size())); // 원하는 폰트 크기로 설정
+        timerLabel.setFont(new Font(20 * size())); // 원하는 폰트 크기로 설정
         VBox timerBox = new VBox(timerLabel);
         timerBox.setPrefWidth(100 * size()); // 필요한 경우 타이머 UI의 크기를 설정
         timerBox.setStyle("-fx-alignment: center;"); // 타이머를 가운데 정렬

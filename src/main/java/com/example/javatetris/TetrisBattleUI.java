@@ -169,7 +169,7 @@ public class TetrisBattleUI {
     private VBox createSidePane(String player) {
         Label scoreLabel;
         VBox sidePane = new VBox(5*size());
-        Text[][] displayGrid = new Text[BOARD_HEIGHT-1][BOARD_WIDTH-1];
+        Text[][] displayGrid = new Text[BOARD_HEIGHT-2][BOARD_WIDTH-2];
 
         scoreLabel = new Label("Score: 0");
         scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20*size()));
@@ -188,18 +188,15 @@ public class TetrisBattleUI {
         GridPane nextAttackDisplay = new GridPane();
         for (int y = 0; y < BOARD_HEIGHT-2; y++) {
             for (int x = 0; x < BOARD_WIDTH-2; x++) {
-                Text block = createText("", Color.BLACK);
+                Text block = createSizedText("O", Color.CYAN, 15);
                 nextAttackDisplay.add(block, x, y);
                 displayGrid[y][x] = block;
             }
         }
 
-//        nextAttackDisplay.setPrefSize(BOARD_WIDTH * size() * 10, BOARD_HEIGHT * size() * 20);
-        nextAttackDisplay.setMaxSize(BOARD_WIDTH * size() * 14, BOARD_HEIGHT * size() * 18);
-        nextAttackDisplay.setMinSize(BOARD_WIDTH * size() * 14, BOARD_HEIGHT * size() * 18);
+        nextAttackDisplay.setMaxSize((BOARD_WIDTH-4) * size() * 15, (BOARD_HEIGHT+1) * size() * 15);
+        nextAttackDisplay.setMinSize((BOARD_WIDTH-4) * size() * 15, (BOARD_HEIGHT+1) * size() * 15); // 300*size
         nextAttackDisplay.setStyle("-fx-background-color: black;");
-        nextAttackDisplay.setScaleX(0.8);
-        nextAttackDisplay.setScaleY(0.8);
 
         if (player.equals("player1")) {
             player1ScoreLabel = scoreLabel;
@@ -208,7 +205,6 @@ public class TetrisBattleUI {
             player1DisplayGrid = displayGrid;
             updateNextTetrominoDisplay(player);
             sidePane.getChildren().addAll(player1ScoreLabel, nextTetrominoDisplay1, nextAttackDisplay1);
-//            sidePane.setStyle("-fx-alignment: center;");
 
             VBox.setMargin(nextTetrominoDisplay1, new Insets(0, 0, 0, 0));
         } else {
@@ -219,7 +215,6 @@ public class TetrisBattleUI {
             updateNextTetrominoDisplay(player);
             sidePane.getChildren().addAll(player2ScoreLabel, nextTetrominoDisplay2, nextAttackDisplay2);
 
-//            sidePane.setStyle("-fx-alignment: center;");
             VBox.setMargin(nextTetrominoDisplay2, new Insets(0, 0, 0, 0));
         }
 
@@ -282,15 +277,14 @@ public class TetrisBattleUI {
 
         Color nextColor = Color.rgb(136, 204, 238); //cyan
         int num = nextAttack.length;
-        for(int y = BOARD_HEIGHT-2; y > BOARD_HEIGHT-2-num; y--) {
+        for(int y = BOARD_HEIGHT-3; y > BOARD_HEIGHT-3-num; y--) {
             for (int x = 0; x < BOARD_WIDTH-2; x++) {
-                if (nextAttack[BOARD_HEIGHT-2-y][x] != 'N') {
-                    displayGrid[BOARD_HEIGHT-2-y][x].setText("O");
-                    displayGrid[BOARD_HEIGHT-2-y][x].setFill(nextColor);
+                if (nextAttack[BOARD_HEIGHT-3-y][x] != 'N') {
+                    displayGrid[y][x].setText("O");
+                    displayGrid[y][x].setFill(nextColor);
                 } else {
-                    displayGrid[BOARD_HEIGHT-2-y][x].setText("O");
-                    //displayGrid[BOARD_HEIGHT-2-y][x].setFill(nextColor);
-                    displayGrid[BOARD_HEIGHT-2-y][x].setFill(Color.TRANSPARENT);
+                    displayGrid[y][x].setText("N");
+                    displayGrid[y][x].setFill(Color.TRANSPARENT);
                 }
             }
         }
@@ -401,6 +395,12 @@ public class TetrisBattleUI {
     private Text createText(String text, Color color) {
         Text t = new Text(text);
         t.setFont(Font.font("Arial", FontWeight.BOLD, 20 * size()));
+        t.setFill(color);
+        return t;
+    }
+    private Text createSizedText(String text, Color color, double size) {
+        Text t = new Text(text);
+        t.setFont(Font.font("Arial", FontWeight.BOLD, size * size()));
         t.setFill(color);
         return t;
     }
