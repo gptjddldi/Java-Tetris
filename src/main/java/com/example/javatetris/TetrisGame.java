@@ -271,6 +271,10 @@ public class TetrisGame {
         return gameOver;
     }
 
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
     public void pauseGame() {
         gameLoop.pause();
     }

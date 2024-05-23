@@ -5,21 +5,31 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import static com.example.SaveFile.size.size;
 
 public class TetrisBattleApplication extends Application {
+    private final int TIMER_DURATION = 180;
     private final TetrisGameBattle player1TetrisGame;
     private final TetrisGameBattle player2TetrisGame;
+    private boolean timerEnded = false;
+    private int timeRemaining = TIMER_DURATION;
+    private Label timerLabel;
+    private Timeline timer;
+    private String mode;
 
     public TetrisBattleApplication(String mode) {
         super();
+        this.mode = mode;
         player1TetrisGame = new TetrisGameBattle(mode);
         player2TetrisGame = new TetrisGameBattle(mode);
 
@@ -30,21 +40,34 @@ public class TetrisBattleApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
+        if (mode.equals("time")) {
+            addTimer();
+        }
+        TetrisBattleUI playerUI = new TetrisBattleUI(player1TetrisGame, player2TetrisGame, root, primaryStage, timer);
 
-        TetrisBattleUI playerUI = new TetrisBattleUI(player1TetrisGame, player2TetrisGame, root, primaryStage);
+        GridPane player1GameBoard = playerUI.getPlayer1GameBoard();
+        player1GameBoard.setMaxSize(240*size(), 480*size());
+        VBox side1Pane = playerUI.getSide1Pane();
+        side1Pane.setMaxWidth(120*size());
 
-        HBox hbox = new HBox(10); // 10은 컴포넌트 사이의 간격
-        hbox.getChildren().addAll(playerUI.getPlayer1GameBoard(), playerUI.getSide1Pane(),
-                playerUI.getPlayer2GameBoard(), playerUI.getSide2Pane());
+        GridPane player2GameBoard = playerUI.getPlayer2GameBoard();
+        player2GameBoard.setMaxSize(240*size(), 480*size());
+        VBox side2Pane = playerUI.getSide2Pane();
+        side2Pane.setMaxWidth(120*size());
 
-        hbox.setPrefSize(750 * size(), 0); // 필요한 크기로 설정, 이 부분을 지우면 크기 잘리는 문제 발생
-        //hbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        HBox player1Layout = new HBox();
+        player1Layout.getChildren().addAll(player1GameBoard, side1Pane);
 
+        HBox player2Layout = new HBox();
+        player2Layout.getChildren().addAll(player2GameBoard, side2Pane);
 
+        VBox timerBox = createTimerUI();
+        
+        HBox mainLayout = new HBox();
+        mainLayout.getChildren().addAll(player1Layout, timerBox, player2Layout);
+        mainLayout.setStyle("-fx-alignment: center;");
 
-        root.setCenter(hbox);
-
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(mainLayout, 800*size(), 600*size());
 
         KeyCode[] player1Keys = new KeyCode[6];
         KeyCode[] player2Keys = new KeyCode[6];
@@ -55,6 +78,8 @@ public class TetrisBattleApplication extends Application {
         }
 
         scene.setOnKeyPressed(event -> {
+            if (timerEnded) return;
+
             KeyCode code = event.getCode();
 
             if (code == player1Keys[2]) player1TetrisGame.moveLeft();
@@ -95,6 +120,38 @@ public class TetrisBattleApplication extends Application {
         player2GameLoop.setCycleCount(Timeline.INDEFINITE);
         player2GameLoop.play();
         playerUI.setPlayer2GameLoop(player2GameLoop);
+    }
+
+    private VBox createTimerUI() {
+        timerLabel = new Label();
+        updateTimerLabel();
+//        timerLabel.setFont(new Font(20 * size())); // 원하는 폰트 크기로 설정
+        VBox timerBox = new VBox(timerLabel);
+        timerBox.setPrefWidth(100 * size()); // 필요한 경우 타이머 UI의 크기를 설정
+        timerBox.setStyle("-fx-alignment: center;"); // 타이머를 가운데 정렬
+        return timerBox;
+    }
+
+    private void updateTimerLabel() {
+        System.out.println("timeRemaining: " + timeRemaining);
+        int minutes = timeRemaining / 60;
+        int seconds = timeRemaining % 60;
+        timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+    }
+
+    private void addTimer() {
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                updateTimerLabel();
+            } else {
+                timerEnded = true;
+                player1TetrisGame.setGameOver(true);
+                player2TetrisGame.setGameOver(true);
+            }
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
+        timer.play();
     }
 
     public static void main(String[] args) {

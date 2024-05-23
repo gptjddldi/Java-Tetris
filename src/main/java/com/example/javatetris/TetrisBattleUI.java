@@ -43,8 +43,9 @@ public class TetrisBattleUI {
     private final Stage window;
     private Timeline player1GameLoop;
     private Timeline player2GameLoop;
+    private Timeline timer;
 
-    public TetrisBattleUI(TetrisGameBattle player1TetrisGame, TetrisGameBattle player2TetrisGame, BorderPane root, Stage window) {
+    public TetrisBattleUI(TetrisGameBattle player1TetrisGame, TetrisGameBattle player2TetrisGame, BorderPane root, Stage window, Timeline timer) {
         this.player1TetrisGame = player1TetrisGame;
         this.player2TetrisGame = player2TetrisGame;
         this.root = root;
@@ -54,6 +55,7 @@ public class TetrisBattleUI {
         this.side1Pane = createSidePane("player1");
         this.side2Pane = createSidePane("player2");
         this.pausePane = createPausePane();
+        this.timer = timer;
     }
 
     public GridPane getPlayer1GameBoard() {
@@ -92,6 +94,7 @@ public class TetrisBattleUI {
             player2GameLoop.pause();
             player1TetrisGame.pauseGame();
             player2TetrisGame.pauseGame();
+            timer.pause();
             root.getChildren().add(createGameOverPane());
             return;
         }
@@ -174,11 +177,12 @@ public class TetrisBattleUI {
         GridPane nextTetrominoDisplay = new GridPane();
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
-                Text block = createText("", Color.WHITE);
+                Text block = createText("O", Color.TRANSPARENT);
                 nextTetrominoDisplay.add(block, x, y);
             }
         }
-        nextTetrominoDisplay.setPrefSize( size() * 100, size() * 100);
+        nextTetrominoDisplay.setMinSize(5 * size() * 20, 5 * size() * 20);
+        nextTetrominoDisplay.setMaxSize(5 * size() * 20, 5 * size() * 20);
         nextTetrominoDisplay.setStyle("-fx-background-color: black;");
 
         GridPane nextAttackDisplay = new GridPane();
@@ -190,10 +194,12 @@ public class TetrisBattleUI {
             }
         }
 
-        nextAttackDisplay.setPrefSize(BOARD_WIDTH * size() * 10, BOARD_HEIGHT * size() * 20);
+//        nextAttackDisplay.setPrefSize(BOARD_WIDTH * size() * 10, BOARD_HEIGHT * size() * 20);
+        nextAttackDisplay.setMaxSize(BOARD_WIDTH * size() * 14, BOARD_HEIGHT * size() * 18);
+        nextAttackDisplay.setMinSize(BOARD_WIDTH * size() * 14, BOARD_HEIGHT * size() * 18);
         nextAttackDisplay.setStyle("-fx-background-color: black;");
-        nextAttackDisplay.setScaleX(0.5);
-        nextAttackDisplay.setScaleY(0.5);
+        nextAttackDisplay.setScaleX(0.8);
+        nextAttackDisplay.setScaleY(0.8);
 
         if (player.equals("player1")) {
             player1ScoreLabel = scoreLabel;
@@ -202,8 +208,9 @@ public class TetrisBattleUI {
             player1DisplayGrid = displayGrid;
             updateNextTetrominoDisplay(player);
             sidePane.getChildren().addAll(player1ScoreLabel, nextTetrominoDisplay1, nextAttackDisplay1);
+//            sidePane.setStyle("-fx-alignment: center;");
 
-            VBox.setMargin(nextTetrominoDisplay1, new Insets(0, 0, 5 * size(), 0));
+            VBox.setMargin(nextTetrominoDisplay1, new Insets(0, 0, 0, 0));
         } else {
             player2ScoreLabel = scoreLabel;
             nextTetrominoDisplay2 = nextTetrominoDisplay;
@@ -212,7 +219,8 @@ public class TetrisBattleUI {
             updateNextTetrominoDisplay(player);
             sidePane.getChildren().addAll(player2ScoreLabel, nextTetrominoDisplay2, nextAttackDisplay2);
 
-            VBox.setMargin(nextTetrominoDisplay2, new Insets(0, 0, 5 * size(), 0));
+//            sidePane.setStyle("-fx-alignment: center;");
+            VBox.setMargin(nextTetrominoDisplay2, new Insets(0, 0, 0, 0));
         }
 
 
@@ -322,14 +330,7 @@ public class TetrisBattleUI {
         gameOverLabel.setLayoutX(50*size());
         gameOverLabel.setLayoutY(200*size());
 
-        String winner;
-        if (player1TetrisGame.isGameOver() && !player2TetrisGame.isGameOver()) {
-            winner = "Player 2";
-        } else if (!player1TetrisGame.isGameOver() && player2TetrisGame.isGameOver()) {
-            winner = "Player 1";
-        } else {
-            winner = "Draw"; // Both players' games ended at the same time
-        }
+        String winner = calculateWinner();
         Label winnerLabel = new Label("Winner: " + winner);
         winnerLabel.setStyle("-fx-font-size: "+ 30*size() +"px; -fx-font-weight: bold;-fx-text-fill: red;");
         winnerLabel.setLayoutX(50*size());
@@ -347,11 +348,34 @@ public class TetrisBattleUI {
         return gameOverPane;
     }
 
+    private String calculateWinner() {
+        String winner;
+        if (player1TetrisGame.isGameOver() && !player2TetrisGame.isGameOver()) {
+            winner = "Player 2";
+        } else if (!player1TetrisGame.isGameOver() && player2TetrisGame.isGameOver()) {
+            winner = "Player 1";
+        }
+        // Timer 모드 or 동시에 죽은 경우
+        else {
+            int player1Score = player1TetrisGame.getScore();
+            int player2Score = player2TetrisGame.getScore();
+            if (player1Score > player2Score) {
+                winner = "Player 1";
+            } else if (player1Score < player2Score) {
+                winner = "Player 2";
+            } else {
+                winner = "Draw";
+            }
+        }
+        return winner;
+    }
+
     public void pauseGame() {
         player1GameLoop.pause();
         player2GameLoop.pause();
         player1TetrisGame.pauseGame();
         player2TetrisGame.pauseGame();
+        timer.pause();
         root.getChildren().add(pausePane);
     }
 
@@ -370,6 +394,7 @@ public class TetrisBattleUI {
         player2GameLoop.play();
         player1TetrisGame.resumeGame();
         player2TetrisGame.resumeGame();
+        timer.play();
         root.getChildren().remove(pausePane);
     }
 
