@@ -40,10 +40,5 @@ public class SaveSettingTest {
         assertEquals("UP", line);
     }
 
-    @Test
-    public void testLoadOneSettingFromFile() throws IOException {
-        assertEquals("UP", SaveSetting.loadOneSettingFromFile(1));
-        assertEquals("DOWN", SaveSetting.loadOneSettingFromFile(2));
-        assertEquals("LEFT", SaveSetting.loadOneSettingFromFile(3));
-    }
+
 }

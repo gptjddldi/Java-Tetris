@@ -19,9 +19,7 @@ class TetrominoFactoryTest {
     }
 
     @Test
-    void testTetrominoGenerationHard() {
-        testTetrominoGeneration(Difficulty.HARD, -0.20, 10000);
-    }
+    void testTetrominoGenerationHard() {testTetrominoGeneration(Difficulty.HARD, -0.20, 10000);  }
 
     private void testTetrominoGeneration(Difficulty difficulty, double additionalProbability, int trials) {
         double baseRate = 1.0 / 7;
