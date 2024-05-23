@@ -33,18 +33,8 @@ public class TetrisGameBattle extends TetrisGame {
     }
 
     protected void fixTetromino() {
+        super.fixTetromino();
         char[][] shape = currentTetromino.shape();
-        Color color = currentTetromino.color();
-
-        // 테트로미노를 보드에 고정
-        for (int i = 0; i < shape.length; i++) {
-            for (int j = 0; j < shape[0].length; j++) {
-                if (shape[i][j] != 'N') {
-                    charBoard[currentY + i][currentX + j] = shape[i][j];
-                    colorBoard[currentY + i][currentX + j] = color;
-                }
-            }
-        }
 
         // 현재 보드 상태 저장
         char[][] boardWithoutCurrentTetromino = new char[BOARD_HEIGHT][BOARD_WIDTH];
@@ -89,9 +79,6 @@ public class TetrisGameBattle extends TetrisGame {
         if(num > 0) {
             attackOpponent(clearedLines);
         }
-        clearLines(num);
-
-        spawnNewTetromino();
     }
 
     private void attackOpponent(char[][] clearedLines) {
