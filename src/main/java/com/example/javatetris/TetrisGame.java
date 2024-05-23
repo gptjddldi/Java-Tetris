@@ -21,6 +21,7 @@ public class TetrisGame {
     private Timeline gameLoop;
     private boolean gameOver = false;
     protected int score = 0;
+    private int targetLineCount = 0;
     protected int clearedLines = 0;
     protected int totalClearedLines = 0;
     private TetrominoFactory tetrominoFactory;
@@ -95,6 +96,8 @@ public class TetrisGame {
             }
         } else {
             fixTetromino();
+            clearLines();
+            spawnNewTetromino();
         }
     }
 
@@ -104,6 +107,9 @@ public class TetrisGame {
             score += difficulty.getBasePoint() / 6;
         }
         fixTetromino();
+        clearLines();
+        spawnNewTetromino();
+
     }
 
 
@@ -128,7 +134,6 @@ public class TetrisGame {
         sideFixed = false;
         char[][] shape = currentTetromino.shape();
         Color color = currentTetromino.color();
-        int num = 0;
 
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
@@ -148,7 +153,7 @@ public class TetrisGame {
                 }
             }
             if (lineCleared) {
-                num++;
+                targetLineCount++;
             }
         }
 
@@ -169,14 +174,12 @@ public class TetrisGame {
         if (currentTetromino.tetrominoType() == SpecialTetrominoType.VERTICAL_SHAPE) {
             handleVerticalShape();
         }
-
-        clearLines(num);
-        spawnNewTetromino();
     }
 
-    protected void clearLines(int num) {
-        clearedLines += num;
-        totalClearedLines += num;
+    protected void clearLines() {
+
+        clearedLines += targetLineCount;
+        totalClearedLines += targetLineCount;
         for (int y = BOARD_HEIGHT - 1; y >= 0; y--) {
             boolean lineFull = true;
             for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -193,7 +196,8 @@ public class TetrisGame {
                 y++;
             }
         }
-        score += num * num * difficulty.getBasePoint();
+        score += targetLineCount * targetLineCount * difficulty.getBasePoint();
+        targetLineCount = 0;
 
         setupGameLoop();
     }
