@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import static com.example.SaveFile.size.size;
+import static com.example.page.StartPage.mode;
 
 public class TetrisBattleUI {
     private final int BOARD_WIDTH = 12;
@@ -43,6 +44,8 @@ public class TetrisBattleUI {
     private final Stage window;
     private Timeline player1GameLoop;
     private Timeline player2GameLoop;
+    private Timeline timer;
+    private String mode;
 
     public TetrisBattleUI(TetrisGameBattle player1TetrisGame, TetrisGameBattle player2TetrisGame, BorderPane root, Stage window) {
         this.player1TetrisGame = player1TetrisGame;
@@ -54,6 +57,8 @@ public class TetrisBattleUI {
         this.side1Pane = createSidePane("player1");
         this.side2Pane = createSidePane("player2");
         this.pausePane = createPausePane();
+        //this.mode = mode;
+        //this.timer = timer;
     }
 
     public GridPane getPlayer1GameBoard() {
@@ -78,6 +83,9 @@ public class TetrisBattleUI {
         this.player2GameLoop = player2GameLoop;
     }
 
+    public void setTimer(Timeline timer){this.timer = timer;}
+    public void setMode(String mode){this.mode = mode;}
+
     public void updatePlayer1GameBoard() {
         updateGameBoard(player1TetrisGame, player1BoardGrid, player1ScoreLabel);
     }
@@ -92,6 +100,10 @@ public class TetrisBattleUI {
             player2GameLoop.pause();
             player1TetrisGame.pauseGame();
             player2TetrisGame.pauseGame();
+            if(mode.equals("time")){
+                timer.pause();
+            }
+            //timer.pause();
             root.getChildren().add(createGameOverPane());
             return;
         }
@@ -166,7 +178,7 @@ public class TetrisBattleUI {
     private VBox createSidePane(String player) {
         Label scoreLabel;
         VBox sidePane = new VBox(5*size());
-        Text[][] displayGrid = new Text[BOARD_HEIGHT-1][BOARD_WIDTH-1];
+        Text[][] displayGrid = new Text[BOARD_HEIGHT-2][BOARD_WIDTH-2];
 
         scoreLabel = new Label("Score: 0");
         scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20*size()));
@@ -174,26 +186,26 @@ public class TetrisBattleUI {
         GridPane nextTetrominoDisplay = new GridPane();
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
-                Text block = createText("", Color.WHITE);
+                Text block = createText("O", Color.TRANSPARENT);
                 nextTetrominoDisplay.add(block, x, y);
             }
         }
-        nextTetrominoDisplay.setPrefSize( size() * 100, size() * 100);
+        nextTetrominoDisplay.setMinSize(5 * size() * 20, 5 * size() * 20);
+        nextTetrominoDisplay.setMaxSize(5 * size() * 20, 5 * size() * 20);
         nextTetrominoDisplay.setStyle("-fx-background-color: black;");
 
         GridPane nextAttackDisplay = new GridPane();
         for (int y = 0; y < BOARD_HEIGHT-2; y++) {
             for (int x = 0; x < BOARD_WIDTH-2; x++) {
-                Text block = createText("", Color.BLACK);
+                Text block = createSizedText("O", Color.CYAN, 15);
                 nextAttackDisplay.add(block, x, y);
                 displayGrid[y][x] = block;
             }
         }
 
-        nextAttackDisplay.setPrefSize(BOARD_WIDTH * size() * 10, BOARD_HEIGHT * size() * 20);
+        nextAttackDisplay.setMaxSize((BOARD_WIDTH-4) * size() * 15, (BOARD_HEIGHT+1) * size() * 15);
+        nextAttackDisplay.setMinSize((BOARD_WIDTH-4) * size() * 15, (BOARD_HEIGHT+1) * size() * 15); // 300*size
         nextAttackDisplay.setStyle("-fx-background-color: black;");
-        nextAttackDisplay.setScaleX(0.5);
-        nextAttackDisplay.setScaleY(0.5);
 
         if (player.equals("player1")) {
             player1ScoreLabel = scoreLabel;
@@ -203,7 +215,7 @@ public class TetrisBattleUI {
             updateNextTetrominoDisplay(player);
             sidePane.getChildren().addAll(player1ScoreLabel, nextTetrominoDisplay1, nextAttackDisplay1);
 
-            VBox.setMargin(nextTetrominoDisplay1, new Insets(0, 0, 5 * size(), 0));
+            VBox.setMargin(nextTetrominoDisplay1, new Insets(0, 0, 0, 0));
         } else {
             player2ScoreLabel = scoreLabel;
             nextTetrominoDisplay2 = nextTetrominoDisplay;
@@ -212,7 +224,7 @@ public class TetrisBattleUI {
             updateNextTetrominoDisplay(player);
             sidePane.getChildren().addAll(player2ScoreLabel, nextTetrominoDisplay2, nextAttackDisplay2);
 
-            VBox.setMargin(nextTetrominoDisplay2, new Insets(0, 0, 5 * size(), 0));
+            VBox.setMargin(nextTetrominoDisplay2, new Insets(0, 0, 0, 0));
         }
 
 
@@ -274,15 +286,14 @@ public class TetrisBattleUI {
 
         Color nextColor = Color.rgb(136, 204, 238); //cyan
         int num = nextAttack.length;
-        for(int y = BOARD_HEIGHT-2; y > BOARD_HEIGHT-2-num; y--) {
+        for(int y = BOARD_HEIGHT-3; y > BOARD_HEIGHT-3-num; y--) {
             for (int x = 0; x < BOARD_WIDTH-2; x++) {
-                if (nextAttack[BOARD_HEIGHT-2-y][x] != 'N') {
-                    displayGrid[BOARD_HEIGHT-2-y][x].setText("O");
-                    displayGrid[BOARD_HEIGHT-2-y][x].setFill(nextColor);
+                if (nextAttack[BOARD_HEIGHT-3-y][x] != 'N') {
+                    displayGrid[y][x].setText("O");
+                    displayGrid[y][x].setFill(nextColor);
                 } else {
-                    displayGrid[BOARD_HEIGHT-2-y][x].setText("O");
-                    //displayGrid[BOARD_HEIGHT-2-y][x].setFill(nextColor);
-                    displayGrid[BOARD_HEIGHT-2-y][x].setFill(Color.TRANSPARENT);
+                    displayGrid[y][x].setText("N");
+                    displayGrid[y][x].setFill(Color.TRANSPARENT);
                 }
             }
         }
@@ -322,14 +333,7 @@ public class TetrisBattleUI {
         gameOverLabel.setLayoutX(50*size());
         gameOverLabel.setLayoutY(200*size());
 
-        String winner;
-        if (player1TetrisGame.isGameOver() && !player2TetrisGame.isGameOver()) {
-            winner = "Player 2";
-        } else if (!player1TetrisGame.isGameOver() && player2TetrisGame.isGameOver()) {
-            winner = "Player 1";
-        } else {
-            winner = "Draw"; // Both players' games ended at the same time
-        }
+        String winner = calculateWinner();
         Label winnerLabel = new Label("Winner: " + winner);
         winnerLabel.setStyle("-fx-font-size: "+ 30*size() +"px; -fx-font-weight: bold;-fx-text-fill: red;");
         winnerLabel.setLayoutX(50*size());
@@ -347,11 +351,37 @@ public class TetrisBattleUI {
         return gameOverPane;
     }
 
+    private String calculateWinner() {
+        String winner;
+        if (player1TetrisGame.isGameOver() && !player2TetrisGame.isGameOver()) {
+            winner = "Player 2";
+        } else if (!player1TetrisGame.isGameOver() && player2TetrisGame.isGameOver()) {
+            winner = "Player 1";
+        }
+        // Timer 모드 or 동시에 죽은 경우
+        else {
+            int player1Score = player1TetrisGame.getScore();
+            int player2Score = player2TetrisGame.getScore();
+            if (player1Score > player2Score) {
+                winner = "Player 1";
+            } else if (player1Score < player2Score) {
+                winner = "Player 2";
+            } else {
+                winner = "Draw";
+            }
+        }
+        return winner;
+    }
+
     public void pauseGame() {
         player1GameLoop.pause();
         player2GameLoop.pause();
         player1TetrisGame.pauseGame();
         player2TetrisGame.pauseGame();
+        if(mode.equals("time")){
+            timer.pause();
+        }
+        //timer.pause();
         root.getChildren().add(pausePane);
     }
 
@@ -370,12 +400,19 @@ public class TetrisBattleUI {
         player2GameLoop.play();
         player1TetrisGame.resumeGame();
         player2TetrisGame.resumeGame();
+        timer.play();
         root.getChildren().remove(pausePane);
     }
 
     private Text createText(String text, Color color) {
         Text t = new Text(text);
         t.setFont(Font.font("Arial", FontWeight.BOLD, 20 * size()));
+        t.setFill(color);
+        return t;
+    }
+    private Text createSizedText(String text, Color color, double size) {
+        Text t = new Text(text);
+        t.setFont(Font.font("Arial", FontWeight.BOLD, size * size()));
         t.setFill(color);
         return t;
     }
