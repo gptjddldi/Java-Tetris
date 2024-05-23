@@ -49,29 +49,58 @@ public class TetrisBattleApplication extends Application {
 
         //TetrisBattleUI playerUI = new TetrisBattleUI(player1TetrisGame, player2TetrisGame, root, primaryStage);
 
-        GridPane player1GameBoard = playerUI.getPlayer1GameBoard();
-        player1GameBoard.setMaxSize(240*size(), 480*size());
-        VBox side1Pane = playerUI.getSide1Pane();
-        side1Pane.setMaxSize(120*size(), 480*size());
+        if (mode.equals("time")){
+            GridPane player1GameBoard = playerUI.getPlayer1GameBoard();
+            player1GameBoard.setMaxSize(240*size(), 480*size());
+            VBox side1Pane = playerUI.getSide1Pane();
+            side1Pane.setMaxSize(120*size(), 480*size());
 
-        GridPane player2GameBoard = playerUI.getPlayer2GameBoard();
-        player2GameBoard.setMaxSize(240*size(), 480*size());
-        VBox side2Pane = playerUI.getSide2Pane();
-        side2Pane.setMaxSize(120*size(), 480*size());
+            GridPane player2GameBoard = playerUI.getPlayer2GameBoard();
+            player2GameBoard.setMaxSize(240*size(), 480*size());
+            VBox side2Pane = playerUI.getSide2Pane();
+            side2Pane.setMaxSize(120*size(), 480*size());
 
-        HBox player1Layout = new HBox();
-        player1Layout.getChildren().addAll(player1GameBoard, side1Pane);
+            HBox player1Layout = new HBox();
+            player1Layout.getChildren().addAll(player1GameBoard, side1Pane);
 
-        HBox player2Layout = new HBox();
-        player2Layout.getChildren().addAll(player2GameBoard, side2Pane);
+            HBox player2Layout = new HBox();
+            player2Layout.getChildren().addAll(player2GameBoard, side2Pane);
 
-        VBox timerBox = createTimerUI();
+            VBox timerBox = createTimerUI();
 
-        HBox mainLayout = new HBox();
-        mainLayout.getChildren().addAll(player1Layout, timerBox, player2Layout);
-        mainLayout.setStyle("-fx-alignment: center;");
+            HBox mainLayout = new HBox();
+            mainLayout.getChildren().addAll(player1Layout, timerBox, player2Layout);
+            mainLayout.setStyle("-fx-alignment: center;");
 
-        root.setCenter(mainLayout);
+            root.setCenter(mainLayout);
+        }else{
+            GridPane player1GameBoard = playerUI.getPlayer1GameBoard();
+            player1GameBoard.setMaxSize(240*size(), 480*size());
+            VBox side1Pane = playerUI.getSide1Pane();
+            side1Pane.setMaxSize(120*size(), 480*size());
+
+            GridPane player2GameBoard = playerUI.getPlayer2GameBoard();
+            player2GameBoard.setMaxSize(240*size(), 480*size());
+            VBox side2Pane = playerUI.getSide2Pane();
+            side2Pane.setMaxSize(120*size(), 480*size());
+
+            HBox player1Layout = new HBox();
+            player1Layout.getChildren().addAll(player1GameBoard, side1Pane);
+
+            HBox player2Layout = new HBox();
+            player2Layout.getChildren().addAll(player2GameBoard, side2Pane);
+
+            //VBox timerBox = createTimerUI();
+            HBox timerEmptyBox = new HBox();
+            timerEmptyBox.setPrefWidth(100 * size());
+
+            HBox mainLayout = new HBox();
+            mainLayout.getChildren().addAll(player1Layout, timerEmptyBox, player2Layout);
+            mainLayout.setStyle("-fx-alignment: center;");
+
+            root.setCenter(mainLayout);
+        }
+
         Scene scene = new Scene(root, 800*size(), 500*size());
 
         KeyCode[] player1Keys = new KeyCode[6];
