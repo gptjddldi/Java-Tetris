@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import static com.example.SaveFile.size.size;
+import static com.example.page.StartPage.mode;
 
 public class TetrisBattleUI {
     private final int BOARD_WIDTH = 12;
@@ -44,8 +45,9 @@ public class TetrisBattleUI {
     private Timeline player1GameLoop;
     private Timeline player2GameLoop;
     private Timeline timer;
+    private String mode;
 
-    public TetrisBattleUI(TetrisGameBattle player1TetrisGame, TetrisGameBattle player2TetrisGame, BorderPane root, Stage window, Timeline timer) {
+    public TetrisBattleUI(TetrisGameBattle player1TetrisGame, TetrisGameBattle player2TetrisGame, BorderPane root, Stage window) {
         this.player1TetrisGame = player1TetrisGame;
         this.player2TetrisGame = player2TetrisGame;
         this.root = root;
@@ -55,7 +57,8 @@ public class TetrisBattleUI {
         this.side1Pane = createSidePane("player1");
         this.side2Pane = createSidePane("player2");
         this.pausePane = createPausePane();
-        this.timer = timer;
+        //this.mode = mode;
+        //this.timer = timer;
     }
 
     public GridPane getPlayer1GameBoard() {
@@ -80,6 +83,9 @@ public class TetrisBattleUI {
         this.player2GameLoop = player2GameLoop;
     }
 
+    public void setTimer(Timeline timer){this.timer = timer;}
+    public void setMode(String mode){this.mode = mode;}
+
     public void updatePlayer1GameBoard() {
         updateGameBoard(player1TetrisGame, player1BoardGrid, player1ScoreLabel);
     }
@@ -94,7 +100,10 @@ public class TetrisBattleUI {
             player2GameLoop.pause();
             player1TetrisGame.pauseGame();
             player2TetrisGame.pauseGame();
-            timer.pause();
+            if(mode.equals("time")){
+                timer.pause();
+            }
+            //timer.pause();
             root.getChildren().add(createGameOverPane());
             return;
         }
@@ -369,7 +378,10 @@ public class TetrisBattleUI {
         player2GameLoop.pause();
         player1TetrisGame.pauseGame();
         player2TetrisGame.pauseGame();
-        timer.pause();
+        if(mode.equals("time")){
+            timer.pause();
+        }
+        //timer.pause();
         root.getChildren().add(pausePane);
     }
 

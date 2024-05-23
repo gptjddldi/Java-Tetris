@@ -40,10 +40,14 @@ public class TetrisBattleApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
+        TetrisBattleUI playerUI = new TetrisBattleUI(player1TetrisGame, player2TetrisGame, root, primaryStage);
+        playerUI.setMode(mode);
         if (mode.equals("time")) {
-            addTimer();
+            addTimer(playerUI);
+            //playerUI.setTimer(timer);
         }
-        TetrisBattleUI playerUI = new TetrisBattleUI(player1TetrisGame, player2TetrisGame, root, primaryStage, timer);
+
+        //TetrisBattleUI playerUI = new TetrisBattleUI(player1TetrisGame, player2TetrisGame, root, primaryStage);
 
         GridPane player1GameBoard = playerUI.getPlayer1GameBoard();
         player1GameBoard.setMaxSize(240*size(), 480*size());
@@ -67,7 +71,8 @@ public class TetrisBattleApplication extends Application {
         mainLayout.getChildren().addAll(player1Layout, timerBox, player2Layout);
         mainLayout.setStyle("-fx-alignment: center;");
 
-        Scene scene = new Scene(mainLayout, 800*size(), 500*size());
+        root.setCenter(mainLayout);
+        Scene scene = new Scene(root, 800*size(), 500*size());
 
         KeyCode[] player1Keys = new KeyCode[6];
         KeyCode[] player2Keys = new KeyCode[6];
@@ -139,7 +144,7 @@ public class TetrisBattleApplication extends Application {
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
-    private void addTimer() {
+    private void addTimer(TetrisBattleUI playerUI) {
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (timeRemaining > 0) {
                 timeRemaining--;
@@ -152,6 +157,8 @@ public class TetrisBattleApplication extends Application {
         }));
         timer.setCycleCount(Timeline.INDEFINITE);
         timer.play();
+
+        playerUI.setTimer(timer);
     }
 
     public static void main(String[] args) {
