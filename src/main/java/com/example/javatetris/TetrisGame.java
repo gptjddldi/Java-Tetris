@@ -124,7 +124,7 @@ public class TetrisGame {
         currentTetromino = Objects.requireNonNullElseGet(nextTetromino, () -> tetrominoFactory.generateTetromino(difficulty));
         if (mode.equals("item") && clearedLines >= 1) {
             nextTetromino = tetrominoFactory.generateSpecialTetromino(difficulty);
-            clearedLines -= 10;
+            clearedLines -= 1;
         } else {
             nextTetromino = tetrominoFactory.generateTetromino(difficulty);
         }
